@@ -189,6 +189,7 @@
     background: var(--branco);
     border: 2px solid var(--borda);
     margin-bottom: 0.9rem;
+    flex-wrap: wrap;
   }
   .lembrete.feito{
     background: #EFF7F1;
@@ -239,6 +240,22 @@
     color: #fff;
   }
 
+  .botao-excluir{
+    font-family: var(--fonte);
+    font-size: 1.4rem;
+    font-weight: 700;
+    padding: 0.5rem 0.8rem;
+    border-radius: 10px;
+    border: 2px solid var(--borda);
+    background: var(--branco);
+    color: var(--coral-escuro);
+    cursor: pointer;
+    min-height: 48px;
+    min-width: 48px;
+    line-height: 1;
+  }
+  .botao-excluir:hover{ border-color: var(--coral-escuro); }
+
   .contato{
     display:flex; align-items:center; gap: 1rem;
     text-decoration:none;
@@ -248,6 +265,7 @@
     padding: 1.2rem;
     box-shadow: var(--sombra);
     min-height: 76px;
+    position: relative;
   }
   .contato:hover{ border-color: var(--coral); }
   .contato .icone-contato{
@@ -257,22 +275,26 @@
     display:flex; align-items:center; justify-content:center;
     flex-shrink:0;
   }
-  .contato .info-contato{ display:flex; flex-direction:column; }
+  .contato .info-contato{ display:flex; flex-direction:column; flex:1; }
   .contato .nome-contato{ font-size: 1.25rem; font-weight:700; }
   .contato .numero-contato{ font-size: 1.1rem; color: var(--azul-marinho-suave); }
   html.alto-contraste .contato .numero-contato{ color: var(--menta); }
+  .contato .botao-excluir{ position: relative; z-index: 2; }
 
   .agenda-item{
     display:flex; align-items:flex-start; gap: 1rem;
     padding: 1rem 0;
     border-bottom: 1px solid var(--borda);
     font-size: 1.2rem;
+    flex-wrap: wrap;
   }
   .agenda-item:last-child{ border-bottom:none; }
   .agenda-item .bolinha{
     width: 0.9rem; height:0.9rem; border-radius:50%;
     background: var(--coral); margin-top: 0.5rem; flex-shrink:0;
   }
+  .agenda-item .texto-agenda{ flex:1; min-width: 200px; }
+  .agenda-item .botao-excluir{ margin-left:auto; }
 
   .caixa-ajuda{
     background: var(--azul-ceu);
@@ -306,6 +328,129 @@
   }
   .botao-emergencia:hover{ background: var(--coral-escuro); }
 
+  /* Formulários de adicionar */
+  .formulario-adicionar{
+    margin-top: 1rem;
+    padding: 1.2rem;
+    border-radius: 16px;
+    background: var(--azul-ceu);
+    border: 2px solid var(--borda);
+    display:flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    align-items: flex-end;
+  }
+  .campo-adicionar{
+    display:flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    flex: 1;
+    min-width: 150px;
+  }
+  .campo-adicionar label{
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  .campo-adicionar input{
+    font-family: var(--fonte);
+    font-size: 1.15rem;
+    padding: 0.7rem 0.8rem;
+    border-radius: 10px;
+    border: 2px solid var(--azul-marinho-suave);
+    background: var(--branco);
+    color: var(--azul-marinho);
+    min-height: 48px;
+  }
+  .campo-hora{ flex: 0 0 auto; min-width: 0; }
+  .selecao-hora{
+    display:flex;
+    align-items:center;
+    gap: 0.35rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+  .selecao-hora select{
+    font-family: var(--fonte);
+    font-size: 1.15rem;
+    padding: 0.7rem 0.5rem;
+    border-radius: 10px;
+    border: 2px solid var(--azul-marinho-suave);
+    background: var(--branco);
+    color: var(--azul-marinho);
+    min-height: 48px;
+    min-width: 4.2rem;
+    cursor: pointer;
+  }
+  .botao-adicionar{
+    font-family: var(--fonte);
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 0.8rem 1.3rem;
+    border-radius: 10px;
+    border: none;
+    background: var(--menta);
+    color: #fff;
+    cursor: pointer;
+    min-height: 48px;
+    white-space: nowrap;
+  }
+  .botao-adicionar:hover{ filter: brightness(0.94); }
+
+  .mensagem-vazio{
+    font-size: 1.1rem;
+    opacity: 0.75;
+    padding: 0.6rem 0;
+  }
+
+  /* Banner de alarme */
+  .banner-alarme{
+    display:none;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--coral);
+    color: #fff;
+    border-radius: 16px;
+    padding: 1.3rem 1.4rem;
+    margin-bottom: 1.6rem;
+    box-shadow: var(--sombra);
+    align-items:center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    animation: piscar 1s infinite alternate;
+  }
+  .banner-alarme.ativo{ display:flex; }
+  @keyframes piscar{
+    from{ background: var(--coral); }
+    to{ background: var(--coral-escuro); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .banner-alarme{ animation: none; background: var(--coral-escuro); }
+  }
+  .banner-alarme .texto-alarme{
+    flex: 1;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+  .banner-alarme button{
+    font-family: var(--fonte);
+    font-size: 1.05rem;
+    font-weight: 700;
+    padding: 0.7rem 1.1rem;
+    border-radius: 10px;
+    border: 2px solid #fff;
+    background: #fff;
+    color: var(--coral-escuro);
+    cursor: pointer;
+    min-height: 48px;
+  }
+
+  .nota-config{
+    font-size: 1rem;
+    opacity: 0.85;
+    margin-top: 0.6rem;
+  }
+
   @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior: auto; }
   }
@@ -336,6 +481,11 @@
 
 <main id="conteudo-principal">
 
+  <div class="banner-alarme" id="banner-alarme" role="alert" aria-live="assertive">
+    <span class="texto-alarme" id="texto-banner-alarme"></span>
+    <button type="button" id="btn-parar-alarme">🔕 Ok, entendi</button>
+  </div>
+
   <div class="saudacao">
     <svg width="64" height="64" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <circle cx="12" cy="12" r="5" fill="#F0B94A"/>
@@ -362,78 +512,63 @@
 
   <section aria-labelledby="titulo-remedios">
     <h2 class="titulo-secao" id="titulo-remedios">💊 Meus remédios de hoje</h2>
-    <div id="lista-remedios">
-      <div class="lembrete" data-id="1">
-        <span class="marcador" aria-hidden="true">○</span>
-        <span class="hora">08:00</span>
-        <span class="texto">Losartana — 1 comprimido, com água</span>
-        <button class="botao-marcar" type="button" aria-label="Marcar Losartana das 08:00 como tomada">Marcar como tomado</button>
+    <div id="lista-remedios"></div>
+
+    <form class="formulario-adicionar" id="form-remedio">
+      <div class="campo-adicionar campo-hora">
+        <label id="rotulo-hora-remedio">Horário</label>
+        <div class="selecao-hora" role="group" aria-labelledby="rotulo-hora-remedio">
+          <select id="input-remedio-hora-h" aria-label="Hora (remédio)" required></select>
+          <span aria-hidden="true">:</span>
+          <select id="input-remedio-hora-m" aria-label="Minuto (remédio)" required></select>
+        </div>
       </div>
-      <div class="lembrete" data-id="2">
-        <span class="marcador" aria-hidden="true">○</span>
-        <span class="hora">13:00</span>
-        <span class="texto">Metformina — 1 comprimido, após o almoço</span>
-        <button class="botao-marcar" type="button" aria-label="Marcar Metformina das 13:00 como tomada">Marcar como tomado</button>
+      <div class="campo-adicionar">
+        <label for="input-remedio-texto">Remédio e instruções</label>
+        <input type="text" id="input-remedio-texto" placeholder="Ex: Losartana — 1 comprimido" required>
       </div>
-      <div class="lembrete" data-id="3">
-        <span class="marcador" aria-hidden="true">○</span>
-        <span class="hora">20:00</span>
-        <span class="texto">Vitamina D — 1 gota, com o jantar</span>
-        <button class="botao-marcar" type="button" aria-label="Marcar Vitamina D das 20:00 como tomada">Marcar como tomado</button>
-      </div>
-    </div>
+      <button class="botao-adicionar" type="submit">➕ Adicionar remédio</button>
+    </form>
   </section>
 
   <section aria-labelledby="titulo-agenda">
     <h2 class="titulo-secao" id="titulo-agenda">📅 Compromissos de hoje</h2>
     <div class="cartao">
-      <div class="agenda-item">
-        <span class="bolinha" aria-hidden="true"></span>
-        <span><strong>10h00</strong> — Consulta com Dra. Marta (Cardiologista)</span>
-      </div>
-      <div class="agenda-item">
-        <span class="bolinha" aria-hidden="true"></span>
-        <span><strong>15h30</strong> — Ligar para a filha, Ana</span>
-      </div>
-      <div class="agenda-item">
-        <span class="bolinha" aria-hidden="true"></span>
-        <span><strong>17h00</strong> — Caminhada leve na praça</span>
-      </div>
+      <div id="lista-agenda"></div>
     </div>
+
+    <form class="formulario-adicionar" id="form-agenda">
+      <div class="campo-adicionar campo-hora">
+        <label id="rotulo-hora-agenda">Horário</label>
+        <div class="selecao-hora" role="group" aria-labelledby="rotulo-hora-agenda">
+          <select id="input-agenda-hora-h" aria-label="Hora (compromisso)" required></select>
+          <span aria-hidden="true">:</span>
+          <select id="input-agenda-hora-m" aria-label="Minuto (compromisso)" required></select>
+        </div>
+      </div>
+      <div class="campo-adicionar">
+        <label for="input-agenda-texto">Compromisso</label>
+        <input type="text" id="input-agenda-texto" placeholder="Ex: Consulta com a médica" required>
+      </div>
+      <button class="botao-adicionar" type="submit">➕ Adicionar compromisso</button>
+    </form>
   </section>
 
   <section aria-labelledby="titulo-contatos">
     <h2 class="titulo-secao" id="titulo-contatos">☎️ Contatos importantes</h2>
-    <div class="grade">
-      <a class="contato" href="tel:+5511987654321">
-        <span class="icone-contato" aria-hidden="true">👩</span>
-        <span class="info-contato">
-          <span class="nome-contato">Ana (filha)</span>
-          <span class="numero-contato">(11) 98765-4321</span>
-        </span>
-      </a>
-      <a class="contato" href="tel:+5511912345678">
-        <span class="icone-contato" aria-hidden="true">👨‍⚕️</span>
-        <span class="info-contato">
-          <span class="nome-contato">Dra. Marta</span>
-          <span class="numero-contato">(11) 91234-5678</span>
-        </span>
-      </a>
-      <a class="contato" href="tel:192">
-        <span class="icone-contato" aria-hidden="true">🚑</span>
-        <span class="info-contato">
-          <span class="nome-contato">SAMU</span>
-          <span class="numero-contato">192</span>
-        </span>
-      </a>
-      <a class="contato" href="tel:193">
-        <span class="icone-contato" aria-hidden="true">🚒</span>
-        <span class="info-contato">
-          <span class="nome-contato">Bombeiros</span>
-          <span class="numero-contato">193</span>
-        </span>
-      </a>
-    </div>
+    <div class="grade" id="lista-contatos"></div>
+
+    <form class="formulario-adicionar" id="form-contato">
+      <div class="campo-adicionar">
+        <label for="input-contato-nome">Nome</label>
+        <input type="text" id="input-contato-nome" placeholder="Ex: Ana (filha)" required>
+      </div>
+      <div class="campo-adicionar">
+        <label for="input-contato-numero">Telefone</label>
+        <input type="tel" id="input-contato-numero" placeholder="Ex: (11) 98765-4321" required>
+      </div>
+      <button class="botao-adicionar" type="submit">➕ Adicionar contato</button>
+    </form>
   </section>
 
   <section aria-labelledby="titulo-ajuda">
@@ -443,6 +578,10 @@
       <p>Se você tem dificuldade para distinguir cores, toque em <strong>"Modo daltônico"</strong> — as cores da página mudam para tons mais fáceis de diferenciar, e cada remédio tomado também mostra um círculo preenchido, não só uma cor.</p>
       <p>Se você prefere ouvir em vez de ler, toque em <strong>"Ouvir a página"</strong> e o computador ou celular vai ler todo o conteúdo em voz alta para você. Este site também funciona bem com leitores de tela, como o NVDA, o VoiceOver ou o TalkBack.</p>
       <p>Para marcar um remédio como tomado, basta tocar no botão ao lado dele. Para ligar para alguém, toque no cartão da pessoa.</p>
+      <p><strong>Para adicionar</strong> um novo remédio, compromisso ou contato, preencha o formulário no final de cada lista e toque em "Adicionar". Para remover algo, toque no ✕ ao lado do item.</p>
+      <p><strong>Alarme:</strong> quando chegar a hora de um remédio ou compromisso, esta página vai tocar um som, mostrar um aviso bem grande no topo e falar em voz alta o que é. É preciso deixar esta página aberta no navegador para o alarme funcionar. Toque em "🔔 Ativar avisos do sistema" abaixo para também receber um aviso mesmo se você estiver em outra aba.</p>
+      <button class="botao-adicionar" type="button" id="btn-permitir-notificacao">🔔 Ativar avisos do sistema</button>
+      <p class="nota-config" id="status-notificacao"></p>
     </div>
   </section>
 
@@ -453,7 +592,7 @@
 </footer>
 
 <script>
-  // Saudação dinâmica conforme o horário
+  // ---------- Saudação dinâmica conforme o horário ----------
   (function() {
     var hora = new Date().getHours();
     var saudacao = "Boa noite!";
@@ -473,20 +612,231 @@
     statusLeitor.textContent = mensagem;
   }
 
-  // Marcar remédios como tomados
-  document.querySelectorAll('.lembrete .botao-marcar').forEach(function(botao) {
-    botao.addEventListener('click', function() {
-      var lembrete = botao.closest('.lembrete');
-      var marcador = lembrete.querySelector('.marcador');
-      var nomeRemedio = lembrete.querySelector('.texto').textContent;
-      var feito = lembrete.classList.toggle('feito');
-      botao.textContent = feito ? 'Tomado ✓' : 'Marcar como tomado';
-      if (marcador) marcador.textContent = feito ? '✓' : '○';
-      anunciar(feito ? (nomeRemedio + ' marcado como tomado.') : (nomeRemedio + ' desmarcado.'));
+  // ---------- Armazenamento (persistente, salvo no seu navegador para esta página) ----------
+  var dados = {
+    remedios: [
+      { id: 1, hora: "08:00", texto: "Losartana — 1 comprimido, com água", feito: false },
+      { id: 2, hora: "13:00", texto: "Metformina — 1 comprimido, após o almoço", feito: false },
+      { id: 3, hora: "20:00", texto: "Vitamina D — 1 gota, com o jantar", feito: false }
+    ],
+    agenda: [
+      { id: 1, hora: "10:00", texto: "Consulta com Dra. Marta (Cardiologista)" },
+      { id: 2, hora: "15:30", texto: "Ligar para a filha, Ana" },
+      { id: 3, hora: "17:00", texto: "Caminhada leve na praça" }
+    ],
+    contatos: [
+      { id: 1, nome: "Ana (filha)", numero: "(11) 98765-4321", tel: "+5511987654321", icone: "👩" },
+      { id: 2, nome: "Dra. Marta", numero: "(11) 91234-5678", tel: "+5511912345678", icone: "👨‍⚕️" },
+      { id: 3, nome: "SAMU", numero: "192", tel: "192", icone: "🚑" },
+      { id: 4, nome: "Bombeiros", numero: "193", tel: "193", icone: "🚒" }
+    ]
+  };
+
+  var proximoIdRemedio = 4, proximoIdAgenda = 4, proximoIdContato = 5;
+
+  async function salvar() {
+    try {
+      if (window.storage) {
+        await window.storage.set('meu-dia:dados', JSON.stringify(dados), false);
+      }
+    } catch (e) { /* sem suporte a armazenamento, os dados ficam só nesta sessão */ }
+  }
+
+  async function carregar() {
+    try {
+      if (window.storage) {
+        var resultado = await window.storage.get('meu-dia:dados', false);
+        if (resultado && resultado.value) {
+          var salvo = JSON.parse(resultado.value);
+          if (salvo && salvo.remedios && salvo.agenda && salvo.contatos) {
+            dados = salvo;
+          }
+        }
+      }
+    } catch (e) { /* nada salvo ainda, usa os dados de exemplo */ }
+    proximoIdRemedio = 1 + Math.max(0, ...dados.remedios.map(function(r){ return r.id; }));
+    proximoIdAgenda = 1 + Math.max(0, ...dados.agenda.map(function(a){ return a.id; }));
+    proximoIdContato = 1 + Math.max(0, ...dados.contatos.map(function(c){ return c.id; }));
+    renderizarTudo();
+  }
+
+  // ---------- Renderização ----------
+  function renderizarRemedios() {
+    var lista = document.getElementById('lista-remedios');
+    lista.innerHTML = '';
+    if (dados.remedios.length === 0) {
+      lista.innerHTML = '<p class="mensagem-vazio">Nenhum remédio cadastrado ainda.</p>';
+      return;
+    }
+    dados.remedios.slice().sort(function(a,b){ return a.hora.localeCompare(b.hora); }).forEach(function(r) {
+      var div = document.createElement('div');
+      div.className = 'lembrete' + (r.feito ? ' feito' : '');
+      div.setAttribute('data-id', r.id);
+      div.innerHTML =
+        '<span class="marcador" aria-hidden="true">' + (r.feito ? '✓' : '○') + '</span>' +
+        '<span class="hora">' + escaparHtml(r.hora) + '</span>' +
+        '<span class="texto">' + escaparHtml(r.texto) + '</span>' +
+        '<button class="botao-marcar" type="button">' + (r.feito ? 'Tomado ✓' : 'Marcar como tomado') + '</button>' +
+        '<button class="botao-excluir" type="button" aria-label="Excluir ' + escaparHtml(r.texto) + '">✕</button>';
+
+      div.querySelector('.botao-marcar').addEventListener('click', function() {
+        r.feito = !r.feito;
+        salvar();
+        renderizarRemedios();
+        anunciar(r.texto + (r.feito ? ' marcado como tomado.' : ' desmarcado.'));
+      });
+      div.querySelector('.botao-excluir').addEventListener('click', function() {
+        dados.remedios = dados.remedios.filter(function(x){ return x.id !== r.id; });
+        salvar();
+        renderizarRemedios();
+        anunciar('Remédio removido.');
+      });
+      lista.appendChild(div);
     });
+  }
+
+  function renderizarAgenda() {
+    var lista = document.getElementById('lista-agenda');
+    lista.innerHTML = '';
+    if (dados.agenda.length === 0) {
+      lista.innerHTML = '<p class="mensagem-vazio">Nenhum compromisso cadastrado ainda.</p>';
+      return;
+    }
+    dados.agenda.slice().sort(function(a,b){ return a.hora.localeCompare(b.hora); }).forEach(function(item) {
+      var div = document.createElement('div');
+      div.className = 'agenda-item';
+      div.innerHTML =
+        '<span class="bolinha" aria-hidden="true"></span>' +
+        '<span class="texto-agenda"><strong>' + escaparHtml(formatarHoraExtenso(item.hora)) + '</strong> — ' + escaparHtml(item.texto) + '</span>' +
+        '<button class="botao-excluir" type="button" aria-label="Excluir compromisso ' + escaparHtml(item.texto) + '">✕</button>';
+      div.querySelector('.botao-excluir').addEventListener('click', function() {
+        dados.agenda = dados.agenda.filter(function(x){ return x.id !== item.id; });
+        salvar();
+        renderizarAgenda();
+        anunciar('Compromisso removido.');
+      });
+      lista.appendChild(div);
+    });
+  }
+
+  function renderizarContatos() {
+    var lista = document.getElementById('lista-contatos');
+    lista.innerHTML = '';
+    if (dados.contatos.length === 0) {
+      lista.innerHTML = '<p class="mensagem-vazio">Nenhum contato cadastrado ainda.</p>';
+      return;
+    }
+    dados.contatos.forEach(function(c) {
+      var wrapper = document.createElement('div');
+      wrapper.style.position = 'relative';
+      wrapper.innerHTML =
+        '<a class="contato" href="tel:' + escaparAtributo(c.tel) + '">' +
+          '<span class="icone-contato" aria-hidden="true">' + c.icone + '</span>' +
+          '<span class="info-contato">' +
+            '<span class="nome-contato">' + escaparHtml(c.nome) + '</span>' +
+            '<span class="numero-contato">' + escaparHtml(c.numero) + '</span>' +
+          '</span>' +
+        '</a>' +
+        '<button class="botao-excluir" type="button" style="position:absolute; top:0.6rem; right:0.6rem;" aria-label="Excluir contato ' + escaparHtml(c.nome) + '">✕</button>';
+      wrapper.querySelector('.botao-excluir').addEventListener('click', function(ev) {
+        ev.preventDefault();
+        dados.contatos = dados.contatos.filter(function(x){ return x.id !== c.id; });
+        salvar();
+        renderizarContatos();
+        anunciar('Contato removido.');
+      });
+      lista.appendChild(wrapper);
+    });
+  }
+
+  function renderizarTudo() {
+    renderizarRemedios();
+    renderizarAgenda();
+    renderizarContatos();
+  }
+
+  function escaparHtml(texto) {
+    var div = document.createElement('div');
+    div.textContent = texto;
+    return div.innerHTML;
+  }
+  function escaparAtributo(texto) {
+    return String(texto).replace(/"/g, '&quot;');
+  }
+  function formatarHoraExtenso(hora) {
+    var partes = hora.split(':');
+    return partes[0] + 'h' + partes[1];
+  }
+
+  // ---------- Seletores de hora (em vez de <input type="time">, que pode falhar
+  //             em navegadores/áreas restritas onde o seletor nativo não abre) ----------
+  function preencherSelecaoHora(selectHora, selectMinuto, horaInicial, minutoInicial) {
+    selectHora.innerHTML = '';
+    for (var h = 0; h < 24; h++) {
+      var op = document.createElement('option');
+      var vh = String(h).padStart(2, '0');
+      op.value = vh;
+      op.textContent = vh;
+      selectHora.appendChild(op);
+    }
+    selectMinuto.innerHTML = '';
+    for (var m = 0; m < 60; m += 5) {
+      var op2 = document.createElement('option');
+      var vm = String(m).padStart(2, '0');
+      op2.value = vm;
+      op2.textContent = vm;
+      selectMinuto.appendChild(op2);
+    }
+    selectHora.value = horaInicial;
+    selectMinuto.value = minutoInicial;
+  }
+
+  var selRemedioH = document.getElementById('input-remedio-hora-h');
+  var selRemedioM = document.getElementById('input-remedio-hora-m');
+  var selAgendaH = document.getElementById('input-agenda-hora-h');
+  var selAgendaM = document.getElementById('input-agenda-hora-m');
+  preencherSelecaoHora(selRemedioH, selRemedioM, '08', '00');
+  preencherSelecaoHora(selAgendaH, selAgendaM, '09', '00');
+
+  // ---------- Formulários de adicionar ----------
+  document.getElementById('form-remedio').addEventListener('submit', function(ev) {
+    ev.preventDefault();
+    var hora = selRemedioH.value + ':' + selRemedioM.value;
+    var texto = document.getElementById('input-remedio-texto').value.trim();
+    if (!texto) return;
+    dados.remedios.push({ id: proximoIdRemedio++, hora: hora, texto: texto, feito: false });
+    salvar();
+    renderizarRemedios();
+    anunciar('Remédio ' + texto + ' adicionado para ' + hora + '.');
+    document.getElementById('input-remedio-texto').value = '';
   });
 
-  // Tamanho da fonte
+  document.getElementById('form-agenda').addEventListener('submit', function(ev) {
+    ev.preventDefault();
+    var hora = selAgendaH.value + ':' + selAgendaM.value;
+    var texto = document.getElementById('input-agenda-texto').value.trim();
+    if (!texto) return;
+    dados.agenda.push({ id: proximoIdAgenda++, hora: hora, texto: texto });
+    salvar();
+    renderizarAgenda();
+    anunciar('Compromisso ' + texto + ' adicionado para ' + hora + '.');
+    document.getElementById('input-agenda-texto').value = '';
+  });
+
+  document.getElementById('form-contato').addEventListener('submit', function(ev) {
+    ev.preventDefault();
+    var nome = document.getElementById('input-contato-nome').value.trim();
+    var numero = document.getElementById('input-contato-numero').value.trim();
+    if (!nome || !numero) return;
+    var telLimpo = numero.replace(/[^\d+]/g, '');
+    dados.contatos.push({ id: proximoIdContato++, nome: nome, numero: numero, tel: telLimpo, icone: '📞' });
+    salvar();
+    renderizarContatos();
+    anunciar('Contato ' + nome + ' adicionado.');
+    this.reset();
+  });
+
+  // ---------- Tamanho da fonte ----------
   var escalaAtual = 1;
   function aplicarEscala() {
     document.documentElement.style.setProperty('--escala', escalaAtual);
@@ -498,7 +848,7 @@
     if (escalaAtual > 0.85) { escalaAtual = Math.round((escalaAtual - 0.15) * 100) / 100; aplicarEscala(); }
   });
 
-  // Alto contraste
+  // ---------- Alto contraste ----------
   var btnContraste = document.getElementById('btn-contraste');
   btnContraste.addEventListener('click', function() {
     var ativo = document.documentElement.classList.toggle('alto-contraste');
@@ -506,7 +856,7 @@
     anunciar(ativo ? 'Alto contraste ativado.' : 'Alto contraste desativado.');
   });
 
-  // Modo daltônico (paleta segura para daltonismo + marcadores por símbolo)
+  // ---------- Modo daltônico ----------
   var btnDaltonico = document.getElementById('btn-daltonico');
   btnDaltonico.addEventListener('click', function() {
     var ativo = document.documentElement.classList.toggle('modo-daltonico');
@@ -514,7 +864,7 @@
     anunciar(ativo ? 'Modo daltônico ativado.' : 'Modo daltônico desativado.');
   });
 
-  // Leitura em voz alta (apoio para pessoas cegas ou com baixa visão)
+  // ---------- Leitura em voz alta ----------
   var btnOuvir = document.getElementById('btn-ouvir');
   var sintetizador = window.speechSynthesis;
   var lendo = false;
@@ -549,6 +899,125 @@
     btnOuvir.setAttribute('aria-pressed', 'true');
     anunciar('Lendo a página em voz alta.');
   });
+
+  // ---------- Notificações do sistema (opcional) ----------
+  var btnNotificacao = document.getElementById('btn-permitir-notificacao');
+  var statusNotificacao = document.getElementById('status-notificacao');
+  function atualizarStatusNotificacao() {
+    if (!('Notification' in window)) {
+      statusNotificacao.textContent = 'Este navegador não é compatível com avisos do sistema.';
+      return;
+    }
+    if (Notification.permission === 'granted') {
+      statusNotificacao.textContent = 'Avisos do sistema ativados. ✓';
+    } else if (Notification.permission === 'denied') {
+      statusNotificacao.textContent = 'Avisos do sistema bloqueados nas configurações do navegador.';
+    } else {
+      statusNotificacao.textContent = 'Avisos do sistema ainda não ativados.';
+    }
+  }
+  btnNotificacao.addEventListener('click', function() {
+    if (!('Notification' in window)) {
+      atualizarStatusNotificacao();
+      return;
+    }
+    Notification.requestPermission().then(atualizarStatusNotificacao);
+  });
+  atualizarStatusNotificacao();
+
+  // ---------- Alarme sonoro (Web Audio, não precisa de arquivo de som) ----------
+  var contextoAudio = null;
+  function tocarBipe() {
+    try {
+      if (!contextoAudio) {
+        contextoAudio = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (contextoAudio.state === 'suspended') contextoAudio.resume();
+      var agora = contextoAudio.currentTime;
+      [0, 0.35, 0.7].forEach(function(atraso) {
+        var oscilador = contextoAudio.createOscillator();
+        var ganho = contextoAudio.createGain();
+        oscilador.type = 'sine';
+        oscilador.frequency.value = 880;
+        ganho.gain.setValueAtTime(0.0001, agora + atraso);
+        ganho.gain.exponentialRampToValueAtTime(0.35, agora + atraso + 0.05);
+        ganho.gain.exponentialRampToValueAtTime(0.0001, agora + atraso + 0.28);
+        oscilador.connect(ganho);
+        ganho.connect(contextoAudio.destination);
+        oscilador.start(agora + atraso);
+        oscilador.stop(agora + atraso + 0.3);
+      });
+    } catch (e) { /* áudio não disponível neste navegador */ }
+  }
+
+  // ---------- Motor do alarme: verifica a cada 20 segundos ----------
+  var bannerAlarme = document.getElementById('banner-alarme');
+  var textoBannerAlarme = document.getElementById('texto-banner-alarme');
+  var jaAlertadoHoje = {}; // chave: "remedio-1" ou "agenda-2", valor: data em que já avisou
+  var alarmeSonoroIntervalo = null;
+
+  function chaveDeHoje() {
+    var d = new Date();
+    return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+  }
+
+  function dispararAlarme(mensagem) {
+    textoBannerAlarme.textContent = '⏰ ' + mensagem;
+    bannerAlarme.classList.add('ativo');
+    anunciar(mensagem);
+    tocarBipe();
+    if (alarmeSonoroIntervalo) clearInterval(alarmeSonoroIntervalo);
+    alarmeSonoroIntervalo = setInterval(tocarBipe, 8000);
+    if ('Notification' in window && Notification.permission === 'granted') {
+      try { new Notification('Meu Dia', { body: mensagem }); } catch (e) {}
+    }
+    if (sintetizador) {
+      var fala = new SpeechSynthesisUtterance(mensagem);
+      fala.lang = 'pt-BR';
+      fala.rate = 0.95;
+      sintetizador.speak(fala);
+    }
+  }
+
+  document.getElementById('btn-parar-alarme').addEventListener('click', function() {
+    bannerAlarme.classList.remove('ativo');
+    if (alarmeSonoroIntervalo) { clearInterval(alarmeSonoroIntervalo); alarmeSonoroIntervalo = null; }
+    if (sintetizador) sintetizador.cancel();
+    anunciar('Alarme silenciado.');
+  });
+
+  function horaAtualHHMM() {
+    var d = new Date();
+    var h = String(d.getHours()).padStart(2, '0');
+    var m = String(d.getMinutes()).padStart(2, '0');
+    return h + ':' + m;
+  }
+
+  function verificarAlarmes() {
+    var agoraHHMM = horaAtualHHMM();
+    var hoje = chaveDeHoje();
+
+    dados.remedios.forEach(function(r) {
+      var chave = 'remedio-' + r.id;
+      if (r.hora === agoraHHMM && jaAlertadoHoje[chave] !== hoje && !r.feito) {
+        jaAlertadoHoje[chave] = hoje;
+        dispararAlarme('Hora do remédio: ' + r.texto);
+      }
+    });
+
+    dados.agenda.forEach(function(item) {
+      var chave = 'agenda-' + item.id;
+      if (item.hora === agoraHHMM && jaAlertadoHoje[chave] !== hoje) {
+        jaAlertadoHoje[chave] = hoje;
+        dispararAlarme('Compromisso agora: ' + item.texto);
+      }
+    });
+  }
+
+  setInterval(verificarAlarmes, 20000);
+
+  // ---------- Início ----------
+  carregar();
 </script>
 
 </body>
