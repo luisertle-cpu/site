@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meu Dia — Seu companheiro do dia a dia</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap');
+
+  :root{
+    --azul-ceu: #E8F2F3;
+    --azul-fundo: #F6FAFA;
+    --azul-marinho: #163449;
+    --azul-marinho-suave: #2C5066;
+    --coral: #D9612F;
+    --coral-escuro: #B94E22;
+    --menta: #4F8F73;
+    --dourado: #F0B94A;
+    --branco: #FFFFFF;
+    --borda: #CFE0E1;
+    --sombra: 0 4px 14px rgba(22,52,73,0.10);
+    --fonte: 'Atkinson Hyperlegible', Arial, sans-serif;
+    --escala: 1;
+  }
+
+  html.alto-contraste{
+    --azul-ceu: #000000;
+    --azul-fundo: #000000;
+    --azul-marinho: #FFFFFF;
+    --azul-marinho-suave: #FFFF00;
+    --coral: #FFD400;
+    --coral-escuro: #FFD400;
+    --menta: #00FF88;
+    --dourado: #FFD400;
+    --branco: #0A0A0A;
+    --borda: #FFFFFF;
+    --sombra: none;
+  }
+
+  /* Paleta segura para daltonismo (baseada na paleta Okabe-Ito),
+     evita depender de vermelho/verde para transmitir significado */
+  html.modo-daltonico{
+    --azul-ceu: #E8F0F7;
+    --azul-fundo: #F7FAFD;
+    --azul-marinho: #002B45;
+    --azul-marinho-suave: #005A8C;
+    --coral: #E69F00;
+    --coral-escuro: #A16D00;
+    --menta: #0072B2;
+    --dourado: #F0E442;
+    --branco: #FFFFFF;
+    --borda: #A6C8DE;
+    --sombra: 0 4px 14px rgba(0,43,69,0.12);
+  }
+  html.modo-daltonico.alto-contraste{
+    --azul-ceu: #000000;
+    --azul-fundo: #000000;
+    --azul-marinho: #FFFFFF;
+    --azul-marinho-suave: #F0E442;
+    --coral: #E69F00;
+    --coral-escuro: #E69F00;
+    --menta: #56B4E9;
+    --dourado: #F0E442;
+    --branco: #0A0A0A;
+    --borda: #FFFFFF;
+    --sombra: none;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{ font-size: calc(18px * var(--escala)); scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    font-family: var(--fonte);
+    background: var(--azul-fundo);
+    color: var(--azul-marinho);
+    line-height: 1.55;
+  }
+
+  html.alto-contraste body{ background: var(--azul-fundo); }
+  html.alto-contraste .cartao,
+  html.alto-contraste header,
+  html.alto-contraste footer{ border: 3px solid var(--borda); }
+
+  a{ color: inherit; }
+
+  .somente-leitor{
+    position:absolute; width:1px; height:1px; overflow:hidden;
+    clip: rect(0 0 0 0); white-space:nowrap; border:0; padding:0; margin:-1px;
+  }
+
+  .pular-link{
+    position:absolute; left:-9999px; top:0;
+    background: var(--coral); color:#fff; padding: 1rem 1.5rem;
+    font-weight:700; z-index:100; border-radius: 0 0 10px 0;
+  }
+  .pular-link:focus{ left:0; }
+
+  *:focus-visible{
+    outline: 4px solid var(--coral-escuro);
+    outline-offset: 3px;
+  }
+
+  header.topo{
+    background: var(--azul-ceu);
+    padding: 1.4rem 1.2rem;
+    display:flex;
+    flex-wrap: wrap;
+    align-items:center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 4px solid var(--menta);
+  }
+
+  .marca{
+    display:flex; align-items:center; gap: 0.7rem;
+    font-size: 1.5rem; font-weight: 700; color: var(--azul-marinho);
+  }
+  .marca svg{ flex-shrink:0; }
+
+  .controles-acessibilidade{
+    display:flex; align-items:center; gap: 0.6rem; flex-wrap: wrap;
+  }
+
+  .botao-controle{
+    font-family: var(--fonte);
+    font-size: 1.05rem;
+    font-weight: 700;
+    background: var(--branco);
+    border: 2px solid var(--azul-marinho-suave);
+    color: var(--azul-marinho);
+    padding: 0.6rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    min-height: 48px;
+  }
+  .botao-controle[aria-pressed="true"]{
+    background: var(--menta);
+    color: #fff;
+    border-color: var(--menta);
+  }
+  .botao-controle:hover{ filter: brightness(0.96); }
+
+  main{ max-width: 900px; margin: 0 auto; padding: 1.6rem 1.2rem 3rem; }
+
+  .saudacao{
+    background: linear-gradient(135deg, var(--azul-marinho) 0%, var(--azul-marinho-suave) 100%);
+    color: #fff;
+    border-radius: 20px;
+    padding: 2rem 1.6rem;
+    display:flex; align-items:center; gap:1.4rem; flex-wrap: wrap;
+    box-shadow: var(--sombra);
+    margin-bottom: 2rem;
+  }
+  html.alto-contraste .saudacao{ background: #0A0A0A; border: 3px solid #FFFFFF; }
+
+  .saudacao svg{ flex-shrink:0; }
+  .saudacao h1{ font-size: 1.9rem; margin: 0 0 0.4rem 0; }
+  .saudacao p{ font-size: 1.25rem; margin:0; opacity:0.95; }
+
+  h2.titulo-secao{
+    font-size: 1.6rem;
+    margin: 0 0 1rem 0;
+    display:flex; align-items:center; gap: 0.6rem;
+    color: var(--azul-marinho);
+  }
+
+  section{ margin-bottom: 2.4rem; }
+
+  .grade{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1rem;
+  }
+
+  .cartao{
+    background: var(--branco);
+    border: 2px solid var(--borda);
+    border-radius: 16px;
+    padding: 1.3rem;
+    box-shadow: var(--sombra);
+  }
+
+  .lembrete{
+    display:flex; align-items:center; gap: 1rem;
+    padding: 1rem;
+    border-radius: 14px;
+    background: var(--branco);
+    border: 2px solid var(--borda);
+    margin-bottom: 0.9rem;
+  }
+  .lembrete.feito{
+    background: #EFF7F1;
+    border-color: var(--menta);
+  }
+  html.alto-contraste .lembrete.feito{ background:#001A0D; }
+
+  .lembrete .marcador{
+    flex-shrink:0;
+    width: 2rem; height: 2rem;
+    border-radius: 50%;
+    border: 3px solid var(--coral-escuro);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size: 1.1rem;
+    color: var(--coral-escuro);
+  }
+  .lembrete.feito .marcador{
+    border-color: var(--menta);
+    background: var(--menta);
+    color: #fff;
+  }
+
+  .lembrete .hora{
+    font-size: 1.3rem; font-weight: 700;
+    min-width: 5.2rem;
+    color: var(--coral-escuro);
+  }
+  .lembrete.feito .hora{ color: var(--menta); text-decoration: line-through; }
+
+  .lembrete .texto{ flex: 1; font-size: 1.2rem; }
+  .lembrete.feito .texto{ text-decoration: line-through; opacity:0.75; }
+
+  .botao-marcar{
+    font-family: var(--fonte);
+    font-size: 1.05rem;
+    font-weight: 700;
+    padding: 0.7rem 1.1rem;
+    border-radius: 10px;
+    border: 2px solid var(--menta);
+    background: var(--branco);
+    color: var(--menta);
+    cursor: pointer;
+    min-height: 48px;
+    white-space: nowrap;
+  }
+  .lembrete.feito .botao-marcar{
+    background: var(--menta);
+    color: #fff;
+  }
+
+  .contato{
+    display:flex; align-items:center; gap: 1rem;
+    text-decoration:none;
+    background: var(--branco);
+    border: 2px solid var(--borda);
+    border-radius: 16px;
+    padding: 1.2rem;
+    box-shadow: var(--sombra);
+    min-height: 76px;
+  }
+  .contato:hover{ border-color: var(--coral); }
+  .contato .icone-contato{
+    background: var(--dourado);
+    border-radius: 50%;
+    width: 3.2rem; height: 3.2rem;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .contato .info-contato{ display:flex; flex-direction:column; }
+  .contato .nome-contato{ font-size: 1.25rem; font-weight:700; }
+  .contato .numero-contato{ font-size: 1.1rem; color: var(--azul-marinho-suave); }
+  html.alto-contraste .contato .numero-contato{ color: var(--menta); }
+
+  .agenda-item{
+    display:flex; align-items:flex-start; gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--borda);
+    font-size: 1.2rem;
+  }
+  .agenda-item:last-child{ border-bottom:none; }
+  .agenda-item .bolinha{
+    width: 0.9rem; height:0.9rem; border-radius:50%;
+    background: var(--coral); margin-top: 0.5rem; flex-shrink:0;
+  }
+
+  .caixa-ajuda{
+    background: var(--azul-ceu);
+    border-radius: 16px;
+    padding: 1.4rem;
+    font-size: 1.15rem;
+    border: 2px dashed var(--menta);
+  }
+
+  footer{
+    background: var(--azul-ceu);
+    text-align:center;
+    padding: 1.6rem 1rem;
+    font-size: 1.05rem;
+    border-top: 4px solid var(--menta);
+  }
+
+  .botao-emergencia{
+    display:block;
+    width: 100%;
+    text-align:center;
+    text-decoration:none;
+    background: var(--coral);
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 700;
+    padding: 1.2rem;
+    border-radius: 16px;
+    margin-bottom: 2rem;
+    box-shadow: var(--sombra);
+  }
+  .botao-emergencia:hover{ background: var(--coral-escuro); }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<a class="pular-link" href="#conteudo-principal">Pular para o conteúdo principal</a>
+
+<header class="topo">
+  <div class="marca">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" fill="#F0B94A"/>
+      <path d="M12 7v5l3 3" stroke="#163449" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>Meu Dia</span>
+  </div>
+  <div class="controles-acessibilidade" role="group" aria-label="Opções de acessibilidade">
+    <button class="botao-controle" id="btn-diminuir" type="button" aria-label="Diminuir o tamanho da letra">A−</button>
+    <button class="botao-controle" id="btn-aumentar" type="button" aria-label="Aumentar o tamanho da letra">A+</button>
+    <button class="botao-controle" id="btn-contraste" type="button" aria-pressed="false">Alto contraste</button>
+    <button class="botao-controle" id="btn-daltonico" type="button" aria-pressed="false">Modo daltônico</button>
+    <button class="botao-controle" id="btn-ouvir" type="button" aria-pressed="false">🔊 Ouvir a página</button>
+  </div>
+</header>
+
+<div id="status-leitor" role="status" aria-live="polite" class="somente-leitor"></div>
+
+<main id="conteudo-principal">
+
+  <div class="saudacao">
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="5" fill="#F0B94A"/>
+      <g stroke="#F0B94A" stroke-width="2" stroke-linecap="round">
+        <line x1="12" y1="1" x2="12" y2="4"/>
+        <line x1="12" y1="20" x2="12" y2="23"/>
+        <line x1="1" y1="12" x2="4" y2="12"/>
+        <line x1="20" y1="12" x2="23" y2="12"/>
+        <line x1="4.2" y1="4.2" x2="6.3" y2="6.3"/>
+        <line x1="17.7" y1="17.7" x2="19.8" y2="19.8"/>
+        <line x1="4.2" y1="19.8" x2="6.3" y2="17.7"/>
+        <line x1="17.7" y1="6.3" x2="19.8" y2="4.2"/>
+      </g>
+    </svg>
+    <div>
+      <h1 id="texto-saudacao">Bom dia!</h1>
+      <p id="texto-data">Hoje é um ótimo dia para cuidar de você.</p>
+    </div>
+  </div>
+
+  <a class="botao-emergencia" href="tel:192" aria-label="Ligar para emergência, número 192, SAMU">
+    🚨 Emergência — Ligar para o SAMU (192)
+  </a>
+
+  <section aria-labelledby="titulo-remedios">
+    <h2 class="titulo-secao" id="titulo-remedios">💊 Meus remédios de hoje</h2>
+    <div id="lista-remedios">
+      <div class="lembrete" data-id="1">
+        <span class="marcador" aria-hidden="true">○</span>
+        <span class="hora">08:00</span>
+        <span class="texto">Losartana — 1 comprimido, com água</span>
+        <button class="botao-marcar" type="button" aria-label="Marcar Losartana das 08:00 como tomada">Marcar como tomado</button>
+      </div>
+      <div class="lembrete" data-id="2">
+        <span class="marcador" aria-hidden="true">○</span>
+        <span class="hora">13:00</span>
+        <span class="texto">Metformina — 1 comprimido, após o almoço</span>
+        <button class="botao-marcar" type="button" aria-label="Marcar Metformina das 13:00 como tomada">Marcar como tomado</button>
+      </div>
+      <div class="lembrete" data-id="3">
+        <span class="marcador" aria-hidden="true">○</span>
+        <span class="hora">20:00</span>
+        <span class="texto">Vitamina D — 1 gota, com o jantar</span>
+        <button class="botao-marcar" type="button" aria-label="Marcar Vitamina D das 20:00 como tomada">Marcar como tomado</button>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="titulo-agenda">
+    <h2 class="titulo-secao" id="titulo-agenda">📅 Compromissos de hoje</h2>
+    <div class="cartao">
+      <div class="agenda-item">
+        <span class="bolinha" aria-hidden="true"></span>
+        <span><strong>10h00</strong> — Consulta com Dra. Marta (Cardiologista)</span>
+      </div>
+      <div class="agenda-item">
+        <span class="bolinha" aria-hidden="true"></span>
+        <span><strong>15h30</strong> — Ligar para a filha, Ana</span>
+      </div>
+      <div class="agenda-item">
+        <span class="bolinha" aria-hidden="true"></span>
+        <span><strong>17h00</strong> — Caminhada leve na praça</span>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="titulo-contatos">
+    <h2 class="titulo-secao" id="titulo-contatos">☎️ Contatos importantes</h2>
+    <div class="grade">
+      <a class="contato" href="tel:+5511987654321">
+        <span class="icone-contato" aria-hidden="true">👩</span>
+        <span class="info-contato">
+          <span class="nome-contato">Ana (filha)</span>
+          <span class="numero-contato">(11) 98765-4321</span>
+        </span>
+      </a>
+      <a class="contato" href="tel:+5511912345678">
+        <span class="icone-contato" aria-hidden="true">👨‍⚕️</span>
+        <span class="info-contato">
+          <span class="nome-contato">Dra. Marta</span>
+          <span class="numero-contato">(11) 91234-5678</span>
+        </span>
+      </a>
+      <a class="contato" href="tel:192">
+        <span class="icone-contato" aria-hidden="true">🚑</span>
+        <span class="info-contato">
+          <span class="nome-contato">SAMU</span>
+          <span class="numero-contato">192</span>
+        </span>
+      </a>
+      <a class="contato" href="tel:193">
+        <span class="icone-contato" aria-hidden="true">🚒</span>
+        <span class="info-contato">
+          <span class="nome-contato">Bombeiros</span>
+          <span class="numero-contato">193</span>
+        </span>
+      </a>
+    </div>
+  </section>
+
+  <section aria-labelledby="titulo-ajuda">
+    <h2 class="titulo-secao" id="titulo-ajuda">ℹ️ Como usar este site</h2>
+    <div class="caixa-ajuda">
+      <p>Toque no botão <strong>"A+"</strong> no topo da página para aumentar o tamanho das letras, ou em <strong>"Alto contraste"</strong> para deixar as cores mais fortes e fáceis de enxergar.</p>
+      <p>Se você tem dificuldade para distinguir cores, toque em <strong>"Modo daltônico"</strong> — as cores da página mudam para tons mais fáceis de diferenciar, e cada remédio tomado também mostra um círculo preenchido, não só uma cor.</p>
+      <p>Se você prefere ouvir em vez de ler, toque em <strong>"Ouvir a página"</strong> e o computador ou celular vai ler todo o conteúdo em voz alta para você. Este site também funciona bem com leitores de tela, como o NVDA, o VoiceOver ou o TalkBack.</p>
+      <p>Para marcar um remédio como tomado, basta tocar no botão ao lado dele. Para ligar para alguém, toque no cartão da pessoa.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Feito com carinho para o seu dia a dia. 💛</p>
+</footer>
+
+<script>
+  // Saudação dinâmica conforme o horário
+  (function() {
+    var hora = new Date().getHours();
+    var saudacao = "Boa noite!";
+    if (hora >= 5 && hora < 12) saudacao = "Bom dia!";
+    else if (hora >= 12 && hora < 18) saudacao = "Boa tarde!";
+    document.getElementById('texto-saudacao').textContent = saudacao;
+
+    var dias = ["domingo","segunda-feira","terça-feira","quarta-feira","quinta-feira","sexta-feira","sábado"];
+    var meses = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+    var agora = new Date();
+    var dataTexto = "Hoje é " + dias[agora.getDay()] + ", " + agora.getDate() + " de " + meses[agora.getMonth()] + ".";
+    document.getElementById('texto-data').textContent = dataTexto;
+  })();
+
+  var statusLeitor = document.getElementById('status-leitor');
+  function anunciar(mensagem) {
+    statusLeitor.textContent = mensagem;
+  }
+
+  // Marcar remédios como tomados
+  document.querySelectorAll('.lembrete .botao-marcar').forEach(function(botao) {
+    botao.addEventListener('click', function() {
+      var lembrete = botao.closest('.lembrete');
+      var marcador = lembrete.querySelector('.marcador');
+      var nomeRemedio = lembrete.querySelector('.texto').textContent;
+      var feito = lembrete.classList.toggle('feito');
+      botao.textContent = feito ? 'Tomado ✓' : 'Marcar como tomado';
+      if (marcador) marcador.textContent = feito ? '✓' : '○';
+      anunciar(feito ? (nomeRemedio + ' marcado como tomado.') : (nomeRemedio + ' desmarcado.'));
+    });
+  });
+
+  // Tamanho da fonte
+  var escalaAtual = 1;
+  function aplicarEscala() {
+    document.documentElement.style.setProperty('--escala', escalaAtual);
+  }
+  document.getElementById('btn-aumentar').addEventListener('click', function() {
+    if (escalaAtual < 1.6) { escalaAtual = Math.round((escalaAtual + 0.15) * 100) / 100; aplicarEscala(); }
+  });
+  document.getElementById('btn-diminuir').addEventListener('click', function() {
+    if (escalaAtual > 0.85) { escalaAtual = Math.round((escalaAtual - 0.15) * 100) / 100; aplicarEscala(); }
+  });
+
+  // Alto contraste
+  var btnContraste = document.getElementById('btn-contraste');
+  btnContraste.addEventListener('click', function() {
+    var ativo = document.documentElement.classList.toggle('alto-contraste');
+    btnContraste.setAttribute('aria-pressed', ativo ? 'true' : 'false');
+    anunciar(ativo ? 'Alto contraste ativado.' : 'Alto contraste desativado.');
+  });
+
+  // Modo daltônico (paleta segura para daltonismo + marcadores por símbolo)
+  var btnDaltonico = document.getElementById('btn-daltonico');
+  btnDaltonico.addEventListener('click', function() {
+    var ativo = document.documentElement.classList.toggle('modo-daltonico');
+    btnDaltonico.setAttribute('aria-pressed', ativo ? 'true' : 'false');
+    anunciar(ativo ? 'Modo daltônico ativado.' : 'Modo daltônico desativado.');
+  });
+
+  // Leitura em voz alta (apoio para pessoas cegas ou com baixa visão)
+  var btnOuvir = document.getElementById('btn-ouvir');
+  var sintetizador = window.speechSynthesis;
+  var lendo = false;
+
+  function pararLeitura() {
+    if (sintetizador) sintetizador.cancel();
+    lendo = false;
+    btnOuvir.textContent = '🔊 Ouvir a página';
+    btnOuvir.setAttribute('aria-pressed', 'false');
+  }
+
+  btnOuvir.addEventListener('click', function() {
+    if (!sintetizador) {
+      anunciar('A leitura em voz alta não é compatível com este navegador.');
+      return;
+    }
+    if (lendo) {
+      pararLeitura();
+      anunciar('Leitura interrompida.');
+      return;
+    }
+    var texto = document.getElementById('conteudo-principal').innerText;
+    var fala = new SpeechSynthesisUtterance(texto);
+    fala.lang = 'pt-BR';
+    fala.rate = 0.95;
+    fala.onend = pararLeitura;
+    fala.onerror = pararLeitura;
+    sintetizador.cancel();
+    sintetizador.speak(fala);
+    lendo = true;
+    btnOuvir.textContent = '⏹ Parar leitura';
+    btnOuvir.setAttribute('aria-pressed', 'true');
+    anunciar('Lendo a página em voz alta.');
+  });
+</script>
+
+</body>
+</html>
