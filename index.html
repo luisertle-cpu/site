@@ -4,459 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Meu Dia — Seu companheiro do dia a dia</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap');
-
-  :root{
-    --azul-ceu: #E8F2F3;
-    --azul-fundo: #F6FAFA;
-    --azul-marinho: #163449;
-    --azul-marinho-suave: #2C5066;
-    --coral: #D9612F;
-    --coral-escuro: #B94E22;
-    --menta: #4F8F73;
-    --dourado: #F0B94A;
-    --branco: #FFFFFF;
-    --borda: #CFE0E1;
-    --sombra: 0 4px 14px rgba(22,52,73,0.10);
-    --fonte: 'Atkinson Hyperlegible', Arial, sans-serif;
-    --escala: 1;
-  }
-
-  html.alto-contraste{
-    --azul-ceu: #000000;
-    --azul-fundo: #000000;
-    --azul-marinho: #FFFFFF;
-    --azul-marinho-suave: #FFFF00;
-    --coral: #FFD400;
-    --coral-escuro: #FFD400;
-    --menta: #00FF88;
-    --dourado: #FFD400;
-    --branco: #0A0A0A;
-    --borda: #FFFFFF;
-    --sombra: none;
-  }
-
-  /* Paleta segura para daltonismo (baseada na paleta Okabe-Ito),
-     evita depender de vermelho/verde para transmitir significado */
-  html.modo-daltonico{
-    --azul-ceu: #E8F0F7;
-    --azul-fundo: #F7FAFD;
-    --azul-marinho: #002B45;
-    --azul-marinho-suave: #005A8C;
-    --coral: #E69F00;
-    --coral-escuro: #A16D00;
-    --menta: #0072B2;
-    --dourado: #F0E442;
-    --branco: #FFFFFF;
-    --borda: #A6C8DE;
-    --sombra: 0 4px 14px rgba(0,43,69,0.12);
-  }
-  html.modo-daltonico.alto-contraste{
-    --azul-ceu: #000000;
-    --azul-fundo: #000000;
-    --azul-marinho: #FFFFFF;
-    --azul-marinho-suave: #F0E442;
-    --coral: #E69F00;
-    --coral-escuro: #E69F00;
-    --menta: #56B4E9;
-    --dourado: #F0E442;
-    --branco: #0A0A0A;
-    --borda: #FFFFFF;
-    --sombra: none;
-  }
-
-  *{ box-sizing: border-box; }
-
-  html{ font-size: calc(18px * var(--escala)); scroll-behavior: smooth; }
-
-  body{
-    margin:0;
-    font-family: var(--fonte);
-    background: var(--azul-fundo);
-    color: var(--azul-marinho);
-    line-height: 1.55;
-  }
-
-  html.alto-contraste body{ background: var(--azul-fundo); }
-  html.alto-contraste .cartao,
-  html.alto-contraste header,
-  html.alto-contraste footer{ border: 3px solid var(--borda); }
-
-  a{ color: inherit; }
-
-  .somente-leitor{
-    position:absolute; width:1px; height:1px; overflow:hidden;
-    clip: rect(0 0 0 0); white-space:nowrap; border:0; padding:0; margin:-1px;
-  }
-
-  .pular-link{
-    position:absolute; left:-9999px; top:0;
-    background: var(--coral); color:#fff; padding: 1rem 1.5rem;
-    font-weight:700; z-index:100; border-radius: 0 0 10px 0;
-  }
-  .pular-link:focus{ left:0; }
-
-  *:focus-visible{
-    outline: 4px solid var(--coral-escuro);
-    outline-offset: 3px;
-  }
-
-  header.topo{
-    background: var(--azul-ceu);
-    padding: 1.4rem 1.2rem;
-    display:flex;
-    flex-wrap: wrap;
-    align-items:center;
-    justify-content: space-between;
-    gap: 1rem;
-    border-bottom: 4px solid var(--menta);
-  }
-
-  .marca{
-    display:flex; align-items:center; gap: 0.7rem;
-    font-size: 1.5rem; font-weight: 700; color: var(--azul-marinho);
-  }
-  .marca svg{ flex-shrink:0; }
-
-  .controles-acessibilidade{
-    display:flex; align-items:center; gap: 0.6rem; flex-wrap: wrap;
-  }
-
-  .botao-controle{
-    font-family: var(--fonte);
-    font-size: 1.05rem;
-    font-weight: 700;
-    background: var(--branco);
-    border: 2px solid var(--azul-marinho-suave);
-    color: var(--azul-marinho);
-    padding: 0.6rem 1rem;
-    border-radius: 10px;
-    cursor: pointer;
-    min-height: 48px;
-  }
-  .botao-controle[aria-pressed="true"]{
-    background: var(--menta);
-    color: #fff;
-    border-color: var(--menta);
-  }
-  .botao-controle:hover{ filter: brightness(0.96); }
-
-  main{ max-width: 900px; margin: 0 auto; padding: 1.6rem 1.2rem 3rem; }
-
-  .saudacao{
-    background: linear-gradient(135deg, var(--azul-marinho) 0%, var(--azul-marinho-suave) 100%);
-    color: #fff;
-    border-radius: 20px;
-    padding: 2rem 1.6rem;
-    display:flex; align-items:center; gap:1.4rem; flex-wrap: wrap;
-    box-shadow: var(--sombra);
-    margin-bottom: 2rem;
-  }
-  html.alto-contraste .saudacao{ background: #0A0A0A; border: 3px solid #FFFFFF; }
-
-  .saudacao svg{ flex-shrink:0; }
-  .saudacao h1{ font-size: 1.9rem; margin: 0 0 0.4rem 0; }
-  .saudacao p{ font-size: 1.25rem; margin:0; opacity:0.95; }
-
-  h2.titulo-secao{
-    font-size: 1.6rem;
-    margin: 0 0 1rem 0;
-    display:flex; align-items:center; gap: 0.6rem;
-    color: var(--azul-marinho);
-  }
-
-  section{ margin-bottom: 2.4rem; }
-
-  .grade{
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 1rem;
-  }
-
-  .cartao{
-    background: var(--branco);
-    border: 2px solid var(--borda);
-    border-radius: 16px;
-    padding: 1.3rem;
-    box-shadow: var(--sombra);
-  }
-
-  .lembrete{
-    display:flex; align-items:center; gap: 1rem;
-    padding: 1rem;
-    border-radius: 14px;
-    background: var(--branco);
-    border: 2px solid var(--borda);
-    margin-bottom: 0.9rem;
-    flex-wrap: wrap;
-  }
-  .lembrete.feito{
-    background: #EFF7F1;
-    border-color: var(--menta);
-  }
-  html.alto-contraste .lembrete.feito{ background:#001A0D; }
-
-  .lembrete .marcador{
-    flex-shrink:0;
-    width: 2rem; height: 2rem;
-    border-radius: 50%;
-    border: 3px solid var(--coral-escuro);
-    display:flex; align-items:center; justify-content:center;
-    font-weight:700; font-size: 1.1rem;
-    color: var(--coral-escuro);
-  }
-  .lembrete.feito .marcador{
-    border-color: var(--menta);
-    background: var(--menta);
-    color: #fff;
-  }
-
-  .lembrete .hora{
-    font-size: 1.3rem; font-weight: 700;
-    min-width: 5.2rem;
-    color: var(--coral-escuro);
-  }
-  .lembrete.feito .hora{ color: var(--menta); text-decoration: line-through; }
-
-  .lembrete .texto{ flex: 1; font-size: 1.2rem; }
-  .lembrete.feito .texto{ text-decoration: line-through; opacity:0.75; }
-
-  .botao-marcar{
-    font-family: var(--fonte);
-    font-size: 1.05rem;
-    font-weight: 700;
-    padding: 0.7rem 1.1rem;
-    border-radius: 10px;
-    border: 2px solid var(--menta);
-    background: var(--branco);
-    color: var(--menta);
-    cursor: pointer;
-    min-height: 48px;
-    white-space: nowrap;
-  }
-  .lembrete.feito .botao-marcar{
-    background: var(--menta);
-    color: #fff;
-  }
-
-  .botao-excluir{
-    font-family: var(--fonte);
-    font-size: 1.4rem;
-    font-weight: 700;
-    padding: 0.5rem 0.8rem;
-    border-radius: 10px;
-    border: 2px solid var(--borda);
-    background: var(--branco);
-    color: var(--coral-escuro);
-    cursor: pointer;
-    min-height: 48px;
-    min-width: 48px;
-    line-height: 1;
-  }
-  .botao-excluir:hover{ border-color: var(--coral-escuro); }
-
-  .contato{
-    display:flex; align-items:center; gap: 1rem;
-    text-decoration:none;
-    background: var(--branco);
-    border: 2px solid var(--borda);
-    border-radius: 16px;
-    padding: 1.2rem;
-    box-shadow: var(--sombra);
-    min-height: 76px;
-    position: relative;
-  }
-  .contato:hover{ border-color: var(--coral); }
-  .contato .icone-contato{
-    background: var(--dourado);
-    border-radius: 50%;
-    width: 3.2rem; height: 3.2rem;
-    display:flex; align-items:center; justify-content:center;
-    flex-shrink:0;
-  }
-  .contato .info-contato{ display:flex; flex-direction:column; flex:1; }
-  .contato .nome-contato{ font-size: 1.25rem; font-weight:700; }
-  .contato .numero-contato{ font-size: 1.1rem; color: var(--azul-marinho-suave); }
-  html.alto-contraste .contato .numero-contato{ color: var(--menta); }
-  .contato .botao-excluir{ position: relative; z-index: 2; }
-
-  .agenda-item{
-    display:flex; align-items:flex-start; gap: 1rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--borda);
-    font-size: 1.2rem;
-    flex-wrap: wrap;
-  }
-  .agenda-item:last-child{ border-bottom:none; }
-  .agenda-item .bolinha{
-    width: 0.9rem; height:0.9rem; border-radius:50%;
-    background: var(--coral); margin-top: 0.5rem; flex-shrink:0;
-  }
-  .agenda-item .texto-agenda{ flex:1; min-width: 200px; }
-  .agenda-item .botao-excluir{ margin-left:auto; }
-
-  .caixa-ajuda{
-    background: var(--azul-ceu);
-    border-radius: 16px;
-    padding: 1.4rem;
-    font-size: 1.15rem;
-    border: 2px dashed var(--menta);
-  }
-
-  footer{
-    background: var(--azul-ceu);
-    text-align:center;
-    padding: 1.6rem 1rem;
-    font-size: 1.05rem;
-    border-top: 4px solid var(--menta);
-  }
-
-  .botao-emergencia{
-    display:block;
-    width: 100%;
-    text-align:center;
-    text-decoration:none;
-    background: var(--coral);
-    color: #fff;
-    font-size: 1.4rem;
-    font-weight: 700;
-    padding: 1.2rem;
-    border-radius: 16px;
-    margin-bottom: 2rem;
-    box-shadow: var(--sombra);
-  }
-  .botao-emergencia:hover{ background: var(--coral-escuro); }
-
-  /* Formulários de adicionar */
-  .formulario-adicionar{
-    margin-top: 1rem;
-    padding: 1.2rem;
-    border-radius: 16px;
-    background: var(--azul-ceu);
-    border: 2px solid var(--borda);
-    display:flex;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-    align-items: flex-end;
-  }
-  .campo-adicionar{
-    display:flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    flex: 1;
-    min-width: 150px;
-  }
-  .campo-adicionar label{
-    font-weight: 700;
-    font-size: 1.05rem;
-  }
-  .campo-adicionar input{
-    font-family: var(--fonte);
-    font-size: 1.15rem;
-    padding: 0.7rem 0.8rem;
-    border-radius: 10px;
-    border: 2px solid var(--azul-marinho-suave);
-    background: var(--branco);
-    color: var(--azul-marinho);
-    min-height: 48px;
-  }
-  .campo-hora{ flex: 0 0 auto; min-width: 0; }
-  .selecao-hora{
-    display:flex;
-    align-items:center;
-    gap: 0.35rem;
-    font-size: 1.3rem;
-    font-weight: 700;
-  }
-  .selecao-hora select{
-    font-family: var(--fonte);
-    font-size: 1.15rem;
-    padding: 0.7rem 0.5rem;
-    border-radius: 10px;
-    border: 2px solid var(--azul-marinho-suave);
-    background: var(--branco);
-    color: var(--azul-marinho);
-    min-height: 48px;
-    min-width: 4.2rem;
-    cursor: pointer;
-  }
-  .botao-adicionar{
-    font-family: var(--fonte);
-    font-size: 1.1rem;
-    font-weight: 700;
-    padding: 0.8rem 1.3rem;
-    border-radius: 10px;
-    border: none;
-    background: var(--menta);
-    color: #fff;
-    cursor: pointer;
-    min-height: 48px;
-    white-space: nowrap;
-  }
-  .botao-adicionar:hover{ filter: brightness(0.94); }
-
-  .mensagem-vazio{
-    font-size: 1.1rem;
-    opacity: 0.75;
-    padding: 0.6rem 0;
-  }
-
-  /* Banner de alarme */
-  .banner-alarme{
-    display:none;
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: var(--coral);
-    color: #fff;
-    border-radius: 16px;
-    padding: 1.3rem 1.4rem;
-    margin-bottom: 1.6rem;
-    box-shadow: var(--sombra);
-    align-items:center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    animation: piscar 1s infinite alternate;
-  }
-  .banner-alarme.ativo{ display:flex; }
-  @keyframes piscar{
-    from{ background: var(--coral); }
-    to{ background: var(--coral-escuro); }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .banner-alarme{ animation: none; background: var(--coral-escuro); }
-  }
-  .banner-alarme .texto-alarme{
-    flex: 1;
-    font-size: 1.3rem;
-    font-weight: 700;
-  }
-  .banner-alarme button{
-    font-family: var(--fonte);
-    font-size: 1.05rem;
-    font-weight: 700;
-    padding: 0.7rem 1.1rem;
-    border-radius: 10px;
-    border: 2px solid #fff;
-    background: #fff;
-    color: var(--coral-escuro);
-    cursor: pointer;
-    min-height: 48px;
-  }
-
-  .nota-config{
-    font-size: 1rem;
-    opacity: 0.85;
-    margin-top: 0.6rem;
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    html{ scroll-behavior: auto; }
-  }
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<!-- Painel de Ativação do Assistente de Voz -->
+<div id="painel-voz" class="painel-voz-topo" role="region" aria-label="Assistente de voz interativo">
+  <div class="conteudo-painel-voz">
+    <span id="texto-pergunta-voz" aria-live="assertive">
+      📢</strong> Deseja ativar a navegação por voz guiada? 
+      Pressione <strong>S</strong> para SIM ou <strong>N</strong> para NÃO.
+    </span>
+    <div class="botoes-painel-voz">
+      <button id="btn-voz-sim" type="button" class="btn-voz btn-voz-sim">SIM (Tecla S)</button>
+      <button id="btn-voz-nao" type="button" class="btn-voz btn-voz-nao">NÃO (Tecla N)</button>
+    </div>
+  </div>
+</div>
 
 <a class="pular-link" href="#conteudo-principal">Pular para o conteúdo principal</a>
 
@@ -472,7 +36,15 @@
     <button class="botao-controle" id="btn-diminuir" type="button" aria-label="Diminuir o tamanho da letra">A−</button>
     <button class="botao-controle" id="btn-aumentar" type="button" aria-label="Aumentar o tamanho da letra">A+</button>
     <button class="botao-controle" id="btn-contraste" type="button" aria-pressed="false">Alto contraste</button>
-    <button class="botao-controle" id="btn-daltonico" type="button" aria-pressed="false">Modo daltônico</button>
+
+    <select class="seletor-controle" id="select-daltonismo" aria-label="Ajuste para tipo de Daltonismo">
+      <option value="nenhum">Modo Daltônico: Desativado</option>
+      <option value="protanopia">Protanopia / Protanomalia (Falta de Vermelho)</option>
+      <option value="deuteranopia">Deuteranopia / Deuteranomalia (Falta de Verde)</option>
+      <option value="tritanopia">Tritanopia / Tritanomalia (Falta de Azul/Amarelo)</option>
+      <option value="acromatopsia">Acromatopsia (Sem cores / Monocromático)</option>
+    </select>
+
     <button class="botao-controle" id="btn-ouvir" type="button" aria-pressed="false">🔊 Ouvir a página</button>
   </div>
 </header>
@@ -504,24 +76,28 @@
       <h1 id="texto-saudacao">Bom dia!</h1>
       <p id="texto-data">Hoje é um ótimo dia para cuidar de você.</p>
     </div>
-  </div>
+</div>
 
   <a class="botao-emergencia" href="tel:192" aria-label="Ligar para emergência, número 192, SAMU">
     🚨 Emergência — Ligar para o SAMU (192)
   </a>
 
+  <p id="relogio-digital" class="relogio-flutuante" aria-label="Horário atual em tempo real"></p>
+
+<script src="script.js"></script>
+</body>
+</html>
+
   <section aria-labelledby="titulo-remedios">
     <h2 class="titulo-secao" id="titulo-remedios">💊 Meus remédios de hoje</h2>
-    <div id="lista-remedios"></div>
+    <div class="cartao">
+      <div id="lista-remedios"></div>
+    </div>
 
     <form class="formulario-adicionar" id="form-remedio">
       <div class="campo-adicionar campo-hora">
-        <label id="rotulo-hora-remedio">Horário</label>
-        <div class="selecao-hora" role="group" aria-labelledby="rotulo-hora-remedio">
-          <select id="input-remedio-hora-h" aria-label="Hora (remédio)" required></select>
-          <span aria-hidden="true">:</span>
-          <select id="input-remedio-hora-m" aria-label="Minuto (remédio)" required></select>
-        </div>
+        <label for="input-remedio-hora">Horário</label>
+        <input type="time" id="input-remedio-hora" value="08:00" required>
       </div>
       <div class="campo-adicionar">
         <label for="input-remedio-texto">Remédio e instruções</label>
@@ -539,12 +115,8 @@
 
     <form class="formulario-adicionar" id="form-agenda">
       <div class="campo-adicionar campo-hora">
-        <label id="rotulo-hora-agenda">Horário</label>
-        <div class="selecao-hora" role="group" aria-labelledby="rotulo-hora-agenda">
-          <select id="input-agenda-hora-h" aria-label="Hora (compromisso)" required></select>
-          <span aria-hidden="true">:</span>
-          <select id="input-agenda-hora-m" aria-label="Minuto (compromisso)" required></select>
-        </div>
+        <label for="input-agenda-hora">Horário</label>
+        <input type="time" id="input-agenda-hora" value="09:00" required>
       </div>
       <div class="campo-adicionar">
         <label for="input-agenda-texto">Compromisso</label>
@@ -556,7 +128,9 @@
 
   <section aria-labelledby="titulo-contatos">
     <h2 class="titulo-secao" id="titulo-contatos">☎️ Contatos importantes</h2>
-    <div class="grade" id="lista-contatos"></div>
+    <div class="cartao">
+      <div class="grade" id="lista-contatos"></div>
+    </div>
 
     <form class="formulario-adicionar" id="form-contato">
       <div class="campo-adicionar">
@@ -574,451 +148,19 @@
   <section aria-labelledby="titulo-ajuda">
     <h2 class="titulo-secao" id="titulo-ajuda">ℹ️ Como usar este site</h2>
     <div class="caixa-ajuda">
-      <p>Toque no botão <strong>"A+"</strong> no topo da página para aumentar o tamanho das letras, ou em <strong>"Alto contraste"</strong> para deixar as cores mais fortes e fáceis de enxergar.</p>
-      <p>Se você tem dificuldade para distinguir cores, toque em <strong>"Modo daltônico"</strong> — as cores da página mudam para tons mais fáceis de diferenciar, e cada remédio tomado também mostra um círculo preenchido, não só uma cor.</p>
-      <p>Se você prefere ouvir em vez de ler, toque em <strong>"Ouvir a página"</strong> e o computador ou celular vai ler todo o conteúdo em voz alta para você. Este site também funciona bem com leitores de tela, como o NVDA, o VoiceOver ou o TalkBack.</p>
-      <p>Para marcar um remédio como tomado, basta tocar no botão ao lado dele. Para ligar para alguém, toque no cartão da pessoa.</p>
-      <p><strong>Para adicionar</strong> um novo remédio, compromisso ou contato, preencha o formulário no final de cada lista e toque em "Adicionar". Para remover algo, toque no ✕ ao lado do item.</p>
-      <p><strong>Alarme:</strong> quando chegar a hora de um remédio ou compromisso, esta página vai tocar um som, mostrar um aviso bem grande no topo e falar em voz alta o que é. É preciso deixar esta página aberta no navegador para o alarme funcionar. Toque em "🔔 Ativar avisos do sistema" abaixo para também receber um aviso mesmo se você estiver em outra aba.</p>
-      <button class="botao-adicionar" type="button" id="btn-permitir-notificacao">🔔 Ativar avisos do sistema</button>
-      <p class="nota-config" id="status-notificacao"></p>
+      <p>Toque no botão <strong>"A+"</strong> no topo para aumentar as letras, ou em <strong>"Alto contraste"</strong> para um fundo escuro e letras vibrantes.</p>
+      <p>Você pode ativar o <strong>Alto Contraste</strong> junto com o seu tipo de <strong>Daltonismo</strong>. O site adaptará todas as cores para o contraste máximo seguro para os seus olhos.</p>
+      <p>Se preferir ouvir em vez de ler, toque em <strong>"Ouvir a página"</strong>.</p>
     </div>
   </section>
 
 </main>
 
 <footer>
-  <p>Feito com carinho para o seu dia a dia. 💛</p>
+  <p> Agenda simples e intuitiva para o seu dia a dia </p>
 </footer>
 
-<script>
-  // ---------- Saudação dinâmica conforme o horário ----------
-  (function() {
-    var hora = new Date().getHours();
-    var saudacao = "Boa noite!";
-    if (hora >= 5 && hora < 12) saudacao = "Bom dia!";
-    else if (hora >= 12 && hora < 18) saudacao = "Boa tarde!";
-    document.getElementById('texto-saudacao').textContent = saudacao;
-
-    var dias = ["domingo","segunda-feira","terça-feira","quarta-feira","quinta-feira","sexta-feira","sábado"];
-    var meses = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
-    var agora = new Date();
-    var dataTexto = "Hoje é " + dias[agora.getDay()] + ", " + agora.getDate() + " de " + meses[agora.getMonth()] + ".";
-    document.getElementById('texto-data').textContent = dataTexto;
-  })();
-
-  var statusLeitor = document.getElementById('status-leitor');
-  function anunciar(mensagem) {
-    statusLeitor.textContent = mensagem;
-  }
-
-  // ---------- Armazenamento (persistente, salvo no seu navegador para esta página) ----------
-  var dados = {
-    remedios: [
-      { id: 1, hora: "08:00", texto: "Losartana — 1 comprimido, com água", feito: false },
-      { id: 2, hora: "13:00", texto: "Metformina — 1 comprimido, após o almoço", feito: false },
-      { id: 3, hora: "20:00", texto: "Vitamina D — 1 gota, com o jantar", feito: false }
-    ],
-    agenda: [
-      { id: 1, hora: "10:00", texto: "Consulta com Dra. Marta (Cardiologista)" },
-      { id: 2, hora: "15:30", texto: "Ligar para a filha, Ana" },
-      { id: 3, hora: "17:00", texto: "Caminhada leve na praça" }
-    ],
-    contatos: [
-      { id: 1, nome: "Ana (filha)", numero: "(11) 98765-4321", tel: "+5511987654321", icone: "👩" },
-      { id: 2, nome: "Dra. Marta", numero: "(11) 91234-5678", tel: "+5511912345678", icone: "👨‍⚕️" },
-      { id: 3, nome: "SAMU", numero: "192", tel: "192", icone: "🚑" },
-      { id: 4, nome: "Bombeiros", numero: "193", tel: "193", icone: "🚒" }
-    ]
-  };
-
-  var proximoIdRemedio = 4, proximoIdAgenda = 4, proximoIdContato = 5;
-
-  async function salvar() {
-    try {
-      if (window.storage) {
-        await window.storage.set('meu-dia:dados', JSON.stringify(dados), false);
-      }
-    } catch (e) { /* sem suporte a armazenamento, os dados ficam só nesta sessão */ }
-  }
-
-  async function carregar() {
-    try {
-      if (window.storage) {
-        var resultado = await window.storage.get('meu-dia:dados', false);
-        if (resultado && resultado.value) {
-          var salvo = JSON.parse(resultado.value);
-          if (salvo && salvo.remedios && salvo.agenda && salvo.contatos) {
-            dados = salvo;
-          }
-        }
-      }
-    } catch (e) { /* nada salvo ainda, usa os dados de exemplo */ }
-    proximoIdRemedio = 1 + Math.max(0, ...dados.remedios.map(function(r){ return r.id; }));
-    proximoIdAgenda = 1 + Math.max(0, ...dados.agenda.map(function(a){ return a.id; }));
-    proximoIdContato = 1 + Math.max(0, ...dados.contatos.map(function(c){ return c.id; }));
-    renderizarTudo();
-  }
-
-  // ---------- Renderização ----------
-  function renderizarRemedios() {
-    var lista = document.getElementById('lista-remedios');
-    lista.innerHTML = '';
-    if (dados.remedios.length === 0) {
-      lista.innerHTML = '<p class="mensagem-vazio">Nenhum remédio cadastrado ainda.</p>';
-      return;
-    }
-    dados.remedios.slice().sort(function(a,b){ return a.hora.localeCompare(b.hora); }).forEach(function(r) {
-      var div = document.createElement('div');
-      div.className = 'lembrete' + (r.feito ? ' feito' : '');
-      div.setAttribute('data-id', r.id);
-      div.innerHTML =
-        '<span class="marcador" aria-hidden="true">' + (r.feito ? '✓' : '○') + '</span>' +
-        '<span class="hora">' + escaparHtml(r.hora) + '</span>' +
-        '<span class="texto">' + escaparHtml(r.texto) + '</span>' +
-        '<button class="botao-marcar" type="button">' + (r.feito ? 'Tomado ✓' : 'Marcar como tomado') + '</button>' +
-        '<button class="botao-excluir" type="button" aria-label="Excluir ' + escaparHtml(r.texto) + '">✕</button>';
-
-      div.querySelector('.botao-marcar').addEventListener('click', function() {
-        r.feito = !r.feito;
-        salvar();
-        renderizarRemedios();
-        anunciar(r.texto + (r.feito ? ' marcado como tomado.' : ' desmarcado.'));
-      });
-      div.querySelector('.botao-excluir').addEventListener('click', function() {
-        dados.remedios = dados.remedios.filter(function(x){ return x.id !== r.id; });
-        salvar();
-        renderizarRemedios();
-        anunciar('Remédio removido.');
-      });
-      lista.appendChild(div);
-    });
-  }
-
-  function renderizarAgenda() {
-    var lista = document.getElementById('lista-agenda');
-    lista.innerHTML = '';
-    if (dados.agenda.length === 0) {
-      lista.innerHTML = '<p class="mensagem-vazio">Nenhum compromisso cadastrado ainda.</p>';
-      return;
-    }
-    dados.agenda.slice().sort(function(a,b){ return a.hora.localeCompare(b.hora); }).forEach(function(item) {
-      var div = document.createElement('div');
-      div.className = 'agenda-item';
-      div.innerHTML =
-        '<span class="bolinha" aria-hidden="true"></span>' +
-        '<span class="texto-agenda"><strong>' + escaparHtml(formatarHoraExtenso(item.hora)) + '</strong> — ' + escaparHtml(item.texto) + '</span>' +
-        '<button class="botao-excluir" type="button" aria-label="Excluir compromisso ' + escaparHtml(item.texto) + '">✕</button>';
-      div.querySelector('.botao-excluir').addEventListener('click', function() {
-        dados.agenda = dados.agenda.filter(function(x){ return x.id !== item.id; });
-        salvar();
-        renderizarAgenda();
-        anunciar('Compromisso removido.');
-      });
-      lista.appendChild(div);
-    });
-  }
-
-  function renderizarContatos() {
-    var lista = document.getElementById('lista-contatos');
-    lista.innerHTML = '';
-    if (dados.contatos.length === 0) {
-      lista.innerHTML = '<p class="mensagem-vazio">Nenhum contato cadastrado ainda.</p>';
-      return;
-    }
-    dados.contatos.forEach(function(c) {
-      var wrapper = document.createElement('div');
-      wrapper.style.position = 'relative';
-      wrapper.innerHTML =
-        '<a class="contato" href="tel:' + escaparAtributo(c.tel) + '">' +
-          '<span class="icone-contato" aria-hidden="true">' + c.icone + '</span>' +
-          '<span class="info-contato">' +
-            '<span class="nome-contato">' + escaparHtml(c.nome) + '</span>' +
-            '<span class="numero-contato">' + escaparHtml(c.numero) + '</span>' +
-          '</span>' +
-        '</a>' +
-        '<button class="botao-excluir" type="button" style="position:absolute; top:0.6rem; right:0.6rem;" aria-label="Excluir contato ' + escaparHtml(c.nome) + '">✕</button>';
-      wrapper.querySelector('.botao-excluir').addEventListener('click', function(ev) {
-        ev.preventDefault();
-        dados.contatos = dados.contatos.filter(function(x){ return x.id !== c.id; });
-        salvar();
-        renderizarContatos();
-        anunciar('Contato removido.');
-      });
-      lista.appendChild(wrapper);
-    });
-  }
-
-  function renderizarTudo() {
-    renderizarRemedios();
-    renderizarAgenda();
-    renderizarContatos();
-  }
-
-  function escaparHtml(texto) {
-    var div = document.createElement('div');
-    div.textContent = texto;
-    return div.innerHTML;
-  }
-  function escaparAtributo(texto) {
-    return String(texto).replace(/"/g, '&quot;');
-  }
-  function formatarHoraExtenso(hora) {
-    var partes = hora.split(':');
-    return partes[0] + 'h' + partes[1];
-  }
-
-  // ---------- Seletores de hora (em vez de <input type="time">, que pode falhar
-  //             em navegadores/áreas restritas onde o seletor nativo não abre) ----------
-  function preencherSelecaoHora(selectHora, selectMinuto, horaInicial, minutoInicial) {
-    selectHora.innerHTML = '';
-    for (var h = 0; h < 24; h++) {
-      var op = document.createElement('option');
-      var vh = String(h).padStart(2, '0');
-      op.value = vh;
-      op.textContent = vh;
-      selectHora.appendChild(op);
-    }
-    selectMinuto.innerHTML = '';
-    for (var m = 0; m < 60; m += 5) {
-      var op2 = document.createElement('option');
-      var vm = String(m).padStart(2, '0');
-      op2.value = vm;
-      op2.textContent = vm;
-      selectMinuto.appendChild(op2);
-    }
-    selectHora.value = horaInicial;
-    selectMinuto.value = minutoInicial;
-  }
-
-  var selRemedioH = document.getElementById('input-remedio-hora-h');
-  var selRemedioM = document.getElementById('input-remedio-hora-m');
-  var selAgendaH = document.getElementById('input-agenda-hora-h');
-  var selAgendaM = document.getElementById('input-agenda-hora-m');
-  preencherSelecaoHora(selRemedioH, selRemedioM, '08', '00');
-  preencherSelecaoHora(selAgendaH, selAgendaM, '09', '00');
-
-  // ---------- Formulários de adicionar ----------
-  document.getElementById('form-remedio').addEventListener('submit', function(ev) {
-    ev.preventDefault();
-    var hora = selRemedioH.value + ':' + selRemedioM.value;
-    var texto = document.getElementById('input-remedio-texto').value.trim();
-    if (!texto) return;
-    dados.remedios.push({ id: proximoIdRemedio++, hora: hora, texto: texto, feito: false });
-    salvar();
-    renderizarRemedios();
-    anunciar('Remédio ' + texto + ' adicionado para ' + hora + '.');
-    document.getElementById('input-remedio-texto').value = '';
-  });
-
-  document.getElementById('form-agenda').addEventListener('submit', function(ev) {
-    ev.preventDefault();
-    var hora = selAgendaH.value + ':' + selAgendaM.value;
-    var texto = document.getElementById('input-agenda-texto').value.trim();
-    if (!texto) return;
-    dados.agenda.push({ id: proximoIdAgenda++, hora: hora, texto: texto });
-    salvar();
-    renderizarAgenda();
-    anunciar('Compromisso ' + texto + ' adicionado para ' + hora + '.');
-    document.getElementById('input-agenda-texto').value = '';
-  });
-
-  document.getElementById('form-contato').addEventListener('submit', function(ev) {
-    ev.preventDefault();
-    var nome = document.getElementById('input-contato-nome').value.trim();
-    var numero = document.getElementById('input-contato-numero').value.trim();
-    if (!nome || !numero) return;
-    var telLimpo = numero.replace(/[^\d+]/g, '');
-    dados.contatos.push({ id: proximoIdContato++, nome: nome, numero: numero, tel: telLimpo, icone: '📞' });
-    salvar();
-    renderizarContatos();
-    anunciar('Contato ' + nome + ' adicionado.');
-    this.reset();
-  });
-
-  // ---------- Tamanho da fonte ----------
-  var escalaAtual = 1;
-  function aplicarEscala() {
-    document.documentElement.style.setProperty('--escala', escalaAtual);
-  }
-  document.getElementById('btn-aumentar').addEventListener('click', function() {
-    if (escalaAtual < 1.6) { escalaAtual = Math.round((escalaAtual + 0.15) * 100) / 100; aplicarEscala(); }
-  });
-  document.getElementById('btn-diminuir').addEventListener('click', function() {
-    if (escalaAtual > 0.85) { escalaAtual = Math.round((escalaAtual - 0.15) * 100) / 100; aplicarEscala(); }
-  });
-
-  // ---------- Alto contraste ----------
-  var btnContraste = document.getElementById('btn-contraste');
-  btnContraste.addEventListener('click', function() {
-    var ativo = document.documentElement.classList.toggle('alto-contraste');
-    btnContraste.setAttribute('aria-pressed', ativo ? 'true' : 'false');
-    anunciar(ativo ? 'Alto contraste ativado.' : 'Alto contraste desativado.');
-  });
-
-  // ---------- Modo daltônico ----------
-  var btnDaltonico = document.getElementById('btn-daltonico');
-  btnDaltonico.addEventListener('click', function() {
-    var ativo = document.documentElement.classList.toggle('modo-daltonico');
-    btnDaltonico.setAttribute('aria-pressed', ativo ? 'true' : 'false');
-    anunciar(ativo ? 'Modo daltônico ativado.' : 'Modo daltônico desativado.');
-  });
-
-  // ---------- Leitura em voz alta ----------
-  var btnOuvir = document.getElementById('btn-ouvir');
-  var sintetizador = window.speechSynthesis;
-  var lendo = false;
-
-  function pararLeitura() {
-    if (sintetizador) sintetizador.cancel();
-    lendo = false;
-    btnOuvir.textContent = '🔊 Ouvir a página';
-    btnOuvir.setAttribute('aria-pressed', 'false');
-  }
-
-  btnOuvir.addEventListener('click', function() {
-    if (!sintetizador) {
-      anunciar('A leitura em voz alta não é compatível com este navegador.');
-      return;
-    }
-    if (lendo) {
-      pararLeitura();
-      anunciar('Leitura interrompida.');
-      return;
-    }
-    var texto = document.getElementById('conteudo-principal').innerText;
-    var fala = new SpeechSynthesisUtterance(texto);
-    fala.lang = 'pt-BR';
-    fala.rate = 0.95;
-    fala.onend = pararLeitura;
-    fala.onerror = pararLeitura;
-    sintetizador.cancel();
-    sintetizador.speak(fala);
-    lendo = true;
-    btnOuvir.textContent = '⏹ Parar leitura';
-    btnOuvir.setAttribute('aria-pressed', 'true');
-    anunciar('Lendo a página em voz alta.');
-  });
-
-  // ---------- Notificações do sistema (opcional) ----------
-  var btnNotificacao = document.getElementById('btn-permitir-notificacao');
-  var statusNotificacao = document.getElementById('status-notificacao');
-  function atualizarStatusNotificacao() {
-    if (!('Notification' in window)) {
-      statusNotificacao.textContent = 'Este navegador não é compatível com avisos do sistema.';
-      return;
-    }
-    if (Notification.permission === 'granted') {
-      statusNotificacao.textContent = 'Avisos do sistema ativados. ✓';
-    } else if (Notification.permission === 'denied') {
-      statusNotificacao.textContent = 'Avisos do sistema bloqueados nas configurações do navegador.';
-    } else {
-      statusNotificacao.textContent = 'Avisos do sistema ainda não ativados.';
-    }
-  }
-  btnNotificacao.addEventListener('click', function() {
-    if (!('Notification' in window)) {
-      atualizarStatusNotificacao();
-      return;
-    }
-    Notification.requestPermission().then(atualizarStatusNotificacao);
-  });
-  atualizarStatusNotificacao();
-
-  // ---------- Alarme sonoro (Web Audio, não precisa de arquivo de som) ----------
-  var contextoAudio = null;
-  function tocarBipe() {
-    try {
-      if (!contextoAudio) {
-        contextoAudio = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (contextoAudio.state === 'suspended') contextoAudio.resume();
-      var agora = contextoAudio.currentTime;
-      [0, 0.35, 0.7].forEach(function(atraso) {
-        var oscilador = contextoAudio.createOscillator();
-        var ganho = contextoAudio.createGain();
-        oscilador.type = 'sine';
-        oscilador.frequency.value = 880;
-        ganho.gain.setValueAtTime(0.0001, agora + atraso);
-        ganho.gain.exponentialRampToValueAtTime(0.35, agora + atraso + 0.05);
-        ganho.gain.exponentialRampToValueAtTime(0.0001, agora + atraso + 0.28);
-        oscilador.connect(ganho);
-        ganho.connect(contextoAudio.destination);
-        oscilador.start(agora + atraso);
-        oscilador.stop(agora + atraso + 0.3);
-      });
-    } catch (e) { /* áudio não disponível neste navegador */ }
-  }
-
-  // ---------- Motor do alarme: verifica a cada 20 segundos ----------
-  var bannerAlarme = document.getElementById('banner-alarme');
-  var textoBannerAlarme = document.getElementById('texto-banner-alarme');
-  var jaAlertadoHoje = {}; // chave: "remedio-1" ou "agenda-2", valor: data em que já avisou
-  var alarmeSonoroIntervalo = null;
-
-  function chaveDeHoje() {
-    var d = new Date();
-    return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
-  }
-
-  function dispararAlarme(mensagem) {
-    textoBannerAlarme.textContent = '⏰ ' + mensagem;
-    bannerAlarme.classList.add('ativo');
-    anunciar(mensagem);
-    tocarBipe();
-    if (alarmeSonoroIntervalo) clearInterval(alarmeSonoroIntervalo);
-    alarmeSonoroIntervalo = setInterval(tocarBipe, 8000);
-    if ('Notification' in window && Notification.permission === 'granted') {
-      try { new Notification('Meu Dia', { body: mensagem }); } catch (e) {}
-    }
-    if (sintetizador) {
-      var fala = new SpeechSynthesisUtterance(mensagem);
-      fala.lang = 'pt-BR';
-      fala.rate = 0.95;
-      sintetizador.speak(fala);
-    }
-  }
-
-  document.getElementById('btn-parar-alarme').addEventListener('click', function() {
-    bannerAlarme.classList.remove('ativo');
-    if (alarmeSonoroIntervalo) { clearInterval(alarmeSonoroIntervalo); alarmeSonoroIntervalo = null; }
-    if (sintetizador) sintetizador.cancel();
-    anunciar('Alarme silenciado.');
-  });
-
-  function horaAtualHHMM() {
-    var d = new Date();
-    var h = String(d.getHours()).padStart(2, '0');
-    var m = String(d.getMinutes()).padStart(2, '0');
-    return h + ':' + m;
-  }
-
-  function verificarAlarmes() {
-    var agoraHHMM = horaAtualHHMM();
-    var hoje = chaveDeHoje();
-
-    dados.remedios.forEach(function(r) {
-      var chave = 'remedio-' + r.id;
-      if (r.hora === agoraHHMM && jaAlertadoHoje[chave] !== hoje && !r.feito) {
-        jaAlertadoHoje[chave] = hoje;
-        dispararAlarme('Hora do remédio: ' + r.texto);
-      }
-    });
-
-    dados.agenda.forEach(function(item) {
-      var chave = 'agenda-' + item.id;
-      if (item.hora === agoraHHMM && jaAlertadoHoje[chave] !== hoje) {
-        jaAlertadoHoje[chave] = hoje;
-        dispararAlarme('Compromisso agora: ' + item.texto);
-      }
-    });
-  }
-
-  setInterval(verificarAlarmes, 20000);
-
-  // ---------- Início ----------
-  carregar();
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
