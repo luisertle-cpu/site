@@ -25,20 +25,18 @@ function atualizarRelogioESaudacao() {
     elData.textContent = "Hoje é " + dias[agora.getDay()] + ", " + agora.getDate() + " de " + meses[agora.getMonth()] + ".";
   }
 
-  // Atualiza o Relógio Digital Flutuante
+  // Atualiza o Relógio Digital Flutuante (caso esteja visível no desktop)
   const elRelogio = document.getElementById('relogio-digital');
   if (elRelogio) {
     elRelogio.textContent = `🕒 ${horaFormatada}:${minutos}:${segundos}`;
   }
 
-  // Verificação de Alarmes para Remédios e Agenda
   verificarAlarmes(horaAtualFormatada);
 }
 
 function verificarAlarmes(horaAtual) {
   if (!dados) return;
 
-  // Verifica remédios pendentes
   dados.remedios.forEach(function(r) {
     var chave = 'remedio_' + r.id + '_' + horaAtual;
     if (r.hora === horaAtual && !r.feito && !alarmesDisparados.has(chave)) {
@@ -47,7 +45,6 @@ function verificarAlarmes(horaAtual) {
     }
   });
 
-  // Verifica compromissos
   dados.agenda.forEach(function(a) {
     var chave = 'agenda_' + a.id + '_' + horaAtual;
     if (a.hora === horaAtual && !alarmesDisparados.has(chave)) {
@@ -68,7 +65,6 @@ function dispararAlarme(mensagem) {
   falar(mensagem);
 }
 
-// Desativação do Alarme
 var btnPararAlarme = document.getElementById('btn-parar-alarme');
 if (btnPararAlarme) {
   btnPararAlarme.addEventListener('click', function() {
@@ -78,11 +74,9 @@ if (btnPararAlarme) {
   });
 }
 
-// Inicializa a contagem do relógio
 atualizarRelogioESaudacao();
 setInterval(atualizarRelogioESaudacao, 1000);
 
-// Acionamento direto do seletor ao clicar em qualquer ponto dos campos de horário
 ['input-remedio-hora', 'input-agenda-hora'].forEach(function(id) {
   var campo = document.getElementById(id);
   if (campo) {
@@ -249,7 +243,6 @@ function escaparHtml(texto) { var div = document.createElement('div'); div.textC
 function escaparAtributo(texto) { return String(texto).replace(/"/g, '&quot;'); }
 function formatarHoraExtenso(hora) { var partes = hora.split(':'); return partes[0] + 'h' + partes[1]; }
 
-// Eventos dos Formulários
 document.getElementById('form-remedio').addEventListener('submit', function(ev) {
   ev.preventDefault();
   var hora = document.getElementById('input-remedio-hora').value;
@@ -284,7 +277,6 @@ document.getElementById('form-contato').addEventListener('submit', function(ev) 
   this.reset();
 });
 
-// Controles de Tamanho de Fonte
 var escalaAtual = 1;
 document.getElementById('btn-aumentar').addEventListener('click', function() {
   if (escalaAtual < 1.6) { escalaAtual = Math.round((escalaAtual + 0.15) * 100) / 100; document.documentElement.style.setProperty('--escala', escalaAtual); }
@@ -293,7 +285,6 @@ document.getElementById('btn-diminuir').addEventListener('click', function() {
   if (escalaAtual > 0.85) { escalaAtual = Math.round((escalaAtual - 0.15) * 100) / 100; document.documentElement.style.setProperty('--escala', escalaAtual); }
 });
 
-// Alto Contraste
 var btnContraste = document.getElementById('btn-contraste');
 btnContraste.addEventListener('click', function() {
   var ativo = document.documentElement.classList.toggle('alto-contraste');
@@ -303,7 +294,6 @@ btnContraste.addEventListener('click', function() {
   anunciar(ativo ? 'Alto contraste ativado.' : 'Alto contraste desativado.');
 });
 
-// Seletor de Daltonismo
 var selectDaltonismo = document.getElementById('select-daltonismo');
 function aplicarModoDaltonismo(modo) {
   if (modo === 'nenhum') {
@@ -322,7 +312,7 @@ selectDaltonismo.addEventListener('change', function() {
   anunciar('Ajuste de cores ativado para: ' + rotuloOpcao);
 });
 
-// --- SISTEMA DE NAVEGAÇÃO E ASSISTENTE DE VOZ INTERATIVO ---
+// NAVEGAÇÃO DE VOZ
 var sintetizador = window.speechSynthesis;
 var assistenteAtivo = false;
 
@@ -436,7 +426,6 @@ btnOuvir.addEventListener('click', function() {
   }
 });
 
-// Captura de Teclas Globais
 document.addEventListener('keydown', function(event) {
   var tecla = event.key.toLowerCase();
   var tagAlvo = event.target.tagName ? event.target.tagName.toLowerCase() : '';
@@ -486,5 +475,4 @@ document.addEventListener('keydown', function(event) {
   }
 });
 
-// Carrega os dados salvos no início
 window.addEventListener('DOMContentLoaded', carregar);
