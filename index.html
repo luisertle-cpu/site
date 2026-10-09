@@ -1,166 +1,172 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meu Dia — Seu companheiro do dia a dia</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Dia — Seu companheiro do dia a dia</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- Painel de Ativação do Assistente de Voz -->
-<div id="painel-voz" class="painel-voz-topo" role="region" aria-label="Assistente de voz interativo">
-  <div class="conteudo-painel-voz">
-    <span id="texto-pergunta-voz" aria-live="assertive">
-      📢</strong> Deseja ativar a navegação por voz guiada? 
-      Pressione <strong>S</strong> para SIM ou <strong>N</strong> para NÃO.
-    </span>
-    <div class="botoes-painel-voz">
-      <button id="btn-voz-sim" type="button" class="btn-voz btn-voz-sim">SIM (Tecla S)</button>
-      <button id="btn-voz-nao" type="button" class="btn-voz btn-voz-nao">NÃO (Tecla N)</button>
+  <!-- Painel de Ativação do Assistente de Voz -->
+  <div id="painel-voz" class="painel-voz-topo" role="region" aria-label="Assistente de voz interativo">
+    <div class="conteudo-painel-voz">
+      <span id="texto-pergunta-voz" aria-live="assertive">
+        📢 <strong>Deseja ativar a navegação por voz guiada?</strong> 
+        Pressione <strong>S</strong> para SIM ou <strong>N</strong> para NÃO.
+      </span>
+      <div class="botoes-painel-voz">
+        <button id="btn-voz-sim" type="button" class="btn-voz btn-voz-sim">SIM (Tecla S)</button>
+        <button id="btn-voz-nao" type="button" class="btn-voz btn-voz-nao">NÃO (Tecla N)</button>
+      </div>
     </div>
   </div>
-</div>
 
-<a class="pular-link" href="#conteudo-principal">Pular para o conteúdo principal</a>
+  <a class="pular-link" href="#conteudo-principal">Pular para o conteúdo principal</a>
 
-<header class="topo">
-  <div class="marca">
-    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="10" fill="#F0B94A"/>
-      <path d="M12 7v5l3 3" stroke="#163449" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <span>Meu Dia</span>
-  </div>
-  <div class="controles-acessibilidade" role="group" aria-label="Opções de acessibilidade">
-    <button class="botao-controle" id="btn-diminuir" type="button" aria-label="Diminuir o tamanho da letra">A−</button>
-    <button class="botao-controle" id="btn-aumentar" type="button" aria-label="Aumentar o tamanho da letra">A+</button>
-    <button class="botao-controle" id="btn-contraste" type="button" aria-pressed="false">Alto contraste</button>
-
-    <select class="seletor-controle" id="select-daltonismo" aria-label="Ajuste para tipo de Daltonismo">
-      <option value="nenhum">Modo Daltônico: Desativado</option>
-      <option value="protanopia">Protanopia / Protanomalia (Falta de Vermelho)</option>
-      <option value="deuteranopia">Deuteranopia / Deuteranomalia (Falta de Verde)</option>
-      <option value="tritanopia">Tritanopia / Tritanomalia (Falta de Azul/Amarelo)</option>
-      <option value="acromatopsia">Acromatopsia (Sem cores / Monocromático)</option>
-    </select>
-
-    <button class="botao-controle" id="btn-ouvir" type="button" aria-pressed="false">🔊 Ouvir a página</button>
-  </div>
-</header>
-
-<div id="status-leitor" role="status" aria-live="polite" class="somente-leitor"></div>
-
-<main id="conteudo-principal">
-
-  <div class="banner-alarme" id="banner-alarme" role="alert" aria-live="assertive">
-    <span class="texto-alarme" id="texto-banner-alarme"></span>
-    <button type="button" id="btn-parar-alarme">🔕 Ok, entendi</button>
-  </div>
-
-  <div class="saudacao">
-    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="5" fill="#F0B94A"/>
-      <g stroke="#F0B94A" stroke-width="2" stroke-linecap="round">
-        <line x1="12" y1="1" x2="12" y2="4"/>
-        <line x1="12" y1="20" x2="12" y2="23"/>
-        <line x1="1" y1="12" x2="4" y2="12"/>
-        <line x1="20" y1="12" x2="23" y2="12"/>
-        <line x1="4.2" y1="4.2" x2="6.3" y2="6.3"/>
-        <line x1="17.7" y1="17.7" x2="19.8" y2="19.8"/>
-        <line x1="4.2" y1="19.8" x2="6.3" y2="17.7"/>
-        <line x1="17.7" y1="6.3" x2="19.8" y2="4.2"/>
-      </g>
-    </svg>
-    <div>
-      <h1 id="texto-saudacao">Bom dia!</h1>
-      <p id="texto-data">Hoje é um ótimo dia para cuidar de você.</p>
+  <!-- Cabeçalho e Acessibilidade -->
+  <header class="topo">
+    <div class="marca">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" fill="#F0B94A"/>
+        <path d="M12 7v5l3 3" stroke="#163449" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Meu Dia</span>
     </div>
-</div>
 
-  <a class="botao-emergencia" href="tel:192" aria-label="Ligar para emergência, número 192, SAMU">
-    🚨 Emergência — Ligar para o SAMU (192)
-  </a>
+    <div class="controles-acessibilidade" role="group" aria-label="Opções de acessibilidade">
+      <button class="botao-controle" id="btn-diminuir" type="button" aria-label="Diminuir o tamanho da letra">A−</button>
+      <button class="botao-controle" id="btn-aumentar" type="button" aria-label="Aumentar o tamanho da letra">A+</button>
+      <button class="botao-controle" id="btn-contraste" type="button" aria-pressed="false">Alto contraste</button>
 
+      <select class="seletor-controle" id="select-daltonismo" aria-label="Ajuste para tipo de Daltonismo">
+        <option value="nenhum">Modo Daltônico: Desativado</option>
+        <option value="protanopia">Protanopia / Protanomalia (Falta de Vermelho)</option>
+        <option value="deuteranopia">Deuteranopia / Deuteranomalia (Falta de Verde)</option>
+        <option value="tritanopia">Tritanopia / Tritanomalia (Falta de Azul/Amarelo)</option>
+        <option value="acromatopsia">Acromatopsia (Sem cores / Monocromático)</option>
+      </select>
+
+      <button class="botao-controle" id="btn-ouvir" type="button" aria-pressed="false">🔊 Ouvir a página</button>
+    </div>
+  </header>
+
+  <div id="status-leitor" role="status" aria-live="polite" class="somente-leitor"></div>
+
+  <!-- Conteúdo Principal -->
+  <main id="conteudo-principal">
+
+    <!-- Banner de Alarme Ativo -->
+    <div class="banner-alarme" id="banner-alarme" role="alert" aria-live="assertive">
+      <span class="texto-alarme" id="texto-banner-alarme"></span>
+      <button type="button" id="btn-parar-alarme">🔕 Ok, entendi</button>
+    </div>
+
+    <!-- Saudação -->
+    <div class="saudacao">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="5" fill="#F0B94A"/>
+        <g stroke="#F0B94A" stroke-width="2" stroke-linecap="round">
+          <line x1="12" y1="1" x2="12" y2="4"/>
+          <line x1="12" y1="20" x2="12" y2="23"/>
+          <line x1="1" y1="12" x2="4" y2="12"/>
+          <line x1="20" y1="12" x2="23" y2="12"/>
+          <line x1="4.2" y1="4.2" x2="6.3" y2="6.3"/>
+          <line x1="17.7" y1="17.7" x2="19.8" y2="19.8"/>
+          <line x1="4.2" y1="19.8" x2="6.3" y2="17.7"/>
+          <line x1="17.7" y1="6.3" x2="19.8" y2="4.2"/>
+        </g>
+      </svg>
+      <div>
+        <h1 id="texto-saudacao">Bom dia!</h1>
+        <p id="texto-data">Hoje é um ótimo dia para cuidar de você.</p>
+      </div>
+    </div>
+
+    <!-- Botão de Emergência -->
+    <a class="botao-emergencia" href="tel:192" aria-label="Ligar para emergência, número 192, SAMU">
+      🚨 Emergência — Ligar para o SAMU (192)
+    </a>
+
+    <!-- Seção de Remédios -->
+    <section aria-labelledby="titulo-remedios">
+      <h2 class="titulo-secao" id="titulo-remedios">💊 Meus remédios de hoje</h2>
+      <div class="cartao">
+        <div id="lista-remedios"></div>
+      </div>
+
+      <form class="formulario-adicionar" id="form-remedio">
+        <div class="campo-adicionar campo-hora">
+          <label for="input-remedio-hora">Horário</label>
+          <input type="time" id="input-remedio-hora" value="08:00" required>
+        </div>
+        <div class="campo-adicionar">
+          <label for="input-remedio-texto">Remédio e instruções</label>
+          <input type="text" id="input-remedio-texto" placeholder="Ex: Losartana — 1 comprimido" required>
+        </div>
+        <button class="botao-adicionar" type="submit">➕ Adicionar remédio</button>
+      </form>
+    </section>
+
+    <!-- Seção de Agenda -->
+    <section aria-labelledby="titulo-agenda">
+      <h2 class="titulo-secao" id="titulo-agenda">📅 Compromissos de hoje</h2>
+      <div class="cartao">
+        <div id="lista-agenda"></div>
+      </div>
+
+      <form class="formulario-adicionar" id="form-agenda">
+        <div class="campo-adicionar campo-hora">
+          <label for="input-agenda-hora">Horário</label>
+          <input type="time" id="input-agenda-hora" value="09:00" required>
+        </div>
+        <div class="campo-adicionar">
+          <label for="input-agenda-texto">Compromisso</label>
+          <input type="text" id="input-agenda-texto" placeholder="Ex: Consulta com a médica" required>
+        </div>
+        <button class="botao-adicionar" type="submit">➕ Adicionar compromisso</button>
+      </form>
+    </section>
+
+    <!-- Seção de Contatos -->
+    <section aria-labelledby="titulo-contatos">
+      <h2 class="titulo-secao" id="titulo-contatos">☎️ Contatos importantes</h2>
+      <div class="cartao">
+        <div class="grade" id="lista-contatos"></div>
+      </div>
+
+      <form class="formulario-adicionar" id="form-contato">
+        <div class="campo-adicionar">
+          <label for="input-contato-nome">Nome</label>
+          <input type="text" id="input-contato-nome" placeholder="Ex: Ana (filha)" required>
+        </div>
+        <div class="campo-adicionar">
+          <label for="input-contato-numero">Telefone</label>
+          <input type="tel" id="input-contato-numero" placeholder="Ex: (11) 98765-4321" required>
+        </div>
+        <button class="botao-adicionar" type="submit">➕ Adicionar contato</button>
+      </form>
+    </section>
+
+    <!-- Seção de Ajuda -->
+    <section aria-labelledby="titulo-ajuda">
+      <h2 class="titulo-secao" id="titulo-ajuda">ℹ️ Como usar este site</h2>
+      <div class="caixa-ajuda">
+        <p>Toque no botão <strong>"A+"</strong> no topo para aumentar as letras, ou em <strong>"Alto contraste"</strong> para um fundo escuro e letras vibrantes.</p>
+        <p>Você pode ativar o <strong>Alto Contraste</strong> junto com o seu tipo de <strong>Daltonismo</strong>. O site adaptará todas as cores para o contraste máximo seguro para os seus olhos.</p>
+        <p>Se preferir ouvir em vez de ler, toque em <strong>"Ouvir a página"</strong> ou acione a navegação por voz no topo.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Relógio Digital Flutuante -->
   <p id="relogio-digital" class="relogio-flutuante" aria-label="Horário atual em tempo real"></p>
 
-<script src="script.js"></script>
-</body>
-</html>
+  <footer>
+    <p>Agenda simples e intuitiva para o seu dia a dia</p>
+  </footer>
 
-  <section aria-labelledby="titulo-remedios">
-    <h2 class="titulo-secao" id="titulo-remedios">💊 Meus remédios de hoje</h2>
-    <div class="cartao">
-      <div id="lista-remedios"></div>
-    </div>
-
-    <form class="formulario-adicionar" id="form-remedio">
-      <div class="campo-adicionar campo-hora">
-        <label for="input-remedio-hora">Horário</label>
-        <input type="time" id="input-remedio-hora" value="08:00" required>
-      </div>
-      <div class="campo-adicionar">
-        <label for="input-remedio-texto">Remédio e instruções</label>
-        <input type="text" id="input-remedio-texto" placeholder="Ex: Losartana — 1 comprimido" required>
-      </div>
-      <button class="botao-adicionar" type="submit">➕ Adicionar remédio</button>
-    </form>
-  </section>
-
-  <section aria-labelledby="titulo-agenda">
-    <h2 class="titulo-secao" id="titulo-agenda">📅 Compromissos de hoje</h2>
-    <div class="cartao">
-      <div id="lista-agenda"></div>
-    </div>
-
-    <form class="formulario-adicionar" id="form-agenda">
-      <div class="campo-adicionar campo-hora">
-        <label for="input-agenda-hora">Horário</label>
-        <input type="time" id="input-agenda-hora" value="09:00" required>
-      </div>
-      <div class="campo-adicionar">
-        <label for="input-agenda-texto">Compromisso</label>
-        <input type="text" id="input-agenda-texto" placeholder="Ex: Consulta com a médica" required>
-      </div>
-      <button class="botao-adicionar" type="submit">➕ Adicionar compromisso</button>
-    </form>
-  </section>
-
-  <section aria-labelledby="titulo-contatos">
-    <h2 class="titulo-secao" id="titulo-contatos">☎️ Contatos importantes</h2>
-    <div class="cartao">
-      <div class="grade" id="lista-contatos"></div>
-    </div>
-
-    <form class="formulario-adicionar" id="form-contato">
-      <div class="campo-adicionar">
-        <label for="input-contato-nome">Nome</label>
-        <input type="text" id="input-contato-nome" placeholder="Ex: Ana (filha)" required>
-      </div>
-      <div class="campo-adicionar">
-        <label for="input-contato-numero">Telefone</label>
-        <input type="tel" id="input-contato-numero" placeholder="Ex: (11) 98765-4321" required>
-      </div>
-      <button class="botao-adicionar" type="submit">➕ Adicionar contato</button>
-    </form>
-  </section>
-
-  <section aria-labelledby="titulo-ajuda">
-    <h2 class="titulo-secao" id="titulo-ajuda">ℹ️ Como usar este site</h2>
-    <div class="caixa-ajuda">
-      <p>Toque no botão <strong>"A+"</strong> no topo para aumentar as letras, ou em <strong>"Alto contraste"</strong> para um fundo escuro e letras vibrantes.</p>
-      <p>Você pode ativar o <strong>Alto Contraste</strong> junto com o seu tipo de <strong>Daltonismo</strong>. O site adaptará todas as cores para o contraste máximo seguro para os seus olhos.</p>
-      <p>Se preferir ouvir em vez de ler, toque em <strong>"Ouvir a página"</strong>.</p>
-    </div>
-  </section>
-
-</main>
-
-<footer>
-  <p> Agenda simples e intuitiva para o seu dia a dia </p>
-</footer>
-
-<script src="script.js"></script>
-
+  <script src="script.js"></script>
 </body>
 </html>
