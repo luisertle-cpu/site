@@ -9,6 +9,7 @@
   --coral-escuro: #B94E22;
   --menta: #4F8F73;
   --dourado: #F0B94A;
+  --dourado-escuro: #B88310;
   --branco: #FFFFFF;
   --borda: #CFE0E1;
   --sombra: 0 4px 14px rgba(22,52,73,0.10);
@@ -54,6 +55,7 @@ html[data-daltonismo="protanopia"] {
   --coral-escuro: #C47F00; 
   --menta: #0072B2;       
   --dourado: #F0E442;     
+  --dourado-escuro: #B8B000;
   --borda: #B0C4DE;
   --textura-feito: repeating-linear-gradient(
     45deg,
@@ -73,6 +75,7 @@ html[data-daltonismo="deuteranopia"] {
   --coral-escuro: #A34700;
   --menta: #00529B;       
   --dourado: #E69F00;     
+  --dourado-escuro: #A84800;
   --borda: #B8C0CC;
   --textura-feito: repeating-linear-gradient(
     -45deg,
@@ -92,6 +95,7 @@ html[data-daltonismo="tritanopia"] {
   --coral-escuro: #961737;
   --menta: #009E73;       
   --dourado: #CC79A7;     
+  --dourado-escuro: #9E4D7A;
   --borda: #E8C5CE;
   --textura-feito: repeating-linear-gradient(
     90deg,
@@ -111,6 +115,7 @@ html[data-daltonismo="acromatopsia"] {
   --coral-escuro: #000000;
   --menta: #3F3F46;
   --dourado: #71717A;
+  --dourado-escuro: #3F3F46;
   --branco: #FFFFFF;
   --borda: #3F3F46;
   --textura-feito: repeating-linear-gradient(
@@ -131,6 +136,7 @@ html.alto-contraste {
   --coral-escuro: #FFD700;
   --menta: #00FF88;
   --dourado: #FFD700;
+  --dourado-escuro: #FFD700;
   --branco: #0A0A0A;
   --borda: #FFFFFF;
   --sombra: none;
@@ -140,6 +146,8 @@ html.alto-contraste {
 html.alto-contraste body { background: var(--azul-fundo); color: var(--azul-marinho); }
 html.alto-contraste .cartao,
 html.alto-contraste .lembrete,
+html.alto-contraste .agenda-item,
+html.alto-contraste .contato-card,
 html.alto-contraste .formulario-adicionar,
 html.alto-contraste .caixa-ajuda,
 html.alto-contraste header,
@@ -164,17 +172,12 @@ html.alto-contraste .seletor-controle {
 }
 
 html.alto-contraste .botao-adicionar,
-html.alto-contraste .botao-emergencia {
+html.alto-contraste .botao-emergencia,
+html.alto-contraste .botao-ligar {
   background-color: var(--coral);
   color: var(--cor-texto-botao) !important;
   border: 3px solid #FFFFFF;
   font-weight: 700;
-}
-
-html.alto-contraste .lembrete.feito .botao-marcar {
-  background-color: var(--menta);
-  color: var(--cor-texto-botao) !important;
-  border: 3px solid #FFFFFF;
 }
 
 .somente-leitor {
@@ -194,7 +197,7 @@ html.alto-contraste .lembrete.feito .botao-marcar {
   outline-offset: 3px;
 }
 
-/* ESTRUTURA PRINCIPAL */
+/* ESTRUTURA PRINCIPAL E HEADER */
 header.topo {
   background: var(--azul-ceu);
   padding: 1.2rem 1rem;
@@ -256,18 +259,41 @@ main {
 .saudacao h1 { font-size: 1.8rem; margin: 0 0 0.4rem 0; }
 .saudacao p { font-size: 1.15rem; margin: 0; opacity: 0.95; }
 
+/* --- IDENTIDADE VISUAL ÚNICA POR SEÇÃO --- */
+section { 
+  margin-bottom: 2.2rem; 
+  border-left: 6px solid transparent;
+  padding-left: 0.8rem;
+  transition: border-color 0.2s ease;
+}
+
+section.secao-remedios { border-left-color: var(--menta); }
+section.secao-remedios h2.titulo-secao { color: var(--menta); }
+
+section.secao-agenda { border-left-color: var(--dourado-escuro); }
+section.secao-agenda h2.titulo-secao { color: var(--dourado-escuro); }
+
+section.secao-contatos { border-left-color: var(--coral); }
+section.secao-contatos h2.titulo-secao { color: var(--coral); }
+
+section.secao-ajuda { border-left-color: var(--azul-marinho-suave); }
+section.secao-ajuda h2.titulo-secao { color: var(--azul-marinho-suave); }
+
+html.alto-contraste section { border-left-width: 8px !important; }
+html.alto-contraste h2.titulo-secao { color: var(--azul-marinho) !important; }
+
 h2.titulo-secao {
   font-size: 1.5rem;
   margin: 0 0 1rem 0;
-  display: flex; align-items: center; gap: 0.6rem;
-  color: var(--azul-marinho);
+  display: flex; 
+  align-items: center; 
+  gap: 0.6rem;
+  font-weight: 700;
 }
 
-section { margin-bottom: 2.2rem; }
-
 .grade {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
   width: 100%;
 }
@@ -281,8 +307,11 @@ section { margin-bottom: 2.2rem; }
   width: 100%;
 }
 
-.lembrete {
-  display: flex; align-items: center; gap: 0.8rem;
+/* --- ESTILO E FORMAS GEOMÉTRICAS DOS REMÉDIOS E AGENDA --- */
+.lembrete, .agenda-item {
+  display: flex; 
+  align-items: center; 
+  gap: 0.8rem;
   padding: 0.9rem;
   border-radius: 14px;
   background-color: var(--branco);
@@ -292,28 +321,98 @@ section { margin-bottom: 2.2rem; }
   word-break: break-word;
   overflow-wrap: anywhere;
 }
-.lembrete.feito {
+
+.lembrete.feito, .agenda-item.feito {
   background-color: var(--azul-ceu);
   background-image: var(--textura-feito);
   border-color: var(--menta);
 }
 
-.lembrete .marcador {
+.marcador {
   flex-shrink: 0;
-  width: 2rem; height: 2rem;
-  border-radius: 50%;
+  width: 2.2rem; 
+  height: 2.2rem;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  font-weight: 700; 
+  font-size: 1.1rem;
+}
+
+/* QUADRADO: Pendente (Remédio) */
+.marcador.forma-quadrado {
+  border-radius: 6px;
   border: 3px solid var(--coral-escuro);
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 1.1rem;
+  background: var(--branco);
   color: var(--coral-escuro);
 }
 
-.lembrete .hora {
-  font-size: 1.2rem; font-weight: 700;
-  color: var(--coral-escuro);
+/* LOSANGO: Pendente (Agenda) */
+.marcador.forma-diamante-box {
+  border-radius: 6px;
+  border: 3px solid var(--dourado-escuro);
+  background: var(--branco);
+  color: var(--dourado-escuro);
 }
 
-.lembrete .texto { flex: 1; font-size: 1.15rem; min-width: 140px; }
+/* CÍRCULO: Concluído (Remédio ou Agenda) */
+.marcador.forma-circulo {
+  border-radius: 50%;
+  border: 3px solid var(--menta);
+  background: var(--menta);
+  color: #FFFFFF;
+}
+
+/* ETIQUETAS VISUAIS DE STATUS (FORMA + TEXTO) */
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  margin-left: 0.4rem;
+}
+.badge-status.pendente {
+  background: rgba(217, 97, 47, 0.15);
+  color: var(--coral-escuro);
+  border: 1px solid var(--coral-escuro);
+}
+.badge-status.pendente-agenda {
+  background: rgba(184, 131, 16, 0.15);
+  color: var(--dourado-escuro);
+  border: 1px solid var(--dourado-escuro);
+}
+.badge-status.tomado {
+  background: rgba(79, 143, 115, 0.15);
+  color: var(--menta);
+  border: 1px solid var(--menta);
+}
+
+.lembrete .hora, .agenda-item .hora {
+  font-size: 1.2rem; 
+  font-weight: 700;
+  color: var(--coral-escuro);
+}
+.agenda-item .hora {
+  color: var(--dourado-escuro);
+}
+.lembrete.feito .hora, .agenda-item.feito .hora {
+  color: var(--menta);
+  text-decoration: line-through;
+}
+
+.lembrete .texto, .agenda-item .texto-agenda { 
+  flex: 1; 
+  font-size: 1.15rem; 
+  min-width: 140px; 
+}
+.lembrete.feito .texto, .agenda-item.feito .texto-agenda {
+  text-decoration: line-through;
+  opacity: 0.85;
+}
 
 .botao-marcar {
   font-family: var(--fonte);
@@ -326,6 +425,10 @@ section { margin-bottom: 2.2rem; }
   color: var(--menta);
   cursor: pointer;
   min-height: 48px;
+}
+.lembrete.feito .botao-marcar, .agenda-item.feito .botao-marcar {
+  background: var(--menta);
+  color: #FFFFFF;
 }
 
 .botao-excluir {
@@ -342,28 +445,81 @@ section { margin-bottom: 2.2rem; }
   min-width: 48px;
 }
 
-.contato {
-  display: flex; align-items: center; gap: 0.8rem;
-  text-decoration: none;
+/* --- CARTÕES DE CONTATOS (NOME EM CIMA, NÚMERO EMBAIXO E AÇÕES PADRONIZADAS) --- */
+.contato-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
   background: var(--branco);
   border: 2px solid var(--borda);
   border-radius: 16px;
-  padding: 1rem;
+  padding: 0.9rem 1rem;
   box-shadow: var(--sombra);
-  min-height: 72px;
-  position: relative;
-  word-break: break-word;
-  overflow-wrap: anywhere;
+  flex-wrap: wrap;
 }
 
-.agenda-item {
-  display: flex; align-items: center; gap: 0.8rem;
-  padding: 0.9rem 0;
-  border-bottom: 1px solid var(--borda);
-  font-size: 1.15rem;
-  flex-wrap: wrap;
-  word-break: break-word;
-  overflow-wrap: anywhere;
+.contato-info-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 180px;
+}
+
+.contato-card .icone-contato {
+  background: var(--dourado);
+  border-radius: 50%;
+  width: 3.2rem; 
+  height: 3.2rem;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.4rem;
+}
+
+.contato-card .info-contato { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: flex-start;
+  gap: 0.2rem;
+}
+
+.contato-card .nome-contato { 
+  font-size: 1.25rem; 
+  font-weight: 700; 
+  color: var(--azul-marinho);
+  line-height: 1.2;
+}
+
+.contato-card .numero-contato { 
+  font-size: 1.05rem; 
+  color: var(--azul-marinho-suave); 
+  line-height: 1.2;
+}
+
+.contato-acoes {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.botao-ligar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-family: var(--fonte);
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  background: var(--menta);
+  color: #FFFFFF;
+  min-height: 48px;
+  border: 2px solid var(--menta);
 }
 
 .caixa-ajuda {
@@ -535,9 +691,8 @@ footer {
   margin: 0;
 }
 
-/* REGRA DE RESPONSIVIDADE PARA TELEMÓVEIS (ATÉ 768px) */
+/* REGRA DE RESPONSIVIDADE PARA CELULARES (ATÉ 768px) */
 @media (max-width: 768px) {
-  /* OCULTA O RELÓGIO DIGITAL NO TELEMÓVEL */
   .relogio-flutuante {
     display: none !important;
   }
@@ -580,12 +735,25 @@ footer {
     flex: 1 1 100%;
   }
 
-  .lembrete {
+  .lembrete, .agenda-item {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .lembrete .botao-marcar {
+  .lembrete .botao-marcar, .agenda-item .botao-marcar {
     width: 100%;
+  }
+
+  .contato-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .contato-acoes {
+    width: 100%;
+  }
+
+  .botao-ligar {
+    flex: 1;
   }
 }
