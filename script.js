@@ -1,10 +1,13 @@
-// --- ATUALIZAÇÃO EM TEMPO REAL DA SAUDAÇÃO, DATA E RELÓGIO ---
+// --- ATUALIZAÇÃO EM TEMPO REAL DA SAUDAÇÃO, DATA, RELÓGIO E ALARMES ---
+var alarmesDisparados = new Set();
+
 function atualizarRelogioESaudacao() {
   const agora = new Date();
   const hora = agora.getHours();
   const minutos = String(agora.getMinutes()).padStart(2, '0');
   const segundos = String(agora.getSeconds()).padStart(2, '0');
   const horaFormatada = String(hora).padStart(2, '0');
+  const horaAtualFormatada = `${horaFormatada}:${minutos}`;
 
   // Atualiza a Saudação
   const elementoSaudacao = document.getElementById("texto-saudacao");
@@ -27,6 +30,52 @@ function atualizarRelogioESaudacao() {
   if (elRelogio) {
     elRelogio.textContent = `🕒 ${horaFormatada}:${minutos}:${segundos}`;
   }
+
+  // Verificação de Alarmes para Remédios e Agenda
+  verificarAlarmes(horaAtualFormatada);
+}
+
+function verificarAlarmes(horaAtual) {
+  if (!dados) return;
+
+  // Verifica remédios pendentes
+  dados.remedios.forEach(function(r) {
+    var chave = 'remedio_' + r.id + '_' + horaAtual;
+    if (r.hora === horaAtual && !r.feito && !alarmesDisparados.has(chave)) {
+      alarmesDisparados.add(chave);
+      dispararAlarme(`⏰ HORA DO REMÉDIO: ${r.texto}!`);
+    }
+  });
+
+  // Verifica compromissos
+  dados.agenda.forEach(function(a) {
+    var chave = 'agenda_' + a.id + '_' + horaAtual;
+    if (a.hora === horaAtual && !alarmesDisparados.has(chave)) {
+      alarmesDisparados.add(chave);
+      dispararAlarme(`⏰ COMPROMISSO AGORA: ${a.texto}!`);
+    }
+  });
+}
+
+function dispararAlarme(mensagem) {
+  var banner = document.getElementById('banner-alarme');
+  var textoBanner = document.getElementById('texto-banner-alarme');
+  if (banner && textoBanner) {
+    textoBanner.textContent = mensagem;
+    banner.classList.add('ativo');
+  }
+  anunciar(mensagem);
+  falar(mensagem);
+}
+
+// Desativação do Alarme
+var btnPararAlarme = document.getElementById('btn-parar-alarme');
+if (btnPararAlarme) {
+  btnPararAlarme.addEventListener('click', function() {
+    var banner = document.getElementById('banner-alarme');
+    if (banner) banner.classList.remove('ativo');
+    pararFala();
+  });
 }
 
 // Inicializa a contagem do relógio
@@ -46,7 +95,7 @@ setInterval(atualizarRelogioESaudacao, 1000);
 });
 
 var statusLeitor = document.getElementById('status-leitor');
-function anunciar(mensagem) { statusLeitor.textContent = mensagem; }
+function anunciar(mensagem) { if (statusLeitor) statusLeitor.textContent = mensagem; }
 
 var dados = {
   modoDaltonismo: 'nenhum',
@@ -62,6 +111,8 @@ async function salvar() {
   try {
     if (window.storage) {
       await window.storage.set('meu-dia:dados', JSON.stringify(dados), false);
+    } else {
+      localStorage.setItem('meu-dia:dados', JSON.stringify(dados));
     }
   } catch (e) {}
 }
@@ -74,18 +125,27 @@ async function carregar() {
         var salvo = JSON.parse(resultado.value);
         if (salvo && salvo.remedios) dados = salvo;
       }
+    } else {
+      var local = localStorage.getItem('meu-dia:dados');
+      if (local) {
+        var salvoLocal = JSON.parse(local);
+        if (salvoLocal && salvoLocal.remedios) dados = salvoLocal;
+      }
     }
   } catch (e) {}
   
   if (dados.modoDaltonismo) {
     var select = document.getElementById('select-daltonismo');
-    select.value = dados.modoDaltonismo;
-    aplicarModoDaltonismo(dados.modoDaltonismo);
+    if (select) {
+      select.value = dados.modoDaltonismo;
+      aplicarModoDaltonismo(dados.modoDaltonismo);
+    }
   }
 
   if (dados.altoContrasteAtivo) {
     document.documentElement.classList.add('alto-contraste');
-    document.getElementById('btn-contraste').setAttribute('aria-pressed', 'true');
+    var btnC = document.getElementById('btn-contraste');
+    if (btnC) btnC.setAttribute('aria-pressed', 'true');
   }
 
   proximoIdRemedio = dados.remedios.length ? 1 + Math.max(0, ...dados.remedios.map(function(r){ return r.id; })) : 1;
@@ -96,6 +156,7 @@ async function carregar() {
 
 function renderizarRemedios() {
   var lista = document.getElementById('lista-remedios');
+  if (!lista) return;
   lista.innerHTML = '';
   if (dados.remedios.length === 0) {
     lista.innerHTML = '<p class="mensagem-vazio">Nenhum remédio cadastrado ainda.</p>';
@@ -129,6 +190,7 @@ function renderizarRemedios() {
 
 function renderizarAgenda() {
   var lista = document.getElementById('lista-agenda');
+  if (!lista) return;
   lista.innerHTML = '';
   if (dados.agenda.length === 0) {
     lista.innerHTML = '<p class="mensagem-vazio">Nenhum compromisso cadastrado ainda.</p>';
@@ -153,6 +215,7 @@ function renderizarAgenda() {
 
 function renderizarContatos() {
   var lista = document.getElementById('lista-contatos');
+  if (!lista) return;
   lista.innerHTML = '';
   if (dados.contatos.length === 0) {
     lista.innerHTML = '<p class="mensagem-vazio">Nenhum contato cadastrado ainda.</p>';
@@ -186,6 +249,7 @@ function escaparHtml(texto) { var div = document.createElement('div'); div.textC
 function escaparAtributo(texto) { return String(texto).replace(/"/g, '&quot;'); }
 function formatarHoraExtenso(hora) { var partes = hora.split(':'); return partes[0] + 'h' + partes[1]; }
 
+// Eventos dos Formulários
 document.getElementById('form-remedio').addEventListener('submit', function(ev) {
   ev.preventDefault();
   var hora = document.getElementById('input-remedio-hora').value;
@@ -220,6 +284,7 @@ document.getElementById('form-contato').addEventListener('submit', function(ev) 
   this.reset();
 });
 
+// Controles de Tamanho de Fonte
 var escalaAtual = 1;
 document.getElementById('btn-aumentar').addEventListener('click', function() {
   if (escalaAtual < 1.6) { escalaAtual = Math.round((escalaAtual + 0.15) * 100) / 100; document.documentElement.style.setProperty('--escala', escalaAtual); }
@@ -228,6 +293,7 @@ document.getElementById('btn-diminuir').addEventListener('click', function() {
   if (escalaAtual > 0.85) { escalaAtual = Math.round((escalaAtual - 0.15) * 100) / 100; document.documentElement.style.setProperty('--escala', escalaAtual); }
 });
 
+// Alto Contraste
 var btnContraste = document.getElementById('btn-contraste');
 btnContraste.addEventListener('click', function() {
   var ativo = document.documentElement.classList.toggle('alto-contraste');
@@ -237,6 +303,7 @@ btnContraste.addEventListener('click', function() {
   anunciar(ativo ? 'Alto contraste ativado.' : 'Alto contraste desativado.');
 });
 
+// Seletor de Daltonismo
 var selectDaltonismo = document.getElementById('select-daltonismo');
 function aplicarModoDaltonismo(modo) {
   if (modo === 'nenhum') {
@@ -258,15 +325,14 @@ selectDaltonismo.addEventListener('change', function() {
 // --- SISTEMA DE NAVEGAÇÃO E ASSISTENTE DE VOZ INTERATIVO ---
 var sintetizador = window.speechSynthesis;
 var assistenteAtivo = false;
-var vozModoMenu = false;
 
 function falar(mensagem, aoTerminar) {
   if (!sintetizador) return;
-  sintetizador.cancel(); // Para qualquer fala em andamento
+  sintetizador.cancel();
 
   var fala = new SpeechSynthesisUtterance(mensagem);
   fala.lang = 'pt-BR';
-  fala.rate = 1.0; // Velocidade normal
+  fala.rate = 1.0;
 
   if (aoTerminar) {
     fala.onend = aoTerminar;
@@ -280,7 +346,6 @@ function pararFala() {
   if (sintetizador) sintetizador.cancel();
 }
 
-// 1. Montagem das saudações e dados temporais
 function obterMensagemInicial() {
   var hora = new Date().getHours();
   var saudacao = "Bom dia!";
@@ -293,14 +358,13 @@ function obterMensagemInicial() {
   var horaFormatada = agora.getHours() + " horas e " + agora.getMinutes() + " minutos";
 
   return textoSaudacao + " " + textoData + " Agora são " + horaFormatada + ". " +
-         "Menu de navegação por voz: Pressione 1 para ouvir os Remédios de hoje. " +
+         "Menu de voz: Pressione 1 para ouvir os Remédios de hoje. " +
          "Pressione 2 para ouvir os Compromissos. " +
          "Pressione 3 para ouvir os Contatos importantes. " +
          "Pressione 0 para ouvir a página inteira. " +
-         "Ou pressione ESC a qualquer momento para parar a leitura.";
+         "Pressione ESC a qualquer momento para parar a leitura.";
 }
 
-// 2. Leitura das Seções Específicas
 function lerSecaoRemedios() {
   if (dados.remedios.length === 0) {
     falar("Você não possui nenhum remédio cadastrado para hoje.");
@@ -342,15 +406,11 @@ function lerPaginaInteira() {
   falar(conteudo);
 }
 
-// 3. Ativação e Desativação do Assistente
 function ativarAssistenteVoz() {
   assistenteAtivo = true;
   document.getElementById('painel-voz').style.display = 'none';
   anunciar("Assistente de voz ativado.");
-  
-  // Inicia a saudação com horário e menu de opções
-  var mensagemInicial = obterMensagemInicial();
-  falar(mensagemInicial);
+  falar(obterMensagemInicial());
 }
 
 function desativarAssistenteVoz() {
@@ -360,11 +420,9 @@ function desativarAssistenteVoz() {
   anunciar("Assistente de voz desativado.");
 }
 
-// 4. Listeners para os botões do Painel
 document.getElementById('btn-voz-sim').addEventListener('click', ativarAssistenteVoz);
 document.getElementById('btn-voz-nao').addEventListener('click', desativarAssistenteVoz);
 
-// Botão tradicional do topo "Ouvir a página"
 var btnOuvir = document.getElementById('btn-ouvir');
 btnOuvir.addEventListener('click', function() {
   if (sintetizador && sintetizador.speaking) {
@@ -378,11 +436,17 @@ btnOuvir.addEventListener('click', function() {
   }
 });
 
-// 5. Captura Global de Teclas de Navegação Acessível
+// Captura de Teclas Globais
 document.addEventListener('keydown', function(event) {
   var tecla = event.key.toLowerCase();
+  var tagAlvo = event.target.tagName ? event.target.tagName.toLowerCase() : '';
+  var estaDigitando = tagAlvo === 'input' || tagAlvo === 'textarea' || tagAlvo === 'select' || event.target.isContentEditable;
 
-  // Se o painel ainda está visível, escuta teclas de decisão S/N
+  if (estaDigitando) {
+    if (tecla === 'escape') pararFala();
+    return;
+  }
+
   var painelVisivel = document.getElementById('painel-voz').style.display !== 'none';
   if (painelVisivel) {
     if (tecla === 's' || tecla === '1') {
@@ -397,14 +461,12 @@ document.addEventListener('keydown', function(event) {
     }
   }
 
-  // Atalho padrão Alt + O para acionar leitura rápida
   if (event.altKey && (tecla === 'o')) {
     event.preventDefault();
     btnOuvir.click();
     return;
   }
 
-  // Atalhos quando o assistente de voz interativo está ativo
   if (assistenteAtivo) {
     if (tecla === 'escape') {
       pararFala();
@@ -424,4 +486,5 @@ document.addEventListener('keydown', function(event) {
   }
 });
 
-carregar();
+// Carrega os dados salvos no início
+window.addEventListener('DOMContentLoaded', carregar);
