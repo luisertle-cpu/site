@@ -25,7 +25,7 @@ function atualizarRelogioESaudacao() {
     elData.textContent = "Hoje é " + dias[agora.getDay()] + ", " + agora.getDate() + " de " + meses[agora.getMonth()] + ".";
   }
 
-  // Atualiza o Relógio Digital Flutuante (caso esteja visível no desktop)
+  // Atualiza o Relógio Digital Flutuante
   const elRelogio = document.getElementById('relogio-digital');
   if (elRelogio) {
     elRelogio.textContent = `🕒 ${horaFormatada}:${minutos}:${segundos}`;
@@ -47,7 +47,7 @@ function verificarAlarmes(horaAtual) {
 
   dados.agenda.forEach(function(a) {
     var chave = 'agenda_' + a.id + '_' + horaAtual;
-    if (a.hora === horaAtual && !alarmesDisparados.has(chave)) {
+    if (a.hora === horaAtual && !a.feito && !alarmesDisparados.has(chave)) {
       alarmesDisparados.add(chave);
       dispararAlarme(`⏰ COMPROMISSO AGORA: ${a.texto}!`);
     }
@@ -148,6 +148,7 @@ async function carregar() {
   renderizarTudo();
 }
 
+// RENDERIZAR REMÉDIOS
 function renderizarRemedios() {
   var lista = document.getElementById('lista-remedios');
   if (!lista) return;
@@ -159,10 +160,19 @@ function renderizarRemedios() {
   dados.remedios.slice().sort(function(a,b){ return a.hora.localeCompare(b.hora); }).forEach(function(r) {
     var div = document.createElement('div');
     div.className = 'lembrete' + (r.feito ? ' feito' : '');
+    
+    var iconeForma = r.feito ? '✓' : '■';
+    var classeForma = r.feito ? 'forma-circulo' : 'forma-quadrado';
+    var statusTexto = r.feito ? 'Tomado' : 'Pendente';
+    var classeBadge = r.feito ? 'tomado' : 'pendente';
+
     div.innerHTML =
-      '<span class="marcador" aria-hidden="true">' + (r.feito ? '✓' : '○') + '</span>' +
+      '<span class="marcador ' + classeForma + '" aria-hidden="true">' + iconeForma + '</span>' +
       '<span class="hora">' + escaparHtml(r.hora) + '</span>' +
-      '<span class="texto">' + escaparHtml(r.texto) + '</span>' +
+      '<span class="texto">' +
+        escaparHtml(r.texto) +
+        '<span class="badge-status ' + classeBadge + '"><span aria-hidden="true">' + iconeForma + '</span> ' + statusTexto + '</span>' +
+      '</span>' +
       '<button class="botao-marcar" type="button">' + (r.feito ? 'Tomado ✓' : 'Marcar como tomado') + '</button>' +
       '<button class="botao-excluir" type="button" aria-label="Excluir ' + escaparHtml(r.texto) + '">✕</button>';
 
@@ -182,6 +192,7 @@ function renderizarRemedios() {
   });
 }
 
+// RENDERIZAR AGENDA (COM STATUS E BOTÃO DE CONCLUIR)
 function renderizarAgenda() {
   var lista = document.getElementById('lista-agenda');
   if (!lista) return;
@@ -192,11 +203,29 @@ function renderizarAgenda() {
   }
   dados.agenda.slice().sort(function(a,b){ return a.hora.localeCompare(b.hora); }).forEach(function(item) {
     var div = document.createElement('div');
-    div.className = 'agenda-item';
+    div.className = 'agenda-item' + (item.feito ? ' feito' : '');
+    
+    var iconeForma = item.feito ? '✓' : '◆';
+    var classeForma = item.feito ? 'forma-circulo' : 'forma-diamante-box';
+    var statusTexto = item.feito ? 'Concluído' : 'Pendente';
+    var classeBadge = item.feito ? 'tomado' : 'pendente-agenda';
+
     div.innerHTML =
-      '<span class="bolinha" aria-hidden="true"></span>' +
-      '<span class="texto-agenda"><strong>' + escaparHtml(formatarHoraExtenso(item.hora)) + '</strong> — ' + escaparHtml(item.texto) + '</span>' +
+      '<span class="marcador ' + classeForma + '" aria-hidden="true">' + iconeForma + '</span>' +
+      '<span class="hora">' + escaparHtml(formatarHoraExtenso(item.hora)) + '</span>' +
+      '<span class="texto-agenda">' +
+        escaparHtml(item.texto) +
+        '<span class="badge-status ' + classeBadge + '"><span aria-hidden="true">' + iconeForma + '</span> ' + statusTexto + '</span>' +
+      '</span>' +
+      '<button class="botao-marcar" type="button">' + (item.feito ? 'Concluído ✓' : 'Marcar concluído') + '</button>' +
       '<button class="botao-excluir" type="button" aria-label="Excluir compromisso ' + escaparHtml(item.texto) + '">✕</button>';
+
+    div.querySelector('.botao-marcar').addEventListener('click', function() {
+      item.feito = !item.feito;
+      salvar();
+      renderizarAgenda();
+      anunciar(item.texto + (item.feito ? ' marcado como concluído.' : ' desmarcado.'));
+    });
     div.querySelector('.botao-excluir').addEventListener('click', function() {
       dados.agenda = dados.agenda.filter(function(x){ return x.id !== item.id; });
       salvar();
@@ -207,6 +236,7 @@ function renderizarAgenda() {
   });
 }
 
+// RENDERIZAR CONTATOS (NOME EM CIMA, NÚMERO EMBAIXO + BOTÃO DE LIGAR)
 function renderizarContatos() {
   var lista = document.getElementById('lista-contatos');
   if (!lista) return;
@@ -216,25 +246,29 @@ function renderizarContatos() {
     return;
   }
   dados.contatos.forEach(function(c) {
-    var wrapper = document.createElement('div');
-    wrapper.style.position = 'relative';
-    wrapper.innerHTML =
-      '<a class="contato" href="tel:' + escaparAtributo(c.tel) + '">' +
+    var div = document.createElement('div');
+    div.className = 'contato-card';
+    div.innerHTML =
+      '<div class="contato-info-wrapper">' +
         '<span class="icone-contato" aria-hidden="true">' + c.icone + '</span>' +
-        '<span class="info-contato">' +
+        '<div class="info-contato">' +
           '<span class="nome-contato">' + escaparHtml(c.nome) + '</span>' +
           '<span class="numero-contato">' + escaparHtml(c.numero) + '</span>' +
-        '</span>' +
-      '</a>' +
-      '<button class="botao-excluir" type="button" style="position:absolute; top:0.6rem; right:0.6rem;" aria-label="Excluir contato ' + escaparHtml(c.nome) + '">✕</button>';
-    wrapper.querySelector('.botao-excluir').addEventListener('click', function(ev) {
+        '</div>' +
+      '</div>' +
+      '<div class="contato-acoes">' +
+        '<a class="botao-ligar" href="tel:' + escaparAtributo(c.tel) + '" aria-label="Ligar para ' + escaparHtml(c.nome) + '">📞 Ligar</a>' +
+        '<button class="botao-excluir" type="button" aria-label="Excluir contato ' + escaparHtml(c.nome) + '">✕</button>' +
+      '</div>';
+
+    div.querySelector('.botao-excluir').addEventListener('click', function(ev) {
       ev.preventDefault();
       dados.contatos = dados.contatos.filter(function(x){ return x.id !== c.id; });
       salvar();
       renderizarContatos();
       anunciar('Contato removido.');
     });
-    lista.appendChild(wrapper);
+    lista.appendChild(div);
   });
 }
 
@@ -243,6 +277,7 @@ function escaparHtml(texto) { var div = document.createElement('div'); div.textC
 function escaparAtributo(texto) { return String(texto).replace(/"/g, '&quot;'); }
 function formatarHoraExtenso(hora) { var partes = hora.split(':'); return partes[0] + 'h' + partes[1]; }
 
+// FORMULÁRIOS
 document.getElementById('form-remedio').addEventListener('submit', function(ev) {
   ev.preventDefault();
   var hora = document.getElementById('input-remedio-hora').value;
@@ -259,7 +294,7 @@ document.getElementById('form-agenda').addEventListener('submit', function(ev) {
   var hora = document.getElementById('input-agenda-hora').value;
   var texto = document.getElementById('input-agenda-texto').value.trim();
   if (!texto || !hora) return;
-  dados.agenda.push({ id: proximoIdAgenda++, hora: hora, texto: texto });
+  dados.agenda.push({ id: proximoIdAgenda++, hora: hora, texto: texto, feito: false });
   salvar(); renderizarAgenda();
   anunciar('Compromisso ' + texto + ' adicionado.');
   document.getElementById('input-agenda-texto').value = '';
@@ -277,6 +312,7 @@ document.getElementById('form-contato').addEventListener('submit', function(ev) 
   this.reset();
 });
 
+// TAMANHO DA FONTE
 var escalaAtual = 1;
 document.getElementById('btn-aumentar').addEventListener('click', function() {
   if (escalaAtual < 1.6) { escalaAtual = Math.round((escalaAtual + 0.15) * 100) / 100; document.documentElement.style.setProperty('--escala', escalaAtual); }
@@ -285,6 +321,7 @@ document.getElementById('btn-diminuir').addEventListener('click', function() {
   if (escalaAtual > 0.85) { escalaAtual = Math.round((escalaAtual - 0.15) * 100) / 100; document.documentElement.style.setProperty('--escala', escalaAtual); }
 });
 
+// ALTO CONTRASTE
 var btnContraste = document.getElementById('btn-contraste');
 btnContraste.addEventListener('click', function() {
   var ativo = document.documentElement.classList.toggle('alto-contraste');
@@ -294,6 +331,7 @@ btnContraste.addEventListener('click', function() {
   anunciar(ativo ? 'Alto contraste ativado.' : 'Alto contraste desativado.');
 });
 
+// SELETOR DE DALTONISMO
 var selectDaltonismo = document.getElementById('select-daltonismo');
 function aplicarModoDaltonismo(modo) {
   if (modo === 'nenhum') {
@@ -312,7 +350,7 @@ selectDaltonismo.addEventListener('change', function() {
   anunciar('Ajuste de cores ativado para: ' + rotuloOpcao);
 });
 
-// NAVEGAÇÃO DE VOZ
+// NAVEGAÇÃO POR VOZ
 var sintetizador = window.speechSynthesis;
 var assistenteAtivo = false;
 
@@ -374,7 +412,7 @@ function lerSecaoAgenda() {
   }
   var texto = "Seus compromissos para hoje são: ";
   dados.agenda.forEach(function(item) {
-    texto += "Às " + formatarHoraExtenso(item.hora) + ", " + item.texto + ". ";
+    texto += "Às " + formatarHoraExtenso(item.hora) + ", " + item.texto + ". Status: " + (item.feito ? "concluído" : "pendente") + ". ";
   });
   falar(texto);
 }
