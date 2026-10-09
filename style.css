@@ -18,7 +18,33 @@
   --cor-texto-botao: #FFFFFF;
 }
 
-/* 1. PROTANOPIA / PROTANOMALIA */
+/* PREVENÇÃO GLOBAL DE TRANSBORDO HORIZONTAL */
+*, *::before, *::after {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+html { 
+  font-size: calc(18px * var(--escala)); 
+  scroll-behavior: smooth; 
+}
+
+body {
+  margin: 0;
+  font-family: var(--fonte);
+  background: var(--azul-fundo);
+  color: var(--azul-marinho);
+  line-height: 1.55;
+}
+
+a { color: inherit; }
+
+/* DALTÔNICOS & ALTO CONTRASTE */
 html[data-daltonismo="protanopia"] {
   --azul-ceu: #EBF3FA;
   --azul-fundo: #e9e9e9;
@@ -38,7 +64,6 @@ html[data-daltonismo="protanopia"] {
   );
 }
 
-/* 2. DEUTERANOPIA / DEUTERANOMALIA */
 html[data-daltonismo="deuteranopia"] {
   --azul-ceu: #EDF4F9;
   --azul-fundo: #e9e9e9;
@@ -58,7 +83,6 @@ html[data-daltonismo="deuteranopia"] {
   );
 }
 
-/* 3. TRITANOPIA / TRITANOMALIA */
 html[data-daltonismo="tritanopia"] {
   --azul-ceu: #FDF2F4;
   --azul-fundo: #e9e9e9;
@@ -78,7 +102,6 @@ html[data-daltonismo="tritanopia"] {
   );
 }
 
-/* 4. ACROMATOPSIA / MONOCROMACIA */
 html[data-daltonismo="acromatopsia"] {
   --azul-ceu: #E4E4E7;
   --azul-fundo: #e9e9e9;
@@ -99,7 +122,6 @@ html[data-daltonismo="acromatopsia"] {
   );
 }
 
-/* ALTO CONTRASTE COMBINADO */
 html.alto-contraste {
   --azul-ceu: #000000;
   --azul-fundo: #000000;
@@ -113,94 +135,6 @@ html.alto-contraste {
   --borda: #FFFFFF;
   --sombra: none;
   --cor-texto-botao: #000000;
-}
-
-html.alto-contraste[data-daltonismo="protanopia"] {
-  --azul-ceu: #000000;
-  --azul-fundo: #000000;
-  --azul-marinho: #FFFFFF;
-  --azul-marinho-suave: #80C4FF;
-  --coral: #FFB300;
-  --coral-escuro: #FFB300;
-  --menta: #3399FF;
-  --dourado: #FFFF00;
-  --branco: #0A0A0A;
-  --borda: #FFFFFF;
-  --sombra: none;
-  --cor-texto-botao: #000000;
-  --textura-feito: repeating-linear-gradient(
-    45deg,
-    rgba(51, 153, 255, 0.4),
-    rgba(51, 153, 255, 0.4) 10px,
-    transparent 10px,
-    transparent 20px
-  );
-}
-
-html.alto-contraste[data-daltonismo="deuteranopia"] {
-  --azul-ceu: #000000;
-  --azul-fundo: #000000;
-  --azul-marinho: #FFFFFF;
-  --azul-marinho-suave: #FFC266;
-  --coral: #FF6600;
-  --coral-escuro: #FF6600;
-  --menta: #00D2FF;
-  --dourado: #FFD700;
-  --branco: #0A0A0A;
-  --borda: #FFFFFF;
-  --sombra: none;
-  --cor-texto-botao: #000000;
-  --textura-feito: repeating-linear-gradient(
-    -45deg,
-    rgba(0, 210, 255, 0.4),
-    rgba(0, 210, 255, 0.4) 10px,
-    transparent 10px,
-    transparent 20px
-  );
-}
-
-html.alto-contraste[data-daltonismo="tritanopia"] {
-  --azul-ceu: #000000;
-  --azul-fundo: #000000;
-  --azul-marinho: #FFFFFF;
-  --azul-marinho-suave: #FF99C8;
-  --coral: #FF0055;
-  --coral-escuro: #FF0055;
-  --menta: #00FF99;
-  --dourado: #FF66CC;
-  --branco: #0A0A0A;
-  --borda: #FFFFFF;
-  --sombra: none;
-  --cor-texto-botao: #000000;
-  --textura-feito: repeating-linear-gradient(
-    90deg,
-    rgba(0, 255, 153, 0.4),
-    rgba(0, 255, 153, 0.4) 10px,
-    transparent 10px,
-    transparent 20px
-  );
-}
-
-html.alto-contraste[data-daltonismo="acromatopsia"] {
-  --azul-ceu: #000000;
-  --azul-fundo: #000000;
-  --azul-marinho: #FFFFFF;
-  --azul-marinho-suave: #E0E0E0;
-  --coral: #FFFFFF;
-  --coral-escuro: #FFFFFF;
-  --menta: #FFFFFF;
-  --dourado: #FFFFFF;
-  --branco: #0A0A0A;
-  --borda: #FFFFFF;
-  --sombra: none;
-  --cor-texto-botao: #000000;
-  --textura-feito: repeating-linear-gradient(
-    45deg,
-    rgba(255, 255, 255, 0.4),
-    rgba(255, 255, 255, 0.4) 8px,
-    transparent 8px,
-    transparent 16px
-  );
 }
 
 html.alto-contraste body { background: var(--azul-fundo); color: var(--azul-marinho); }
@@ -243,20 +177,6 @@ html.alto-contraste .lembrete.feito .botao-marcar {
   border: 3px solid #FFFFFF;
 }
 
-* { box-sizing: border-box; }
-
-html { font-size: calc(18px * var(--escala)); scroll-behavior: smooth; }
-
-body {
-  margin: 0;
-  font-family: var(--fonte);
-  background: var(--azul-fundo);
-  color: var(--azul-marinho);
-  line-height: 1.55;
-}
-
-a { color: inherit; }
-
 .somente-leitor {
   position: absolute; width: 1px; height: 1px; overflow: hidden;
   clip: rect(0 0 0 0); white-space: nowrap; border: 0; padding: 0; margin: -1px;
@@ -274,9 +194,10 @@ a { color: inherit; }
   outline-offset: 3px;
 }
 
+/* ESTRUTURA PRINCIPAL */
 header.topo {
   background: var(--azul-ceu);
-  padding: 1.4rem 1.2rem;
+  padding: 1.2rem 1rem;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -312,63 +233,64 @@ header.topo {
   color: #fff;
   border-color: var(--menta);
 }
-html.alto-contraste .botao-controle[aria-pressed="true"] {
-  background: var(--menta);
-  color: var(--cor-texto-botao);
-}
-.botao-controle:hover, .seletor-controle:hover { filter: brightness(0.96); }
 
-main { max-width: 900px; margin: 0 auto; padding: 1.6rem 1.2rem 5rem; }
+main { 
+  max-width: 900px; 
+  margin: 0 auto; 
+  padding: 1.2rem 1rem 3rem; 
+}
 
 .saudacao {
   background: linear-gradient(135deg, var(--azul-marinho) 0%, var(--azul-marinho-suave) 100%);
   color: #fff;
   border-radius: 20px;
-  padding: 2rem 1.6rem;
-  display: flex; align-items: center; gap: 1.4rem; flex-wrap: wrap;
+  padding: 1.5rem 1.2rem;
+  display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap;
   box-shadow: var(--sombra);
-  margin-bottom: 2rem;
+  margin-bottom: 1.8rem;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
-html.alto-contraste .saudacao { background: #0A0A0A; border: 3px solid #FFFFFF; color: #FFFFFF; }
 
 .saudacao svg { flex-shrink: 0; }
-.saudacao h1 { font-size: 1.9rem; margin: 0 0 0.4rem 0; }
-.saudacao p { font-size: 1.25rem; margin: 0; opacity: 0.95; }
+.saudacao h1 { font-size: 1.8rem; margin: 0 0 0.4rem 0; }
+.saudacao p { font-size: 1.15rem; margin: 0; opacity: 0.95; }
 
 h2.titulo-secao {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   margin: 0 0 1rem 0;
   display: flex; align-items: center; gap: 0.6rem;
   color: var(--azul-marinho);
 }
 
-section { margin-bottom: 2.4rem; }
+section { margin-bottom: 2.2rem; }
 
 .grade {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
+  width: 100%;
 }
 
 .cartao {
   background: var(--branco);
   border: 2px solid var(--borda);
   border-radius: 16px;
-  padding: 1.3rem;
+  padding: 1.1rem;
   box-shadow: var(--sombra);
+  width: 100%;
 }
 
 .lembrete {
-  display: flex; align-items: center; gap: 1rem;
-  padding: 1rem;
+  display: flex; align-items: center; gap: 0.8rem;
+  padding: 0.9rem;
   border-radius: 14px;
   background-color: var(--branco);
   border: 2px solid var(--borda);
-  margin-bottom: 0.9rem;
+  margin-bottom: 0.8rem;
   flex-wrap: wrap;
-}
-.cartao .lembrete:last-child {
-  margin-bottom: 0;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 .lembrete.feito {
   background-color: var(--azul-ceu);
@@ -385,48 +307,32 @@ section { margin-bottom: 2.4rem; }
   font-weight: 700; font-size: 1.1rem;
   color: var(--coral-escuro);
 }
-.lembrete.feito .marcador {
-  border-color: var(--menta);
-  background: var(--menta);
-  color: #fff;
-}
-html.alto-contraste .lembrete.feito .marcador {
-  color: var(--cor-texto-botao);
-}
 
 .lembrete .hora {
-  font-size: 1.3rem; font-weight: 700;
-  min-width: 5.2rem;
+  font-size: 1.2rem; font-weight: 700;
   color: var(--coral-escuro);
 }
-.lembrete.feito .hora { color: var(--menta); text-decoration: line-through; }
 
-.lembrete .texto { flex: 1; font-size: 1.2rem; }
-.lembrete.feito .texto { text-decoration: line-through; opacity: 0.85; }
+.lembrete .texto { flex: 1; font-size: 1.15rem; min-width: 140px; }
 
 .botao-marcar {
   font-family: var(--fonte);
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 700;
-  padding: 0.7rem 1.1rem;
+  padding: 0.6rem 0.9rem;
   border-radius: 10px;
   border: 2px solid var(--menta);
   background: var(--branco);
   color: var(--menta);
   cursor: pointer;
   min-height: 48px;
-  white-space: nowrap;
-}
-.lembrete.feito .botao-marcar {
-  background: var(--menta);
-  color: #fff;
 }
 
 .botao-excluir {
   font-family: var(--fonte);
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  padding: 0.5rem 0.8rem;
+  padding: 0.4rem 0.7rem;
   border-radius: 10px;
   border: 2px solid var(--borda);
   background: var(--branco);
@@ -434,62 +340,46 @@ html.alto-contraste .lembrete.feito .marcador {
   cursor: pointer;
   min-height: 48px;
   min-width: 48px;
-  line-height: 1;
 }
-.botao-excluir:hover { border-color: var(--coral-escuro); }
 
 .contato {
-  display: flex; align-items: center; gap: 1rem;
+  display: flex; align-items: center; gap: 0.8rem;
   text-decoration: none;
   background: var(--branco);
   border: 2px solid var(--borda);
   border-radius: 16px;
-  padding: 1.2rem;
+  padding: 1rem;
   box-shadow: var(--sombra);
-  min-height: 76px;
+  min-height: 72px;
   position: relative;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
-.contato:hover { border-color: var(--coral); }
-.contato .icone-contato {
-  background: var(--dourado);
-  border-radius: 50%;
-  width: 3.2rem; height: 3.2rem;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.contato .info-contato { display: flex; flex-direction: column; flex: 1; }
-.contato .nome-contato { font-size: 1.25rem; font-weight: 700; }
-.contato .numero-contato { font-size: 1.1rem; color: var(--azul-marinho-suave); }
-.contato .botao-excluir { position: relative; z-index: 2; }
 
 .agenda-item {
-  display: flex; align-items: flex-start; gap: 1rem;
-  padding: 1rem 0;
+  display: flex; align-items: center; gap: 0.8rem;
+  padding: 0.9rem 0;
   border-bottom: 1px solid var(--borda);
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   flex-wrap: wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
-.agenda-item:last-child { border-bottom: none; }
-.agenda-item .bolinha {
-  width: 0.9rem; height: 0.9rem; border-radius: 50%;
-  background: var(--coral); margin-top: 0.5rem; flex-shrink: 0;
-}
-.agenda-item .texto-agenda { flex: 1; min-width: 200px; }
-.agenda-item .botao-excluir { margin-left: auto; }
 
 .caixa-ajuda {
   background: var(--azul-ceu);
   border-radius: 16px;
-  padding: 1.4rem;
-  font-size: 1.15rem;
+  padding: 1.2rem;
+  font-size: 1.1rem;
   border: 2px dashed var(--menta);
+  word-break: break-word;
 }
 
 footer {
   background: var(--azul-ceu);
   text-align: center;
-  padding: 1.6rem 1rem;
-  font-size: 1.05rem;
+  padding: 1.4rem 1rem;
+  font-size: 1rem;
   border-top: 4px solid var(--menta);
 }
 
@@ -500,18 +390,18 @@ footer {
   text-decoration: none;
   background: var(--coral);
   color: #fff;
-  font-size: 1.4rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  padding: 1.2rem;
+  padding: 1.1rem;
   border-radius: 16px;
-  margin-bottom: 2rem;
+  margin-bottom: 1.8rem;
   box-shadow: var(--sombra);
+  word-break: break-word;
 }
-.botao-emergencia:hover { filter: brightness(0.92); }
 
 .formulario-adicionar {
   margin-top: 1rem;
-  padding: 1.2rem;
+  padding: 1rem;
   border-radius: 16px;
   background: var(--azul-ceu);
   border: 2px solid var(--borda);
@@ -519,19 +409,22 @@ footer {
   flex-wrap: wrap;
   gap: 0.8rem;
   align-items: flex-end;
+  width: 100%;
 }
+
 .campo-adicionar {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  flex: 1;
-  min-width: 150px;
+  flex: 1 1 200px;
+  width: 100%;
 }
-.campo-adicionar label { font-weight: 700; font-size: 1.05rem; cursor: pointer; }
+
+.campo-adicionar label { font-weight: 700; font-size: 1rem; cursor: pointer; }
 .campo-adicionar input {
   font-family: var(--fonte);
-  font-size: 1.15rem;
-  padding: 0.7rem 0.8rem;
+  font-size: 1.1rem;
+  padding: 0.6rem 0.8rem;
   border-radius: 10px;
   border: 2px solid var(--azul-marinho-suave);
   background: var(--branco);
@@ -540,42 +433,27 @@ footer {
   width: 100%;
 }
 
-/* ÁREA CLICÁVEL COMPLETA DO CAMPO DE HORÁRIO */
-.campo-hora { flex: 0 0 auto; min-width: 140px; }
+.campo-hora { flex: 1 1 120px; }
 .campo-hora input[type="time"] {
   position: relative;
   cursor: pointer;
   font-weight: 700;
   text-align: center;
 }
-.campo-hora input[type="time"]::-webkit-calendar-picker-indicator {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-}
 
 .botao-adicionar {
   font-family: var(--fonte);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  padding: 0.8rem 1.3rem;
+  padding: 0.8rem 1.2rem;
   border-radius: 10px;
   border: none;
   background: var(--menta);
   color: #fff;
   cursor: pointer;
   min-height: 48px;
-  white-space: nowrap;
+  flex: 1 1 auto;
 }
-.botao-adicionar:hover { filter: brightness(0.94); }
-
-.mensagem-vazio { font-size: 1.1rem; opacity: 0.75; padding: 0.6rem 0; }
 
 .banner-alarme {
   display: none;
@@ -585,11 +463,11 @@ footer {
   background: var(--coral);
   color: #fff;
   border-radius: 16px;
-  padding: 1.3rem 1.4rem;
-  margin-bottom: 1.6rem;
+  padding: 1.1rem 1.2rem;
+  margin-bottom: 1.5rem;
   box-shadow: var(--sombra);
   align-items: center;
-  gap: 1rem;
+  gap: 0.8rem;
   flex-wrap: wrap;
   animation: piscar 1s infinite alternate;
 }
@@ -600,40 +478,13 @@ footer {
   to { background: var(--coral-escuro); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .banner-alarme { animation: none; background: var(--coral-escuro); }
-  html { scroll-behavior: auto; }
-}
-
-.banner-alarme .texto-alarme { flex: 1; font-size: 1.3rem; font-weight: 700; }
-.banner-alarme button {
-  font-family: var(--fonte);
-  font-size: 1.05rem;
-  font-weight: 700;
-  padding: 0.7rem 1.1rem;
-  border-radius: 10px;
-  border: 2px solid #fff;
-  background: #fff;
-  color: var(--coral-escuro);
-  cursor: pointer;
-  min-height: 48px;
-}
-
-.nota-config { font-size: 1rem; opacity: 0.85; margin-top: 0.6rem; }
-
-/* PAINEL DE ASSISTENTE DE VOZ */
+/* PAINEL DE VOZ */
 .painel-voz-topo {
   background: var(--azul-marinho);
   color: var(--branco);
-  padding: 1rem 1.2rem;
+  padding: 0.9rem 1rem;
   border-bottom: 4px solid var(--dourado);
   box-shadow: var(--sombra);
-}
-
-html.alto-contraste .painel-voz-topo {
-  background: #000000;
-  color: #FFFFFF;
-  border-bottom: 4px solid #FFFFFF;
 }
 
 .conteudo-painel-voz {
@@ -642,44 +493,31 @@ html.alto-contraste .painel-voz-topo {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.8rem;
   flex-wrap: wrap;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .botoes-painel-voz {
   display: flex;
-  gap: 0.8rem;
+  gap: 0.6rem;
   align-items: center;
 }
 
 .btn-voz {
   font-family: var(--fonte);
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  padding: 0.6rem 1.2rem;
+  padding: 0.5rem 1rem;
   border-radius: 10px;
   cursor: pointer;
   min-height: 48px;
   border: 2px solid transparent;
 }
+.btn-voz-sim { background: var(--menta); color: #FFFFFF; }
+.btn-voz-nao { background: var(--coral); color: #FFFFFF; }
 
-.btn-voz-sim {
-  background: var(--menta);
-  color: #FFFFFF;
-}
-
-.btn-voz-nao {
-  background: var(--coral);
-  color: #FFFFFF;
-}
-
-.btn-voz:focus, .btn-voz:hover {
-  outline: 3px solid var(--dourado);
-  filter: brightness(1.1);
-}
-
-/* RELÓGIO FLUTUANTE RESPONSIVO */
+/* RELÓGIO FLUTUANTE (APENAS COMPUTADOR) */
 .relogio-flutuante {
   position: fixed;
   bottom: 20px;
@@ -697,19 +535,39 @@ html.alto-contraste .painel-voz-topo {
   margin: 0;
 }
 
-html.alto-contraste .relogio-flutuante {
-  background: #000000;
-  color: #FFFF00;
-  border-color: #FFFFFF;
-}
-
-/* AJUSTES PARA TELAS MENORES (CELULARES) */
-@media (max-width: 600px) {
+/* REGRA DE RESPONSIVIDADE PARA TELEMÓVEIS (ATÉ 768px) */
+@media (max-width: 768px) {
+  /* OCULTA O RELÓGIO DIGITAL NO TELEMÓVEL */
   .relogio-flutuante {
-    font-size: 1.2rem;
-    padding: 0.5rem 0.8rem;
-    bottom: 12px;
-    right: 12px;
+    display: none !important;
+  }
+
+  header.topo {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .controles-acessibilidade {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .seletor-controle {
+    width: 100%;
+  }
+
+  .conteudo-painel-voz {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .botoes-painel-voz {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .btn-voz {
+    flex: 1;
   }
 
   .formulario-adicionar {
@@ -717,11 +575,17 @@ html.alto-contraste .relogio-flutuante {
     align-items: stretch;
   }
 
-  .campo-hora {
+  .campo-adicionar, .campo-hora, .botao-adicionar {
     width: 100%;
+    flex: 1 1 100%;
   }
 
-  .botao-adicionar {
+  .lembrete {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .lembrete .botao-marcar {
     width: 100%;
   }
 }
