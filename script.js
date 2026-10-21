@@ -337,7 +337,7 @@ btnContraste.addEventListener('click', function() {
   anunciar(ativo ? 'Alto contraste ativado.' : 'Alto contraste desativado.');
 });
 
-// SELETOR DE DALTONISMO COM REGRAS DINÂMICAS DE PALETA
+// SELETOR DE DALTONISMO COM REGRAS DINÂMICAS
 var selectDaltonismo = document.getElementById('select-daltonismo');
 function aplicarModoDaltonismo(modo) {
   if (modo === 'nenhum') {
