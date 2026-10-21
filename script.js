@@ -192,7 +192,7 @@ function renderizarRemedios() {
   });
 }
 
-// RENDERIZAR AGENDA (COM STATUS E BOTÃO DE CONCLUIR)
+// RENDERIZAR AGENDA
 function renderizarAgenda() {
   var lista = document.getElementById('lista-agenda');
   if (!lista) return;
@@ -236,7 +236,7 @@ function renderizarAgenda() {
   });
 }
 
-// RENDERIZAR CONTATOS (NOME EM CIMA, NÚMERO EMBAIXO + BOTÃO DE LIGAR)
+// RENDERIZAR CONTATOS
 function renderizarContatos() {
   var lista = document.getElementById('lista-contatos');
   if (!lista) return;
@@ -514,3 +514,93 @@ document.addEventListener('keydown', function(event) {
 });
 
 window.addEventListener('DOMContentLoaded', carregar);
+
+// --- INTEGRAÇÃO SEGURA COM O BACKEND DA IA ---
+const URL_BACKEND_IA = 'http://localhost:3000/api/assistente';
+
+async function processarComandoComIA(textoComando) {
+  const elCarregamento = document.getElementById('indicador-carregamento-ia');
+  const elTextoCarregamento = document.getElementById('texto-carregamento-ia');
+
+  try {
+    // 1. Feedback Acessível de Carregamento
+    if (elCarregamento) elCarregamento.style.display = 'flex';
+    anunciar("Processando seu comando com a IA, por favor aguarde...");
+
+    const resposta = await fetch(URL_BACKEND_IA, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ comando: textoComando })
+    });
+
+    if (!resposta.ok) {
+      throw new Error("Erro na comunicação com o servidor.");
+    }
+
+    const resultado = await resposta.json();
+
+    // 2. Encaminha para preenchimento com base no tipo retornado
+    if (resultado.tipo === 'remedio' && resultado.texto) {
+      document.getElementById('input-remedio-texto').value = resultado.texto;
+      if (resultado.hora) document.getElementById('input-remedio-hora').value = resultado.hora;
+      
+      document.getElementById('input-remedio-texto').focus();
+      anunciar(`Remédio ${resultado.texto} preenchido. Confira os dados e clique em adicionar.`);
+      falar(`Preenchi o remédio ${resultado.texto} para você. Clique em adicionar para confirmar.`);
+
+    } else if (resultado.tipo === 'agenda' && resultado.texto) {
+      document.getElementById('input-agenda-texto').value = resultado.texto;
+      if (resultado.hora) document.getElementById('input-agenda-hora').value = resultado.hora;
+      
+      document.getElementById('input-agenda-texto').focus();
+      anunciar(`Compromisso ${resultado.texto} preenchido. Confira os dados e clique em adicionar.`);
+      falar(`Preenchi o compromisso ${resultado.texto}. Clique em adicionar para confirmar.`);
+
+    } else if (resultado.tipo === 'contato' && resultado.texto) {
+      document.getElementById('input-contato-nome').value = resultado.texto;
+      if (resultado.numero) document.getElementById('input-contato-numero').value = resultado.numero;
+
+      document.getElementById('input-contato-nome').focus();
+      anunciar(`Contato ${resultado.texto} preenchido. Confira e clique em adicionar.`);
+      falar(`Preenchi o contato ${resultado.texto}. Clique em adicionar para salvar.`);
+
+    } else {
+      anunciar("Não entendi o comando. Tente dizer por exemplo: Adicionar remédio Losartana às 8 horas.");
+      falar("Não consegui entender seu comando. Tente falar novamente especificando se é um remédio ou compromisso.");
+    }
+
+  } catch (erro) {
+    console.error("Erro na integração IA:", erro);
+    anunciar("Não foi possível conectar com a IA no momento. Use os campos manuais.");
+    falar("Ocorreu um erro ao conectar com a IA. Você pode preencher os campos manualmente.");
+  } finally {
+    if (elCarregamento) elCarregamento.style.display = 'none';
+  }
+}
+
+// CAPTURA DE VOZ NATIVA DO NAVEGADOR (Web Speech API)
+var btnIaVoz = document.getElementById('btn-ia-voz');
+if (btnIaVoz && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+  var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var RECONHECEDOR = new SpeechRecognition();
+  RECONHECEDOR.lang = 'pt-BR';
+  RECONHECEDOR.continuous = false;
+
+  btnIaVoz.addEventListener('click', function() {
+    try {
+      RECONHECEDOR.start();
+      anunciar("Pode falar agora...");
+      falar("Pode falar seu comando.");
+    } catch(e) {}
+  });
+
+  RECONHECEDOR.onresult = function(event) {
+    var transcricao = event.results[0][0].transcript;
+    anunciar("Você disse: " + transcricao);
+    processarComandoComIA(transcricao);
+  };
+
+  RECONHECEDOR.onerror = function() {
+    anunciar("Não consegui ouvir. Tente clicar no botão e falar novamente.");
+  };
+}
