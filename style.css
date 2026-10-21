@@ -45,132 +45,133 @@ body {
 
 a { color: inherit; }
 
-/* MODOS DALTÔNICOS (PADRÃO) */
+/* ============================================================
+   PALETAS DALTÔNICAS SUAVE / SEM OFUSCAMENTO (MODO NORMAL)
+   ============================================================ */
+
+/* PROTANOPIA: Fúcsia Suave, Ciano Profundo, Amarelo Dourado */
 html[data-daltonismo="protanopia"] {
   --azul-ceu: #EBF3FA;
-  --azul-fundo: #e9e9e9;
-  --azul-marinho: #002244;
-  --azul-marinho-suave: #004080;
-  --coral: #E69F00;        
-  --coral-escuro: #C47F00; 
-  --menta: #0072B2;       
-  --dourado: #F0E442;     
-  --dourado-escuro: #B8B000;
+  --coral: #D81B60;          /* Fúcsia Suave */
+  --coral-escuro: #AD1457; 
+  --menta: #0097A7;          /* Ciano Profundo */
+  --dourado: #E6B800;        /* Amarelo Dourado */
+  --dourado-escuro: #B38F00;
   --borda: #B0C4DE;
-  --textura-feito: repeating-linear-gradient(
-    45deg,
-    rgba(0, 114, 178, 0.15),
-    rgba(0, 114, 178, 0.15) 10px,
-    transparent 10px,
-    transparent 20px
-  );
 }
 
+/* DEUTERANOPIA: ZERO VERDE! Terracota, Azul Cobalto Profundo, Âmbar */
 html[data-daltonismo="deuteranopia"] {
-  --azul-ceu: #EDF4F9;
-  --azul-fundo: #e9e9e9;
-  --azul-marinho: #0B2545;
-  --azul-marinho-suave: #134074;
-  --coral: #D55E00;        
-  --coral-escuro: #A34700;
-  --menta: #00529B;       
-  --dourado: #E69F00;     
-  --dourado-escuro: #A84800;
-  --borda: #B8C0CC;
-  --textura-feito: repeating-linear-gradient(
-    -45deg,
-    rgba(0, 82, 155, 0.15),
-    rgba(0, 82, 155, 0.15) 8px,
-    transparent 8px,
-    transparent 16px
-  );
+  --azul-ceu: #EDF2FF;
+  --coral: #D84315;          /* Terracota / Vermelhão Suave */
+  --coral-escuro: #BF360C;
+  --menta: #1565C0;          /* Azul Cobalto Profundo */
+  --dourado: #E65100;        /* Âmbar Escuro Dourado */
+  --dourado-escuro: #BF360C;
+  --borda: #B8C4E8;
 }
 
+/* TRITANOPIA: Carmim Suave, Menta Profundo, Rosa Amostra */
 html[data-daltonismo="tritanopia"] {
   --azul-ceu: #FDF2F4;
-  --azul-fundo: #e9e9e9;
-  --azul-marinho: #2A0913;
-  --azul-marinho-suave: #5C1D2E;
-  --coral: #C7254E;        
-  --coral-escuro: #961737;
-  --menta: #009E73;       
-  --dourado: #CC79A7;     
-  --dourado-escuro: #9E4D7A;
+  --coral: #C2185B;          /* Carmim Suave */
+  --coral-escuro: #880E4F;
+  --menta: #00897B;          /* Menta/Teal Profundo */
+  --dourado: #D81B60;        /* Rosa Suave */
+  --dourado-escuro: #AD1457;
   --borda: #E8C5CE;
-  --textura-feito: repeating-linear-gradient(
-    90deg,
-    rgba(0, 158, 115, 0.15),
-    rgba(0, 158, 115, 0.15) 12px,
-    transparent 12px,
-    transparent 24px
-  );
 }
 
+/* ACHROMATOPSIA: Monocromático Absoluto */
 html[data-daltonismo="acromatopsia"] {
   --azul-ceu: #E4E4E7;
-  --azul-fundo: #e9e9e9;
-  --azul-marinho: #09090B;
-  --azul-marinho-suave: #27272A;
   --coral: #18181B;
   --coral-escuro: #000000;
   --menta: #3F3F46;
   --dourado: #71717A;
   --dourado-escuro: #3F3F46;
-  --branco: #FFFFFF;
   --borda: #3F3F46;
-  --textura-feito: repeating-linear-gradient(
-    45deg,
-    rgba(0, 0, 0, 0.2),
-    rgba(0, 0, 0, 0.2) 6px,
-    transparent 6px,
-    transparent 12px
-  );
+}
+
+/* TEXTURAS E REFORÇOS VISUAIS PARA MODO DALTÔNICO */
+html[data-daltonismo]:not([data-daltonismo="nenhum"]) .lembrete,
+html[data-daltonismo]:not([data-daltonismo="nenhum"]) .agenda-item {
+  border-width: 3px !important;
+}
+
+html[data-daltonismo]:not([data-daltonismo="nenhum"]) .badge-status.pendente,
+html[data-daltonismo]:not([data-daltonismo="nenhum"]) .badge-status.pendente-agenda {
+  border: 2px dashed var(--coral-escuro) !important;
+  color: var(--coral-escuro) !important;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 4px, rgba(0,0,0,0.05) 4px, rgba(0,0,0,0.05) 8px) !important;
+}
+
+html[data-daltonismo]:not([data-daltonismo="nenhum"]) .badge-status.tomado {
+  border: 2px solid var(--menta) !important;
+  color: var(--menta) !important;
+  background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, rgba(0,0,0,0.08) 4px, rgba(0,0,0,0.08) 8px) !important;
+}
+
+html[data-daltonismo]:not([data-daltonismo="nenhum"]) .botao-excluir {
+  border: 2px dashed var(--coral-escuro) !important;
+  color: var(--coral-escuro) !important;
 }
 
 /* ============================================================
-   MODO ALTO CONTRASTE (REFEITO TOTALMENTE PARA LEGIBILIDADE)
+   MODO ALTO CONTRASTE + ADAPTAÇÃO DALTÔNICA (BRILHO EQUILIBRADO)
    ============================================================ */
 html.alto-contraste {
   --azul-fundo: #000000;
   --azul-ceu: #121212;
   --azul-marinho: #FFFFFF;
-  --azul-marinho-suave: #FFFF00;
-  --coral: #FFD700;
-  --coral-escuro: #FFD700;
-  --menta: #00FF88;
-  --dourado: #FFFF00;
-  --dourado-escuro: #FFFF00;
+  --azul-marinho-suave: #FFD600;
+  --coral: #FFB300;
+  --coral-escuro: #FFB300;
+  --menta: #00E676;
+  --dourado: #FFD600;
+  --dourado-escuro: #FFD600;
   --branco: #000000;
   --borda: #FFFFFF;
   --sombra: none;
   --cor-texto-botao: #000000;
 }
 
+/* PROTANOPIA (Alto Contraste): Amarelo Dourado, Ciano Vivo, Fúcsia */
 html.alto-contraste[data-daltonismo="protanopia"] {
-  --dourado: #FFFF00;
-  --menta: #00E5FF;
-  --coral: #FFB300;
+  --dourado: #FFD600;
+  --dourado-escuro: #FFD600;
+  --menta: #00B0FF;
+  --coral: #FF4081;
+  --coral-escuro: #FF4081;
 }
 
+/* DEUTERANOPIA (Alto Contraste): ZERO VERDE! Âmbar, Azul Vivo, Laranja-Vermelho */
 html.alto-contraste[data-daltonismo="deuteranopia"] {
-  --dourado: #FFD700;
-  --menta: #00D2FF;
-  --coral: #FF6600;
+  --dourado: #FFB300;
+  --dourado-escuro: #FFB300;
+  --menta: #2979FF;   /* Azul Vivo */
+  --coral: #FF5722;   /* Laranja-Vermelho de Alto Contraste */
+  --coral-escuro: #FF5722;
 }
 
+/* TRITANOPIA (Alto Contraste): Rosa Vivo, Menta Suave, Carmim */
 html.alto-contraste[data-daltonismo="tritanopia"] {
-  --dourado: #FF66CC;
-  --menta: #00FF99;
-  --coral: #FF0055;
+  --dourado: #FF4081;
+  --dourado-escuro: #FF4081;
+  --menta: #00E676;
+  --coral: #FF1744;
+  --coral-escuro: #FF1744;
 }
 
+/* ACHROMATOPSIA (Alto Contraste): Monocromático */
 html.alto-contraste[data-daltonismo="acromatopsia"] {
   --dourado: #FFFFFF;
+  --dourado-escuro: #FFFFFF;
   --menta: #FFFFFF;
   --coral: #FFFFFF;
+  --coral-escuro: #FFFFFF;
 }
 
-/* SOBREPOSIÇÕES DIRETAS DO ALTO CONTRASTE */
 html.alto-contraste body {
   background-color: #000000 !important;
   color: #FFFFFF !important;
@@ -219,6 +220,12 @@ html.alto-contraste .caixa-ajuda {
   border: 2px solid #FFFFFF !important;
 }
 
+html.alto-contraste[data-daltonismo]:not([data-daltonismo="nenhum"]) .lembrete.feito,
+html.alto-contraste[data-daltonismo]:not([data-daltonismo="nenhum"]) .agenda-item.feito {
+  border: 3px double var(--menta) !important;
+  background-image: repeating-linear-gradient(45deg, #000000, #000000 8px, #222222 8px, #222222 16px) !important;
+}
+
 html.alto-contraste .nome-contato,
 html.alto-contraste .numero-contato,
 html.alto-contraste .texto,
@@ -261,50 +268,6 @@ html.alto-contraste .btn-voz-nao {
   color: #000000 !important;
   border: 2px solid #FFFFFF !important;
   font-weight: 700 !important;
-}
-
-html.alto-contraste .botao-excluir {
-  background-color: #000000 !important;
-  color: #FF6666 !important;
-  border: 2px solid #FFFFFF !important;
-}
-
-html.alto-contraste .relogio-flutuante {
-  background-color: #000000 !important;
-  color: var(--dourado) !important;
-  border: 2px solid #FFFFFF !important;
-}
-
-html.alto-contraste .marcador {
-  border-color: #FFFFFF !important;
-}
-html.alto-contraste .marcador.forma-quadrado,
-html.alto-contraste .marcador.forma-diamante-box {
-  background-color: #000000 !important;
-  color: var(--dourado) !important;
-  border: 2px solid #FFFFFF !important;
-}
-html.alto-contraste .marcador.forma-circulo {
-  background-color: #FFFFFF !important;
-  color: #000000 !important;
-  border: 2px solid #FFFFFF !important;
-}
-
-html.alto-contraste .badge-status.pendente,
-html.alto-contraste .badge-status.pendente-agenda {
-  background-color: #000000 !important;
-  color: var(--dourado) !important;
-  border: 1px solid var(--dourado) !important;
-}
-html.alto-contraste .badge-status.tomado {
-  background-color: #000000 !important;
-  color: var(--menta) !important;
-  border: 1px solid var(--menta) !important;
-}
-
-html.alto-contraste .icone-contato {
-  background-color: var(--dourado) !important;
-  color: #000000 !important;
 }
 
 .somente-leitor {
@@ -386,27 +349,81 @@ main {
 .saudacao h1 { font-size: 1.8rem; margin: 0 0 0.4rem 0; }
 .saudacao p { font-size: 1.15rem; margin: 0; opacity: 0.95; }
 
-/* IDENTIDADE VISUAL ÚNICA POR SEÇÃO */
+/* ============================================================
+   BARRAS INDICADORAS DE ALTO IMPACTO E TEXTURIZADAS
+   ============================================================ */
 section { 
-  margin-bottom: 2.2rem; 
-  border-left: 6px solid transparent;
-  padding-left: 0.8rem;
-  transition: border-color 0.2s ease;
+  margin-bottom: 2.5rem; 
+  position: relative;
+  padding-left: 1.8rem;
+  transition: all 0.2s ease;
 }
 
-section.secao-remedios { border-left-color: var(--menta); }
+section::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 14px;
+  border-radius: 8px;
+  background-color: var(--borda);
+  box-shadow: 2px 0 6px rgba(0,0,0,0.1);
+}
+
+/* 💊 SECÇÃO REMÉDIOS */
 section.secao-remedios h2.titulo-secao { color: var(--menta); }
+section.secao-remedios::before {
+  background-color: var(--menta);
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.35),
+    rgba(255, 255, 255, 0.35) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
 
-section.secao-agenda { border-left-color: var(--dourado-escuro); }
+/* 📅 SECÇÃO AGENDA */
 section.secao-agenda h2.titulo-secao { color: var(--dourado-escuro); }
+section.secao-agenda::before {
+  background-color: var(--dourado-escuro);
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.4),
+    rgba(255, 255, 255, 0.4) 4px,
+    transparent 4px,
+    transparent 10px
+  );
+}
 
-section.secao-contatos { border-left-color: var(--coral); }
+/* ☎️ SECÇÃO CONTACTOS */
 section.secao-contatos h2.titulo-secao { color: var(--coral); }
+section.secao-contatos::before {
+  background-color: var(--coral);
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.75) 35%, 
+    transparent 35%
+  );
+  background-size: 10px 10px;
+  background-position: center;
+}
 
-section.secao-ajuda { border-left-color: var(--azul-marinho-suave); }
+/* ℹ️ SECÇÃO AJUDA */
 section.secao-ajuda h2.titulo-secao { color: var(--azul-marinho-suave); }
+section.secao-ajuda::before {
+  background-color: var(--azul-marinho-suave);
+}
 
-html.alto-contraste section { border-left-width: 8px !important; }
+/* SUPORTE BARRAS LATERAIS EM MODO ALTO CONTRASTE */
+html.alto-contraste section::before {
+  width: 16px !important;
+  border: 2px solid #FFFFFF !important;
+}
+html.alto-contraste section.secao-remedios::before { background-color: var(--menta) !important; }
+html.alto-contraste section.secao-agenda::before { background-color: var(--dourado) !important; }
+html.alto-contraste section.secao-contatos::before { background-color: var(--coral) !important; }
+html.alto-contraste section.secao-ajuda::before { background-color: #FFFFFF !important; }
 
 h2.titulo-secao {
   font-size: 1.5rem;
@@ -486,6 +503,7 @@ h2.titulo-secao {
   color: #FFFFFF;
 }
 
+/* BADGES DINÂMICAS */
 .badge-status {
   display: inline-flex;
   align-items: center;
@@ -496,19 +514,17 @@ h2.titulo-secao {
   border-radius: 6px;
   text-transform: uppercase;
   margin-left: 0.4rem;
+  background: var(--branco);
 }
 .badge-status.pendente {
-  background: rgba(217, 97, 47, 0.15);
   color: var(--coral-escuro);
   border: 1px solid var(--coral-escuro);
 }
 .badge-status.pendente-agenda {
-  background: rgba(184, 131, 16, 0.15);
   color: var(--dourado-escuro);
   border: 1px solid var(--dourado-escuro);
 }
 .badge-status.tomado {
-  background: rgba(79, 143, 115, 0.15);
   color: var(--menta);
   border: 1px solid var(--menta);
 }
@@ -677,6 +693,9 @@ footer {
   word-break: break-word;
 }
 
+/* ============================================================
+   ESTRUTURA E ALINHAMENTO DOS FORMULÁRIOS
+   ============================================================ */
 .formulario-adicionar {
   margin-top: 1rem;
   padding: 1rem;
@@ -694,43 +713,61 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  flex: 1 1 200px;
-  width: 100%;
+  flex: 1 1 180px;
 }
 
-.campo-adicionar label { font-weight: 700; font-size: 1rem; cursor: pointer; }
-.campo-adicionar input {
+.campo-hora { flex: 0 1 110px; }
+.campo-nome { flex: 2 1 180px; }
+.campo-qtd { flex: 0 1 85px; }
+.campo-unidade { flex: 1 1 150px; }
+
+.campo-adicionar label { 
+  font-weight: 700; 
+  font-size: 0.95rem; 
+  color: var(--azul-marinho);
+  cursor: pointer; 
+  white-space: nowrap;
+}
+
+.campo-adicionar input,
+.campo-adicionar select.seletor-campo {
   font-family: var(--fonte);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
+  font-weight: 700;
   padding: 0.6rem 0.8rem;
   border-radius: 10px;
   border: 2px solid var(--azul-marinho-suave);
   background: var(--branco);
   color: var(--azul-marinho);
   min-height: 48px;
+  height: 48px;
   width: 100%;
+  box-sizing: border-box;
 }
 
-.campo-hora { flex: 1 1 120px; }
-.campo-hora input[type="time"] {
-  position: relative;
-  cursor: pointer;
-  font-weight: 700;
+.campo-hora input[type="time"],
+.campo-qtd input[type="number"] {
   text-align: center;
 }
 
 .botao-adicionar {
   font-family: var(--fonte);
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 700;
-  padding: 0.8rem 1.2rem;
+  padding: 0.6rem 1rem;
   border-radius: 10px;
   border: none;
   background: var(--menta);
   color: #fff;
   cursor: pointer;
   min-height: 48px;
-  flex: 1 1 auto;
+  height: 48px;
+  flex: 0 0 240px;
+  max-width: 100%;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .banner-alarme {
@@ -795,7 +832,7 @@ footer {
 .btn-voz-sim { background: var(--menta); color: #FFFFFF; }
 .btn-voz-nao { background: var(--coral); color: #FFFFFF; }
 
-/* RELÓGIO FLUTUANTE (APENAS COMPUTADOR) */
+/* RELÓGIO FLUTUANTE ADAPTÁVEL COM TOM SUAVE */
 .relogio-flutuante {
   position: fixed;
   bottom: 20px;
@@ -809,11 +846,42 @@ footer {
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   box-shadow: var(--sombra);
-  border: 2px solid var(--dourado);
+  border: 3px solid var(--dourado);
   margin: 0;
+  transition: all 0.2s ease;
 }
 
-/* RESPONSIVIDADE PARA CELULARES (ATÉ 768px) */
+html[data-daltonismo="protanopia"] .relogio-flutuante {
+  background: #1A0D1A;
+  color: #FFD600;
+  border-color: #FF4081;
+}
+
+html[data-daltonismo="deuteranopia"] .relogio-flutuante {
+  background: #0A1526;
+  color: #FFB300;
+  border-color: #2979FF;
+}
+
+html[data-daltonismo="tritanopia"] .relogio-flutuante {
+  background: #1F0D15;
+  color: #FF4081;
+  border-color: #00E676;
+}
+
+html[data-daltonismo="acromatopsia"] .relogio-flutuante {
+  background: #000000;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+html.alto-contraste .relogio-flutuante {
+  background-color: #000000 !important;
+  color: var(--dourado) !important;
+  border: 3px solid #FFFFFF !important;
+}
+
+/* RESPONSIVIDADE PARA CELULARES */
 @media (max-width: 768px) {
   .relogio-flutuante {
     display: none !important;
@@ -852,7 +920,7 @@ footer {
     align-items: stretch;
   }
 
-  .campo-adicionar, .campo-hora, .botao-adicionar {
+  .campo-adicionar, .campo-hora, .campo-nome, .campo-qtd, .campo-unidade, .botao-adicionar {
     width: 100%;
     flex: 1 1 100%;
   }
@@ -878,4 +946,40 @@ footer {
   .botao-ligar {
     flex: 1;
   }
+}
+
+/* ============================================================
+   CONTORNO VISÍVEL AO PASSAR O MOUSE (HOVER SEM SELECIONAR)
+   ============================================================ */
+
+/* 1. Contorno ao passar o cursor por cima (Hover): 
+      Usa as variáveis do modo daltônico ativo assim que o mouse encosta na caixa ou botão */
+.campo-adicionar input:hover,
+.campo-adicionar select:hover,
+.seletor-controle:hover,
+.botao-controle:hover,
+.botao-adicionar:hover,
+.botao-marcar:hover,
+.botao-excluir:hover,
+.botao-ligar:hover {
+  border-color: var(--coral-escuro) !important;
+  outline: 3px solid var(--dourado) !important; /* O anel de contorno aparece aqui! */
+  outline-offset: 2px;
+  cursor: pointer;
+}
+
+/* 2. Mantém o contorno quando a caixa é finalmente clicada/selecionada (Focus) */
+.campo-adicionar input:focus,
+.campo-adicionar select:focus,
+.seletor-controle:focus,
+.botao-controle:focus {
+  border-color: var(--coral-escuro) !important;
+  outline: 3px solid var(--menta) !important;
+  outline-offset: 2px;
+}
+
+/* 3. Seleção de texto grifado */
+::selection {
+  background-color: var(--dourado) !important;
+  color: #000000 !important;
 }
