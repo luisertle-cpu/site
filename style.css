@@ -45,7 +45,7 @@ body {
 
 a { color: inherit; }
 
-/* DALTÔNICOS & ALTO CONTRASTE */
+/* MODOS DALTÔNICOS (PADRÃO) */
 html[data-daltonismo="protanopia"] {
   --azul-ceu: #EBF3FA;
   --azul-fundo: #e9e9e9;
@@ -127,57 +127,184 @@ html[data-daltonismo="acromatopsia"] {
   );
 }
 
+/* ============================================================
+   MODO ALTO CONTRASTE (REFEITO TOTALMENTE PARA LEGIBILIDADE)
+   ============================================================ */
 html.alto-contraste {
-  --azul-ceu: #000000;
   --azul-fundo: #000000;
+  --azul-ceu: #121212;
   --azul-marinho: #FFFFFF;
   --azul-marinho-suave: #FFFF00;
   --coral: #FFD700;
   --coral-escuro: #FFD700;
   --menta: #00FF88;
-  --dourado: #FFD700;
-  --dourado-escuro: #FFD700;
-  --branco: #0A0A0A;
+  --dourado: #FFFF00;
+  --dourado-escuro: #FFFF00;
+  --branco: #000000;
   --borda: #FFFFFF;
   --sombra: none;
   --cor-texto-botao: #000000;
 }
 
-html.alto-contraste body { background: var(--azul-fundo); color: var(--azul-marinho); }
+html.alto-contraste[data-daltonismo="protanopia"] {
+  --dourado: #FFFF00;
+  --menta: #00E5FF;
+  --coral: #FFB300;
+}
+
+html.alto-contraste[data-daltonismo="deuteranopia"] {
+  --dourado: #FFD700;
+  --menta: #00D2FF;
+  --coral: #FF6600;
+}
+
+html.alto-contraste[data-daltonismo="tritanopia"] {
+  --dourado: #FF66CC;
+  --menta: #00FF99;
+  --coral: #FF0055;
+}
+
+html.alto-contraste[data-daltonismo="acromatopsia"] {
+  --dourado: #FFFFFF;
+  --menta: #FFFFFF;
+  --coral: #FFFFFF;
+}
+
+/* SOBREPOSIÇÕES DIRETAS DO ALTO CONTRASTE */
+html.alto-contraste body {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+html.alto-contraste header.topo,
+html.alto-contraste .painel-voz-topo,
+html.alto-contraste footer {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  border-color: #FFFFFF !important;
+}
+
+html.alto-contraste .marca,
+html.alto-contraste .marca span {
+  color: #FFFFFF !important;
+}
+
+html.alto-contraste .svg-circulo-logo { fill: var(--dourado) !important; }
+html.alto-contraste .svg-ponteiro-logo { stroke: #000000 !important; }
+
+html.alto-contraste .saudacao {
+  background: #000000 !important;
+  border: 3px solid #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+html.alto-contraste .saudacao h1,
+html.alto-contraste .saudacao p {
+  color: #FFFFFF !important;
+}
+html.alto-contraste .svg-sol-saudacao circle { fill: var(--dourado) !important; }
+html.alto-contraste .svg-sol-saudacao g { stroke: var(--dourado) !important; }
+
+html.alto-contraste h2.titulo-secao {
+  color: #FFFFFF !important;
+}
+
 html.alto-contraste .cartao,
 html.alto-contraste .lembrete,
 html.alto-contraste .agenda-item,
 html.alto-contraste .contato-card,
 html.alto-contraste .formulario-adicionar,
-html.alto-contraste .caixa-ajuda,
-html.alto-contraste header,
-html.alto-contraste footer { 
-  background-color: var(--branco);
-  color: var(--azul-marinho);
-  border: 3px solid var(--borda);
+html.alto-contraste .caixa-ajuda {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  border: 2px solid #FFFFFF !important;
+}
+
+html.alto-contraste .nome-contato,
+html.alto-contraste .numero-contato,
+html.alto-contraste .texto,
+html.alto-contraste .texto-agenda,
+html.alto-contraste .hora {
+  color: #FFFFFF !important;
 }
 
 html.alto-contraste input,
 html.alto-contraste select {
   background-color: #000000 !important;
   color: #FFFFFF !important;
-  border: 3px solid var(--borda) !important;
+  border: 2px solid #FFFFFF !important;
+}
+
+html.alto-contraste input::placeholder {
+  color: #DDDDDD !important;
+  opacity: 1 !important;
 }
 
 html.alto-contraste .botao-controle,
 html.alto-contraste .seletor-controle {
-  background-color: #000000;
-  color: #FFFFFF;
-  border: 3px solid var(--borda);
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  border: 2px solid #FFFFFF !important;
+}
+
+html.alto-contraste .botao-controle[aria-pressed="true"] {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
 }
 
 html.alto-contraste .botao-adicionar,
 html.alto-contraste .botao-emergencia,
-html.alto-contraste .botao-ligar {
-  background-color: var(--coral);
-  color: var(--cor-texto-botao) !important;
-  border: 3px solid #FFFFFF;
-  font-weight: 700;
+html.alto-contraste .botao-ligar,
+html.alto-contraste .btn-voz-sim,
+html.alto-contraste .btn-voz-nao {
+  background-color: var(--dourado) !important;
+  color: #000000 !important;
+  border: 2px solid #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+html.alto-contraste .botao-excluir {
+  background-color: #000000 !important;
+  color: #FF6666 !important;
+  border: 2px solid #FFFFFF !important;
+}
+
+html.alto-contraste .relogio-flutuante {
+  background-color: #000000 !important;
+  color: var(--dourado) !important;
+  border: 2px solid #FFFFFF !important;
+}
+
+html.alto-contraste .marcador {
+  border-color: #FFFFFF !important;
+}
+html.alto-contraste .marcador.forma-quadrado,
+html.alto-contraste .marcador.forma-diamante-box {
+  background-color: #000000 !important;
+  color: var(--dourado) !important;
+  border: 2px solid #FFFFFF !important;
+}
+html.alto-contraste .marcador.forma-circulo {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+  border: 2px solid #FFFFFF !important;
+}
+
+html.alto-contraste .badge-status.pendente,
+html.alto-contraste .badge-status.pendente-agenda {
+  background-color: #000000 !important;
+  color: var(--dourado) !important;
+  border: 1px solid var(--dourado) !important;
+}
+html.alto-contraste .badge-status.tomado {
+  background-color: #000000 !important;
+  color: var(--menta) !important;
+  border: 1px solid var(--menta) !important;
+}
+
+html.alto-contraste .icone-contato {
+  background-color: var(--dourado) !important;
+  color: #000000 !important;
 }
 
 .somente-leitor {
@@ -259,7 +386,7 @@ main {
 .saudacao h1 { font-size: 1.8rem; margin: 0 0 0.4rem 0; }
 .saudacao p { font-size: 1.15rem; margin: 0; opacity: 0.95; }
 
-/* --- IDENTIDADE VISUAL ÚNICA POR SEÇÃO --- */
+/* IDENTIDADE VISUAL ÚNICA POR SEÇÃO */
 section { 
   margin-bottom: 2.2rem; 
   border-left: 6px solid transparent;
@@ -280,7 +407,6 @@ section.secao-ajuda { border-left-color: var(--azul-marinho-suave); }
 section.secao-ajuda h2.titulo-secao { color: var(--azul-marinho-suave); }
 
 html.alto-contraste section { border-left-width: 8px !important; }
-html.alto-contraste h2.titulo-secao { color: var(--azul-marinho) !important; }
 
 h2.titulo-secao {
   font-size: 1.5rem;
@@ -307,7 +433,7 @@ h2.titulo-secao {
   width: 100%;
 }
 
-/* --- ESTILO E FORMAS GEOMÉTRICAS DOS REMÉDIOS E AGENDA --- */
+/* ESTILO E FORMAS GEOMÉTRICAS DOS REMÉDIOS E AGENDA */
 .lembrete, .agenda-item {
   display: flex; 
   align-items: center; 
@@ -339,7 +465,6 @@ h2.titulo-secao {
   font-size: 1.1rem;
 }
 
-/* QUADRADO: Pendente (Remédio) */
 .marcador.forma-quadrado {
   border-radius: 6px;
   border: 3px solid var(--coral-escuro);
@@ -347,7 +472,6 @@ h2.titulo-secao {
   color: var(--coral-escuro);
 }
 
-/* LOSANGO: Pendente (Agenda) */
 .marcador.forma-diamante-box {
   border-radius: 6px;
   border: 3px solid var(--dourado-escuro);
@@ -355,7 +479,6 @@ h2.titulo-secao {
   color: var(--dourado-escuro);
 }
 
-/* CÍRCULO: Concluído (Remédio ou Agenda) */
 .marcador.forma-circulo {
   border-radius: 50%;
   border: 3px solid var(--menta);
@@ -363,7 +486,6 @@ h2.titulo-secao {
   color: #FFFFFF;
 }
 
-/* ETIQUETAS VISUAIS DE STATUS (FORMA + TEXTO) */
 .badge-status {
   display: inline-flex;
   align-items: center;
@@ -445,7 +567,7 @@ h2.titulo-secao {
   min-width: 48px;
 }
 
-/* --- CARTÕES DE CONTATOS (NOME EM CIMA, NÚMERO EMBAIXO E AÇÕES PADRONIZADAS) --- */
+/* CARTÕES DE CONTATOS */
 .contato-card {
   display: flex;
   align-items: center;
@@ -691,7 +813,7 @@ footer {
   margin: 0;
 }
 
-/* REGRA DE RESPONSIVIDADE PARA CELULARES (ATÉ 768px) */
+/* RESPONSIVIDADE PARA CELULARES (ATÉ 768px) */
 @media (max-width: 768px) {
   .relogio-flutuante {
     display: none !important;
