@@ -1,985 +1,526 @@
-@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap');
-
-:root {
-  --azul-ceu: #E8F2F3;
-  --azul-fundo: #e9e9e9;
-  --azul-marinho: #163449;
-  --azul-marinho-suave: #2C5066;
-  --coral: #D9612F;
-  --coral-escuro: #B94E22;
-  --menta: #4F8F73;
-  --dourado: #F0B94A;
-  --dourado-escuro: #B88310;
-  --branco: #FFFFFF;
-  --borda: #CFE0E1;
-  --sombra: 0 4px 14px rgba(22,52,73,0.10);
-  --fonte: 'Atkinson Hyperlegible', Arial, sans-serif;
-  --escala: 1;
-  --textura-feito: none;
-  --cor-texto-botao: #FFFFFF;
-}
-
-/* PREVENÇÃO GLOBAL DE TRANSBORDO HORIZONTAL */
-*, *::before, *::after {
-  box-sizing: border-box;
-  max-width: 100%;
-}
-
-html, body {
-  width: 100%;
-  overflow-x: hidden;
-}
-
-html { 
-  font-size: calc(18px * var(--escala)); 
-  scroll-behavior: smooth; 
-}
-
-body {
-  margin: 0;
-  font-family: var(--fonte);
-  background: var(--azul-fundo);
-  color: var(--azul-marinho);
-  line-height: 1.55;
-}
-
-a { color: inherit; }
-
-/* ============================================================
-   PALETAS DALTÔNICAS SUAVE / SEM OFUSCAMENTO (MODO NORMAL)
-   ============================================================ */
-
-/* PROTANOPIA: Fúcsia Suave, Ciano Profundo, Amarelo Dourado */
-html[data-daltonismo="protanopia"] {
-  --azul-ceu: #EBF3FA;
-  --coral: #D81B60;          /* Fúcsia Suave */
-  --coral-escuro: #AD1457; 
-  --menta: #0097A7;          /* Ciano Profundo */
-  --dourado: #E6B800;        /* Amarelo Dourado */
-  --dourado-escuro: #B38F00;
-  --borda: #B0C4DE;
-}
-
-/* DEUTERANOPIA: ZERO VERDE! Terracota, Azul Cobalto Profundo, Âmbar */
-html[data-daltonismo="deuteranopia"] {
-  --azul-ceu: #EDF2FF;
-  --coral: #D84315;          /* Terracota / Vermelhão Suave */
-  --coral-escuro: #BF360C;
-  --menta: #1565C0;          /* Azul Cobalto Profundo */
-  --dourado: #E65100;        /* Âmbar Escuro Dourado */
-  --dourado-escuro: #BF360C;
-  --borda: #B8C4E8;
-}
-
-/* TRITANOPIA: Carmim Suave, Menta Profundo, Rosa Amostra */
-html[data-daltonismo="tritanopia"] {
-  --azul-ceu: #FDF2F4;
-  --coral: #C2185B;          /* Carmim Suave */
-  --coral-escuro: #880E4F;
-  --menta: #00897B;          /* Menta/Teal Profundo */
-  --dourado: #D81B60;        /* Rosa Suave */
-  --dourado-escuro: #AD1457;
-  --borda: #E8C5CE;
-}
-
-/* ACHROMATOPSIA: Monocromático Absoluto */
-html[data-daltonismo="acromatopsia"] {
-  --azul-ceu: #E4E4E7;
-  --coral: #18181B;
-  --coral-escuro: #000000;
-  --menta: #3F3F46;
-  --dourado: #71717A;
-  --dourado-escuro: #3F3F46;
-  --borda: #3F3F46;
-}
-
-/* TEXTURAS E REFORÇOS VISUAIS PARA MODO DALTÔNICO */
-html[data-daltonismo]:not([data-daltonismo="nenhum"]) .lembrete,
-html[data-daltonismo]:not([data-daltonismo="nenhum"]) .agenda-item {
-  border-width: 3px !important;
-}
-
-html[data-daltonismo]:not([data-daltonismo="nenhum"]) .badge-status.pendente,
-html[data-daltonismo]:not([data-daltonismo="nenhum"]) .badge-status.pendente-agenda {
-  border: 2px dashed var(--coral-escuro) !important;
-  color: var(--coral-escuro) !important;
-  background-image: repeating-linear-gradient(45deg, transparent, transparent 4px, rgba(0,0,0,0.05) 4px, rgba(0,0,0,0.05) 8px) !important;
-}
-
-html[data-daltonismo]:not([data-daltonismo="nenhum"]) .badge-status.tomado {
-  border: 2px solid var(--menta) !important;
-  color: var(--menta) !important;
-  background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, rgba(0,0,0,0.08) 4px, rgba(0,0,0,0.08) 8px) !important;
-}
-
-html[data-daltonismo]:not([data-daltonismo="nenhum"]) .botao-excluir {
-  border: 2px dashed var(--coral-escuro) !important;
-  color: var(--coral-escuro) !important;
-}
-
-/* ============================================================
-   MODO ALTO CONTRASTE + ADAPTAÇÃO DALTÔNICA (BRILHO EQUILIBRADO)
-   ============================================================ */
-html.alto-contraste {
-  --azul-fundo: #000000;
-  --azul-ceu: #121212;
-  --azul-marinho: #FFFFFF;
-  --azul-marinho-suave: #FFD600;
-  --coral: #FFB300;
-  --coral-escuro: #FFB300;
-  --menta: #00E676;
-  --dourado: #FFD600;
-  --dourado-escuro: #FFD600;
-  --branco: #000000;
-  --borda: #FFFFFF;
-  --sombra: none;
-  --cor-texto-botao: #000000;
-}
-
-/* PROTANOPIA (Alto Contraste): Amarelo Dourado, Ciano Vivo, Fúcsia */
-html.alto-contraste[data-daltonismo="protanopia"] {
-  --dourado: #FFD600;
-  --dourado-escuro: #FFD600;
-  --menta: #00B0FF;
-  --coral: #FF4081;
-  --coral-escuro: #FF4081;
-}
-
-/* DEUTERANOPIA (Alto Contraste): ZERO VERDE! Âmbar, Azul Vivo, Laranja-Vermelho */
-html.alto-contraste[data-daltonismo="deuteranopia"] {
-  --dourado: #FFB300;
-  --dourado-escuro: #FFB300;
-  --menta: #2979FF;   /* Azul Vivo */
-  --coral: #FF5722;   /* Laranja-Vermelho de Alto Contraste */
-  --coral-escuro: #FF5722;
-}
-
-/* TRITANOPIA (Alto Contraste): Rosa Vivo, Menta Suave, Carmim */
-html.alto-contraste[data-daltonismo="tritanopia"] {
-  --dourado: #FF4081;
-  --dourado-escuro: #FF4081;
-  --menta: #00E676;
-  --coral: #FF1744;
-  --coral-escuro: #FF1744;
-}
-
-/* ACHROMATOPSIA (Alto Contraste): Monocromático */
-html.alto-contraste[data-daltonismo="acromatopsia"] {
-  --dourado: #FFFFFF;
-  --dourado-escuro: #FFFFFF;
-  --menta: #FFFFFF;
-  --coral: #FFFFFF;
-  --coral-escuro: #FFFFFF;
-}
-
-html.alto-contraste body {
-  background-color: #000000 !important;
-  color: #FFFFFF !important;
-}
-
-html.alto-contraste header.topo,
-html.alto-contraste .painel-voz-topo,
-html.alto-contraste footer {
-  background-color: #000000 !important;
-  color: #FFFFFF !important;
-  border-color: #FFFFFF !important;
-}
-
-html.alto-contraste .marca,
-html.alto-contraste .marca span {
-  color: #FFFFFF !important;
-}
-
-html.alto-contraste .svg-circulo-logo { fill: var(--dourado) !important; }
-html.alto-contraste .svg-ponteiro-logo { stroke: #000000 !important; }
-
-html.alto-contraste .saudacao {
-  background: #000000 !important;
-  border: 3px solid #FFFFFF !important;
-  color: #FFFFFF !important;
-}
-html.alto-contraste .saudacao h1,
-html.alto-contraste .saudacao p {
-  color: #FFFFFF !important;
-}
-html.alto-contraste .svg-sol-saudacao circle { fill: var(--dourado) !important; }
-html.alto-contraste .svg-sol-saudacao g { stroke: var(--dourado) !important; }
-
-html.alto-contraste h2.titulo-secao {
-  color: #FFFFFF !important;
-}
-
-html.alto-contraste .cartao,
-html.alto-contraste .lembrete,
-html.alto-contraste .agenda-item,
-html.alto-contraste .contato-card,
-html.alto-contraste .formulario-adicionar,
-html.alto-contraste .caixa-ajuda {
-  background-color: #000000 !important;
-  color: #FFFFFF !important;
-  border: 2px solid #FFFFFF !important;
-}
-
-html.alto-contraste[data-daltonismo]:not([data-daltonismo="nenhum"]) .lembrete.feito,
-html.alto-contraste[data-daltonismo]:not([data-daltonismo="nenhum"]) .agenda-item.feito {
-  border: 3px double var(--menta) !important;
-  background-image: repeating-linear-gradient(45deg, #000000, #000000 8px, #222222 8px, #222222 16px) !important;
-}
-
-html.alto-contraste .nome-contato,
-html.alto-contraste .numero-contato,
-html.alto-contraste .texto,
-html.alto-contraste .texto-agenda,
-html.alto-contraste .hora {
-  color: #FFFFFF !important;
-}
-
-html.alto-contraste input,
-html.alto-contraste select {
-  background-color: #000000 !important;
-  color: #FFFFFF !important;
-  border: 2px solid #FFFFFF !important;
-}
-
-html.alto-contraste input::placeholder {
-  color: #DDDDDD !important;
-  opacity: 1 !important;
-}
-
-html.alto-contraste .botao-controle,
-html.alto-contraste .seletor-controle {
-  background-color: #000000 !important;
-  color: #FFFFFF !important;
-  border: 2px solid #FFFFFF !important;
-}
-
-html.alto-contraste .botao-controle[aria-pressed="true"] {
-  background-color: #FFFFFF !important;
-  color: #000000 !important;
-  font-weight: 700 !important;
-}
-
-html.alto-contraste .botao-adicionar,
-html.alto-contraste .botao-emergencia,
-html.alto-contraste .botao-ligar,
-html.alto-contraste .btn-voz-sim,
-html.alto-contraste .btn-voz-nao {
-  background-color: var(--dourado) !important;
-  color: #000000 !important;
-  border: 2px solid #FFFFFF !important;
-  font-weight: 700 !important;
-}
-
-.somente-leitor {
-  position: absolute; width: 1px; height: 1px; overflow: hidden;
-  clip: rect(0 0 0 0); white-space: nowrap; border: 0; padding: 0; margin: -1px;
-}
-
-.pular-link {
-  position: absolute; left: -9999px; top: 0;
-  background: var(--coral); color: #fff; padding: 1rem 1.5rem;
-  font-weight: 700; z-index: 100; border-radius: 0 0 10px 0;
-}
-.pular-link:focus { left: 0; }
-
-*:focus-visible {
-  outline: 4px solid var(--coral-escuro);
-  outline-offset: 3px;
-}
-
-/* ESTRUTURA PRINCIPAL E HEADER */
-header.topo {
-  background: var(--azul-ceu);
-  padding: 1.2rem 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  border-bottom: 4px solid var(--menta);
-}
-
-.marca {
-  display: flex; align-items: center; gap: 0.7rem;
-  font-size: 1.5rem; font-weight: 700; color: var(--azul-marinho);
-}
-.marca svg { flex-shrink: 0; }
-
-.controles-acessibilidade {
-  display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
-}
-
-.botao-controle, .seletor-controle {
-  font-family: var(--fonte);
-  font-size: 1rem;
-  font-weight: 700;
-  background: var(--branco);
-  border: 2px solid var(--azul-marinho-suave);
-  color: var(--azul-marinho);
-  padding: 0.6rem 0.8rem;
-  border-radius: 10px;
-  cursor: pointer;
-  min-height: 48px;
-}
-.botao-controle[aria-pressed="true"] {
-  background: var(--menta);
-  color: #fff;
-  border-color: var(--menta);
-}
-
-main { 
-  max-width: 900px; 
-  margin: 0 auto; 
-  padding: 1.2rem 1rem 3rem; 
-}
-
-.saudacao {
-  background: linear-gradient(135deg, var(--azul-marinho) 0%, var(--azul-marinho-suave) 100%);
-  color: #fff;
-  border-radius: 20px;
-  padding: 1.5rem 1.2rem;
-  display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap;
-  box-shadow: var(--sombra);
-  margin-bottom: 1.8rem;
-  word-break: break-word;
-  overflow-wrap: anywhere;
-}
-
-.saudacao svg { flex-shrink: 0; }
-.saudacao h1 { font-size: 1.8rem; margin: 0 0 0.4rem 0; }
-.saudacao p { font-size: 1.15rem; margin: 0; opacity: 0.95; }
-
-/* ============================================================
-   BARRAS INDICADORAS DE ALTO IMPACTO E TEXTURIZADAS
-   ============================================================ */
-section { 
-  margin-bottom: 2.5rem; 
-  position: relative;
-  padding-left: 1.8rem;
-  transition: all 0.2s ease;
-}
-
-section::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 14px;
-  border-radius: 8px;
-  background-color: var(--borda);
-  box-shadow: 2px 0 6px rgba(0,0,0,0.1);
-}
-
-/* 💊 SECÇÃO REMÉDIOS */
-section.secao-remedios h2.titulo-secao { color: var(--menta); }
-section.secao-remedios::before {
-  background-color: var(--menta);
-  background-image: repeating-linear-gradient(
-    45deg,
-    rgba(255, 255, 255, 0.35),
-    rgba(255, 255, 255, 0.35) 6px,
-    transparent 6px,
-    transparent 12px
-  );
-}
-
-/* 📅 SECÇÃO AGENDA */
-section.secao-agenda h2.titulo-secao { color: var(--dourado-escuro); }
-section.secao-agenda::before {
-  background-color: var(--dourado-escuro);
-  background-image: repeating-linear-gradient(
-    0deg,
-    rgba(255, 255, 255, 0.4),
-    rgba(255, 255, 255, 0.4) 4px,
-    transparent 4px,
-    transparent 10px
-  );
-}
-
-/* ☎️ SECÇÃO CONTACTOS */
-section.secao-contatos h2.titulo-secao { color: var(--coral); }
-section.secao-contatos::before {
-  background-color: var(--coral);
-  background-image: radial-gradient(
-    rgba(255, 255, 255, 0.75) 35%, 
-    transparent 35%
-  );
-  background-size: 10px 10px;
-  background-position: center;
-}
-
-/* ℹ️ SECÇÃO AJUDA */
-section.secao-ajuda h2.titulo-secao { color: var(--azul-marinho-suave); }
-section.secao-ajuda::before {
-  background-color: var(--azul-marinho-suave);
-}
-
-/* SUPORTE BARRAS LATERAIS EM MODO ALTO CONTRASTE */
-html.alto-contraste section::before {
-  width: 16px !important;
-  border: 2px solid #FFFFFF !important;
-}
-html.alto-contraste section.secao-remedios::before { background-color: var(--menta) !important; }
-html.alto-contraste section.secao-agenda::before { background-color: var(--dourado) !important; }
-html.alto-contraste section.secao-contatos::before { background-color: var(--coral) !important; }
-html.alto-contraste section.secao-ajuda::before { background-color: #FFFFFF !important; }
-
-h2.titulo-secao {
-  font-size: 1.5rem;
-  margin: 0 0 1rem 0;
-  display: flex; 
-  align-items: center; 
-  gap: 0.6rem;
-  font-weight: 700;
-}
-
-.grade {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 100%;
-}
-
-.cartao {
-  background: var(--branco);
-  border: 2px solid var(--borda);
-  border-radius: 16px;
-  padding: 1.1rem;
-  box-shadow: var(--sombra);
-  width: 100%;
-}
-
-/* ESTILO E FORMAS GEOMÉTRICAS DOS REMÉDIOS E AGENDA */
-.lembrete, .agenda-item {
-  display: flex; 
-  align-items: center; 
-  gap: 0.8rem;
-  padding: 0.9rem;
-  border-radius: 14px;
-  background-color: var(--branco);
-  border: 2px solid var(--borda);
-  margin-bottom: 0.8rem;
-  flex-wrap: wrap;
-  word-break: break-word;
-  overflow-wrap: anywhere;
-}
-
-.lembrete.feito, .agenda-item.feito {
-  background-color: var(--azul-ceu);
-  background-image: var(--textura-feito);
-  border-color: var(--menta);
-}
-
-.marcador {
-  flex-shrink: 0;
-  width: 2.2rem; 
-  height: 2.2rem;
-  display: flex; 
-  align-items: center; 
-  justify-content: center;
-  font-weight: 700; 
-  font-size: 1.1rem;
-}
-
-.marcador.forma-quadrado {
-  border-radius: 6px;
-  border: 3px solid var(--coral-escuro);
-  background: var(--branco);
-  color: var(--coral-escuro);
-}
-
-.marcador.forma-diamante-box {
-  border-radius: 6px;
-  border: 3px solid var(--dourado-escuro);
-  background: var(--branco);
-  color: var(--dourado-escuro);
-}
-
-.marcador.forma-circulo {
-  border-radius: 50%;
-  border: 3px solid var(--menta);
-  background: var(--menta);
-  color: #FFFFFF;
-}
-
-/* BADGES DINÂMICAS */
-.badge-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-size: 0.8rem;
-  font-weight: 700;
-  padding: 0.2rem 0.5rem;
-  border-radius: 6px;
-  text-transform: uppercase;
-  margin-left: 0.4rem;
-  background: var(--branco);
-}
-.badge-status.pendente {
-  color: var(--coral-escuro);
-  border: 1px solid var(--coral-escuro);
-}
-.badge-status.pendente-agenda {
-  color: var(--dourado-escuro);
-  border: 1px solid var(--dourado-escuro);
-}
-.badge-status.tomado {
-  color: var(--menta);
-  border: 1px solid var(--menta);
-}
-
-.lembrete .hora, .agenda-item .hora {
-  font-size: 1.2rem; 
-  font-weight: 700;
-  color: var(--coral-escuro);
-}
-.agenda-item .hora {
-  color: var(--dourado-escuro);
-}
-.lembrete.feito .hora, .agenda-item.feito .hora {
-  color: var(--menta);
-  text-decoration: line-through;
-}
-
-.lembrete .texto, .agenda-item .texto-agenda { 
-  flex: 1; 
-  font-size: 1.15rem; 
-  min-width: 140px; 
-}
-.lembrete.feito .texto, .agenda-item.feito .texto-agenda {
-  text-decoration: line-through;
-  opacity: 0.85;
-}
-
-.botao-marcar {
-  font-family: var(--fonte);
-  font-size: 1rem;
-  font-weight: 700;
-  padding: 0.6rem 0.9rem;
-  border-radius: 10px;
-  border: 2px solid var(--menta);
-  background: var(--branco);
-  color: var(--menta);
-  cursor: pointer;
-  min-height: 48px;
-}
-.lembrete.feito .botao-marcar, .agenda-item.feito .botao-marcar {
-  background: var(--menta);
-  color: #FFFFFF;
-}
-
-.botao-excluir {
-  font-family: var(--fonte);
-  font-size: 1.3rem;
-  font-weight: 700;
-  padding: 0.4rem 0.7rem;
-  border-radius: 10px;
-  border: 2px solid var(--borda);
-  background: var(--branco);
-  color: var(--coral-escuro);
-  cursor: pointer;
-  min-height: 48px;
-  min-width: 48px;
-}
-
-/* CARTÕES DE CONTATOS */
-.contato-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  background: var(--branco);
-  border: 2px solid var(--borda);
-  border-radius: 16px;
-  padding: 0.9rem 1rem;
-  box-shadow: var(--sombra);
-  flex-wrap: wrap;
-}
-
-.contato-info-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex: 1;
-  min-width: 180px;
-}
-
-.contato-card .icone-contato {
-  background: var(--dourado);
-  border-radius: 50%;
-  width: 3.2rem; 
-  height: 3.2rem;
-  display: flex; 
-  align-items: center; 
-  justify-content: center;
-  flex-shrink: 0;
-  font-size: 1.4rem;
-}
-
-.contato-card .info-contato { 
-  display: flex; 
-  flex-direction: column; 
-  align-items: flex-start;
-  gap: 0.2rem;
-}
-
-.contato-card .nome-contato { 
-  font-size: 1.25rem; 
-  font-weight: 700; 
-  color: var(--azul-marinho);
-  line-height: 1.2;
-}
-
-.contato-card .numero-contato { 
-  font-size: 1.05rem; 
-  color: var(--azul-marinho-suave); 
-  line-height: 1.2;
-}
-
-.contato-acoes {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.botao-ligar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  font-family: var(--fonte);
-  font-size: 1.05rem;
-  font-weight: 700;
-  text-decoration: none;
-  padding: 0.6rem 1rem;
-  border-radius: 10px;
-  background: var(--menta);
-  color: #FFFFFF;
-  min-height: 48px;
-  border: 2px solid var(--menta);
-}
-
-.caixa-ajuda {
-  background: var(--azul-ceu);
-  border-radius: 16px;
-  padding: 1.2rem;
-  font-size: 1.1rem;
-  border: 2px dashed var(--menta);
-  word-break: break-word;
-}
-
-footer {
-  background: var(--azul-ceu);
-  text-align: center;
-  padding: 1.4rem 1rem;
-  font-size: 1rem;
-  border-top: 4px solid var(--menta);
-}
-
-.botao-emergencia {
-  display: block;
-  width: 100%;
-  text-align: center;
-  text-decoration: none;
-  background: var(--coral);
-  color: #fff;
-  font-size: 1.25rem;
-  font-weight: 700;
-  padding: 1.1rem;
-  border-radius: 16px;
-  margin-bottom: 1.8rem;
-  box-shadow: var(--sombra);
-  word-break: break-word;
-}
-
-/* ============================================================
-   ESTRUTURA E ALINHAMENTO DOS FORMULÁRIOS
-   ============================================================ */
-.formulario-adicionar {
-  margin-top: 1rem;
-  padding: 1rem;
-  border-radius: 16px;
-  background: var(--azul-ceu);
-  border: 2px solid var(--borda);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-  align-items: flex-end;
-  width: 100%;
-}
-
-.campo-adicionar {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  flex: 1 1 180px;
-}
-
-.campo-hora { flex: 0 1 110px; }
-.campo-nome { flex: 2 1 180px; }
-.campo-qtd { flex: 0 1 85px; }
-.campo-unidade { flex: 1 1 150px; }
-
-.campo-adicionar label { 
-  font-weight: 700; 
-  font-size: 0.95rem; 
-  color: var(--azul-marinho);
-  cursor: pointer; 
-  white-space: nowrap;
-}
-
-.campo-adicionar input,
-.campo-adicionar select.seletor-campo {
-  font-family: var(--fonte);
-  font-size: 1.05rem;
-  font-weight: 700;
-  padding: 0.6rem 0.8rem;
-  border-radius: 10px;
-  border: 2px solid var(--azul-marinho-suave);
-  background: var(--branco);
-  color: var(--azul-marinho);
-  min-height: 48px;
-  height: 48px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.campo-hora input[type="time"],
-.campo-qtd input[type="number"] {
-  text-align: center;
-}
-
-.botao-adicionar {
-  font-family: var(--fonte);
-  font-size: 1rem;
-  font-weight: 700;
-  padding: 0.6rem 1rem;
-  border-radius: 10px;
-  border: none;
-  background: var(--menta);
-  color: #fff;
-  cursor: pointer;
-  min-height: 48px;
-  height: 48px;
-  flex: 0 0 240px;
-  max-width: 100%;
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.banner-alarme {
-  display: none;
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: var(--coral);
-  color: #fff;
-  border-radius: 16px;
-  padding: 1.1rem 1.2rem;
-  margin-bottom: 1.5rem;
-  box-shadow: var(--sombra);
-  align-items: center;
-  gap: 0.8rem;
-  flex-wrap: wrap;
-  animation: piscar 1s infinite alternate;
-}
-.banner-alarme.ativo { display: flex; }
-
-@keyframes piscar {
-  from { background: var(--coral); }
-  to { background: var(--coral-escuro); }
-}
-
-/* PAINEL DE VOZ */
-.painel-voz-topo {
-  background: var(--azul-marinho);
-  color: var(--branco);
-  padding: 0.9rem 1rem;
-  border-bottom: 4px solid var(--dourado);
-  box-shadow: var(--sombra);
-}
-
-.conteudo-painel-voz {
-  max-width: 900px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.8rem;
-  flex-wrap: wrap;
-  font-size: 1rem;
-}
-
-.botoes-painel-voz {
-  display: flex;
-  gap: 0.6rem;
-  align-items: center;
-}
-
-.btn-voz {
-  font-family: var(--fonte);
-  font-size: 0.95rem;
-  font-weight: 700;
-  padding: 0.5rem 1rem;
-  border-radius: 10px;
-  cursor: pointer;
-  min-height: 48px;
-  border: 2px solid transparent;
-}
-.btn-voz-sim { background: var(--menta); color: #FFFFFF; }
-.btn-voz-nao { background: var(--coral); color: #FFFFFF; }
-
-/* RELÓGIO FLUTUANTE ADAPTÁVEL COM TOM SUAVE */
-.relogio-flutuante {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1000;
-  background: var(--azul-marinho);
-  color: var(--dourado);
-  padding: 0.8rem 1.2rem;
-  border-radius: 12px;
-  font-size: 1.8rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  box-shadow: var(--sombra);
-  border: 3px solid var(--dourado);
-  margin: 0;
-  transition: all 0.2s ease;
-}
-
-html[data-daltonismo="protanopia"] .relogio-flutuante {
-  background: #1A0D1A;
-  color: #FFD600;
-  border-color: #FF4081;
-}
-
-html[data-daltonismo="deuteranopia"] .relogio-flutuante {
-  background: #0A1526;
-  color: #FFB300;
-  border-color: #2979FF;
-}
-
-html[data-daltonismo="tritanopia"] .relogio-flutuante {
-  background: #1F0D15;
-  color: #FF4081;
-  border-color: #00E676;
-}
-
-html[data-daltonismo="acromatopsia"] .relogio-flutuante {
-  background: #000000;
-  color: #FFFFFF;
-  border-color: #FFFFFF;
-}
-
-html.alto-contraste .relogio-flutuante {
-  background-color: #000000 !important;
-  color: var(--dourado) !important;
-  border: 3px solid #FFFFFF !important;
-}
-
-/* RESPONSIVIDADE PARA CELULARES */
-@media (max-width: 768px) {
-  .relogio-flutuante {
-    display: none !important;
+// --- ATUALIZAÇÃO EM TEMPO REAL DA SAUDAÇÃO, DATA, RELÓGIO E ALARMES ---
+var alarmesDisparados = new Set();
+
+function atualizarRelogioESaudacao() {
+  const agora = new Date();
+  const hora = agora.getHours();
+  const minutos = String(agora.getMinutes()).padStart(2, '0');
+  const segundos = String(agora.getSeconds()).padStart(2, '0');
+  const horaFormatada = String(hora).padStart(2, '0');
+  const horaAtualFormatada = `${horaFormatada}:${minutos}`;
+
+  // Atualiza a Saudação
+  const elementoSaudacao = document.getElementById("texto-saudacao");
+  if (elementoSaudacao) {
+    if (hora >= 5 && hora < 12) elementoSaudacao.textContent = "Bom dia!";
+    else if (hora >= 12 && hora < 18) elementoSaudacao.textContent = "Boa tarde!";
+    else elementoSaudacao.textContent = "Boa noite!";
   }
 
-  header.topo {
-    flex-direction: column;
-    align-items: stretch;
+  // Atualiza a Data
+  const dias = ["domingo","segunda-feira","terça-feira","quarta-feira","quinta-feira","sexta-feira","sábado"];
+  const meses = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+  const elData = document.getElementById('texto-data');
+  if (elData) {
+    elData.textContent = "Hoje é " + dias[agora.getDay()] + ", " + agora.getDate() + " de " + meses[agora.getMonth()] + ".";
   }
 
-  .controles-acessibilidade {
-    width: 100%;
-    justify-content: space-between;
+  // Atualiza o Relógio Digital Flutuante
+  const elRelogio = document.getElementById('relogio-digital');
+  if (elRelogio) {
+    elRelogio.textContent = `🕒 ${horaFormatada}:${minutos}:${segundos}`;
   }
 
-  .seletor-controle {
-    width: 100%;
+  verificarAlarmes(horaAtualFormatada);
+}
+
+function verificarAlarmes(horaAtual) {
+  if (!dados) return;
+
+  dados.remedios.forEach(function(r) {
+    var chave = 'remedio_' + r.id + '_' + horaAtual;
+    if (r.hora === horaAtual && !r.feito && !alarmesDisparados.has(chave)) {
+      alarmesDisparados.add(chave);
+      dispararAlarme(`⏰ HORA DO REMÉDIO: ${r.texto}!`);
+    }
+  });
+
+  dados.agenda.forEach(function(a) {
+    var chave = 'agenda_' + a.id + '_' + horaAtual;
+    if (a.hora === horaAtual && !a.feito && !alarmesDisparados.has(chave)) {
+      alarmesDisparados.add(chave);
+      dispararAlarme(`⏰ COMPROMISSO AGORA: ${a.texto}!`);
+    }
+  });
+}
+
+function dispararAlarme(mensagem) {
+  var banner = document.getElementById('banner-alarme');
+  var textoBanner = document.getElementById('texto-banner-alarme');
+  if (banner && textoBanner) {
+    textoBanner.textContent = mensagem;
+    banner.classList.add('ativo');
+  }
+  anunciar(mensagem);
+  falar(mensagem);
+}
+
+var btnPararAlarme = document.getElementById('btn-parar-alarme');
+if (btnPararAlarme) {
+  btnPararAlarme.addEventListener('click', function() {
+    var banner = document.getElementById('banner-alarme');
+    if (banner) banner.classList.remove('ativo');
+    pararFala();
+  });
+}
+
+['input-remedio-hora', 'input-agenda-hora'].forEach(function(id) {
+  var campo = document.getElementById(id);
+  if (campo) {
+    campo.addEventListener('click', function() {
+      if ('showPicker' in HTMLInputElement.prototype) {
+        try { campo.showPicker(); } catch(e) {}
+      }
+    });
+  }
+});
+
+var statusLeitor = document.getElementById('status-leitor');
+function anunciar(mensagem) { if (statusLeitor) statusLeitor.textContent = mensagem; }
+
+var dados = {
+  modoDaltonismo: 'nenhum',
+  altoContrasteAtivo: false,
+  remedios: [],
+  agenda: [],
+  contatos: []
+};
+
+var proximoIdRemedio = 1, proximoIdAgenda = 1, proximoIdContato = 1;
+
+async function salvar() {
+  try {
+    if (window.storage) {
+      await window.storage.set('meu-dia:dados', JSON.stringify(dados), false);
+    } else {
+      localStorage.setItem('meu-dia:dados', JSON.stringify(dados));
+    }
+  } catch (e) {}
+}
+
+async function carregar() {
+  try {
+    if (window.storage) {
+      var resultado = await window.storage.get('meu-dia:dados', false);
+      if (resultado && resultado.value) {
+        var salvo = JSON.parse(resultado.value);
+        if (salvo && salvo.remedios) dados = salvo;
+      }
+    } else {
+      var local = localStorage.getItem('meu-dia:dados');
+      if (local) {
+        var salvoLocal = JSON.parse(local);
+        if (salvoLocal && salvoLocal.remedios) dados = salvoLocal;
+      }
+    }
+  } catch (e) {}
+  
+  if (dados.modoDaltonismo) {
+    var select = document.getElementById('select-daltonismo');
+    if (select) {
+      select.value = dados.modoDaltonismo;
+      aplicarModoDaltonismo(dados.modoDaltonismo);
+    }
   }
 
-  .conteudo-painel-voz {
-    flex-direction: column;
-    text-align: center;
+  if (dados.altoContrasteAtivo) {
+    document.documentElement.classList.add('alto-contraste');
+    var btnC = document.getElementById('btn-contraste');
+    if (btnC) btnC.setAttribute('aria-pressed', 'true');
   }
 
-  .botoes-painel-voz {
-    width: 100%;
-    justify-content: center;
-  }
+  proximoIdRemedio = dados.remedios.length ? 1 + Math.max(0, ...dados.remedios.map(function(r){ return r.id; })) : 1;
+  proximoIdAgenda = dados.agenda.length ? 1 + Math.max(0, ...dados.agenda.map(function(a){ return a.id; })) : 1;
+  proximoIdContato = dados.contatos.length ? 1 + Math.max(0, ...dados.contatos.map(function(c){ return c.id; })) : 1;
+  renderizarTudo();
+}
 
-  .btn-voz {
-    flex: 1;
+// RENDERIZAR REMÉDIOS
+function renderizarRemedios() {
+  var lista = document.getElementById('lista-remedios');
+  if (!lista) return;
+  lista.innerHTML = '';
+  if (dados.remedios.length === 0) {
+    lista.innerHTML = '<p class="mensagem-vazio">Nenhum remédio cadastrado ainda.</p>';
+    return;
   }
+  dados.remedios.slice().sort(function(a,b){ return a.hora.localeCompare(b.hora); }).forEach(function(r) {
+    var div = document.createElement('div');
+    div.className = 'lembrete' + (r.feito ? ' feito' : '');
+    
+    var iconeForma = r.feito ? '✓' : '■';
+    var classeForma = r.feito ? 'forma-circulo' : 'forma-quadrado';
+    var statusTexto = r.feito ? 'Tomado' : 'Pendente';
+    var classeBadge = r.feito ? 'tomado' : 'pendente';
 
-  .formulario-adicionar {
-    flex-direction: column;
-    align-items: stretch;
+    div.innerHTML =
+      '<span class="marcador ' + classeForma + '" aria-hidden="true">' + iconeForma + '</span>' +
+      '<span class="hora">' + escaparHtml(r.hora) + '</span>' +
+      '<span class="texto">' +
+        escaparHtml(r.texto) +
+        '<span class="badge-status ' + classeBadge + '"><span aria-hidden="true">' + iconeForma + '</span> ' + statusTexto + '</span>' +
+      '</span>' +
+      '<button class="botao-marcar" type="button">' + (r.feito ? 'Tomado ✓' : 'Marcar como tomado') + '</button>' +
+      '<button class="botao-excluir" type="button" aria-label="Excluir ' + escaparHtml(r.texto) + '">✕</button>';
+
+    div.querySelector('.botao-marcar').addEventListener('click', function() {
+      r.feito = !r.feito;
+      salvar();
+      renderizarRemedios();
+      anunciar(r.texto + (r.feito ? ' marcado como tomado.' : ' desmarcado.'));
+    });
+    div.querySelector('.botao-excluir').addEventListener('click', function() {
+      dados.remedios = dados.remedios.filter(function(x){ return x.id !== r.id; });
+      salvar();
+      renderizarRemedios();
+      anunciar('Remédio removido.');
+    });
+    lista.appendChild(div);
+  });
+}
+
+// RENDERIZAR AGENDA
+function renderizarAgenda() {
+  var lista = document.getElementById('lista-agenda');
+  if (!lista) return;
+  lista.innerHTML = '';
+  if (dados.agenda.length === 0) {
+    lista.innerHTML = '<p class="mensagem-vazio">Nenhum compromisso cadastrado ainda.</p>';
+    return;
   }
+  dados.agenda.slice().sort(function(a,b){ return a.hora.localeCompare(b.hora); }).forEach(function(item) {
+    var div = document.createElement('div');
+    div.className = 'agenda-item' + (item.feito ? ' feito' : '');
+    
+    var iconeForma = item.feito ? '✓' : '◆';
+    var classeForma = item.feito ? 'forma-circulo' : 'forma-diamante-box';
+    var statusTexto = item.feito ? 'Concluído' : 'Pendente';
+    var classeBadge = item.feito ? 'tomado' : 'pendente-agenda';
 
-  .campo-adicionar, .campo-hora, .campo-nome, .campo-qtd, .campo-unidade, .botao-adicionar {
-    width: 100%;
-    flex: 1 1 100%;
+    div.innerHTML =
+      '<span class="marcador ' + classeForma + '" aria-hidden="true">' + iconeForma + '</span>' +
+      '<span class="hora">' + escaparHtml(formatarHoraExtenso(item.hora)) + '</span>' +
+      '<span class="texto-agenda">' +
+        escaparHtml(item.texto) +
+        '<span class="badge-status ' + classeBadge + '"><span aria-hidden="true">' + iconeForma + '</span> ' + statusTexto + '</span>' +
+      '</span>' +
+      '<button class="botao-marcar" type="button">' + (item.feito ? 'Concluído ✓' : 'Marcar concluído') + '</button>' +
+      '<button class="botao-excluir" type="button" aria-label="Excluir compromisso ' + escaparHtml(item.texto) + '">✕</button>';
+
+    div.querySelector('.botao-marcar').addEventListener('click', function() {
+      item.feito = !item.feito;
+      salvar();
+      renderizarAgenda();
+      anunciar(item.texto + (item.feito ? ' marcado como concluído.' : ' desmarcado.'));
+    });
+    div.querySelector('.botao-excluir').addEventListener('click', function() {
+      dados.agenda = dados.agenda.filter(function(x){ return x.id !== item.id; });
+      salvar();
+      renderizarAgenda();
+      anunciar('Compromisso removido.');
+    });
+    lista.appendChild(div);
+  });
+}
+
+// RENDERIZAR CONTATOS
+function renderizarContatos() {
+  var lista = document.getElementById('lista-contatos');
+  if (!lista) return;
+  lista.innerHTML = '';
+  if (dados.contatos.length === 0) {
+    lista.innerHTML = '<p class="mensagem-vazio">Nenhum contato cadastrado ainda.</p>';
+    return;
   }
+  dados.contatos.forEach(function(c) {
+    var div = document.createElement('div');
+    div.className = 'contato-card';
+    div.innerHTML =
+      '<div class="contato-info-wrapper">' +
+        '<span class="icone-contato" aria-hidden="true">' + c.icone + '</span>' +
+        '<div class="info-contato">' +
+          '<span class="nome-contato">' + escaparHtml(c.nome) + '</span>' +
+          '<span class="numero-contato">' + escaparHtml(c.numero) + '</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="contato-acoes">' +
+        '<a class="botao-ligar" href="tel:' + escaparAtributo(c.tel) + '" aria-label="Ligar para ' + escaparHtml(c.nome) + '">📞 Ligar</a>' +
+        '<button class="botao-excluir" type="button" aria-label="Excluir contato ' + escaparHtml(c.nome) + '">✕</button>' +
+      '</div>';
 
-  .lembrete, .agenda-item {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+    div.querySelector('.botao-excluir').addEventListener('click', function(ev) {
+      ev.preventDefault();
+      dados.contatos = dados.contatos.filter(function(x){ return x.id !== c.id; });
+      salvar();
+      renderizarContatos();
+      anunciar('Contato removido.');
+    });
+    lista.appendChild(div);
+  });
+}
 
-  .lembrete .botao-marcar, .agenda-item .botao-marcar {
-    width: 100%;
-  }
+function renderizarTudo() { renderizarRemedios(); renderizarAgenda(); renderizarContatos(); }
+function escaparHtml(texto) { var div = document.createElement('div'); div.textContent = texto; return div.innerHTML; }
+function escaparAtributo(texto) { return String(texto).replace(/"/g, '&quot;'); }
+function formatarHoraExtenso(hora) { var partes = hora.split(':'); return partes[0] + 'h' + partes[1]; }
 
-  .contato-card {
-    flex-direction: column;
-    align-items: stretch;
-  }
+// FORMULÁRIOS
+document.getElementById('form-remedio').addEventListener('submit', function(ev) {
+  ev.preventDefault();
+  var hora = document.getElementById('input-remedio-hora').value;
+  var nome = document.getElementById('input-remedio-texto').value.trim();
+  var qtd = document.getElementById('input-remedio-qtd').value.trim();
+  var unidade = document.getElementById('select-remedio-unidade').value;
 
-  .contato-acoes {
-    width: 100%;
-  }
+  if (!nome || !hora || !qtd) return;
 
-  .botao-ligar {
-    flex: 1;
+  var textoCompleto = nome + ' — ' + qtd + ' ' + unidade;
+
+  dados.remedios.push({ id: proximoIdRemedio++, hora: hora, texto: textoCompleto, feito: false });
+  salvar(); 
+  renderizarRemedios();
+  anunciar('Remédio ' + textoCompleto + ' adicionado.');
+
+  document.getElementById('input-remedio-texto').value = '';
+  document.getElementById('input-remedio-qtd').value = '1';
+});
+
+document.getElementById('form-agenda').addEventListener('submit', function(ev) {
+  ev.preventDefault();
+  var hora = document.getElementById('input-agenda-hora').value;
+  var texto = document.getElementById('input-agenda-texto').value.trim();
+  if (!texto || !hora) return;
+  dados.agenda.push({ id: proximoIdAgenda++, hora: hora, texto: texto, feito: false });
+  salvar(); renderizarAgenda();
+  anunciar('Compromisso ' + texto + ' adicionado.');
+  document.getElementById('input-agenda-texto').value = '';
+});
+
+document.getElementById('form-contato').addEventListener('submit', function(ev) {
+  ev.preventDefault();
+  var nome = document.getElementById('input-contato-nome').value.trim();
+  var numero = document.getElementById('input-contato-numero').value.trim();
+  if (!nome || !numero) return;
+  var telLimpo = numero.replace(/[^\d+]/g, '');
+  dados.contatos.push({ id: proximoIdContato++, nome: nome, numero: numero, tel: telLimpo, icone: '📞' });
+  salvar(); renderizarContatos();
+  anunciar('Contato ' + nome + ' adicionado.');
+  this.reset();
+});
+
+// TAMANHO DA FONTE
+var escalaAtual = 1;
+document.getElementById('btn-aumentar').addEventListener('click', function() {
+  if (escalaAtual < 1.6) { escalaAtual = Math.round((escalaAtual + 0.15) * 100) / 100; document.documentElement.style.setProperty('--escala', escalaAtual); }
+});
+document.getElementById('btn-diminuir').addEventListener('click', function() {
+  if (escalaAtual > 0.85) { escalaAtual = Math.round((escalaAtual - 0.15) * 100) / 100; document.documentElement.style.setProperty('--escala', escalaAtual); }
+});
+
+// ALTO CONTRASTE
+var btnContraste = document.getElementById('btn-contraste');
+btnContraste.addEventListener('click', function() {
+  var ativo = document.documentElement.classList.toggle('alto-contraste');
+  btnContraste.setAttribute('aria-pressed', ativo ? 'true' : 'false');
+  dados.altoContrasteAtivo = ativo;
+  salvar();
+  anunciar(ativo ? 'Alto contraste ativado.' : 'Alto contraste desativado.');
+});
+
+// SELETOR DE DALTONISMO COM REGRAS DINÂMICAS DE PALETA
+var selectDaltonismo = document.getElementById('select-daltonismo');
+function aplicarModoDaltonismo(modo) {
+  if (modo === 'nenhum') {
+    document.documentElement.removeAttribute('data-daltonismo');
+  } else {
+    document.documentElement.setAttribute('data-daltonismo', modo);
   }
 }
 
-/* ============================================================
-   CONTORNO VISÍVEL AO PASSAR O MOUSE (HOVER SEM SELECIONAR)
-   ============================================================ */
+selectDaltonismo.addEventListener('change', function() {
+  var modoSelecionado = selectDaltonismo.value;
+  aplicarModoDaltonismo(modoSelecionado);
+  dados.modoDaltonismo = modoSelecionado;
+  salvar();
+  var rotuloOpcao = selectDaltonismo.options[selectDaltonismo.selectedIndex].text;
+  anunciar('Modo de cores e texturas ajustado para: ' + rotuloOpcao);
+});
 
-/* 1. Contorno ao passar o cursor por cima (Hover): 
-      Usa as variáveis do modo daltônico ativo assim que o mouse encosta na caixa ou botão */
-.campo-adicionar input:hover,
-.campo-adicionar select:hover,
-.seletor-controle:hover,
-.botao-controle:hover,
-.botao-adicionar:hover,
-.botao-marcar:hover,
-.botao-excluir:hover,
-.botao-ligar:hover {
-  border-color: var(--coral-escuro) !important;
-  outline: 3px solid var(--dourado) !important; /* O anel de contorno aparece aqui! */
-  outline-offset: 2px;
-  cursor: pointer;
+// NAVEGAÇÃO POR VOZ
+var sintetizador = window.speechSynthesis;
+var assistenteAtivo = false;
+
+function falar(mensagem, aoTerminar) {
+  if (!sintetizador) return;
+  sintetizador.cancel();
+
+  var fala = new SpeechSynthesisUtterance(mensagem);
+  fala.lang = 'pt-BR';
+  fala.rate = 1.0;
+
+  if (aoTerminar) {
+    fala.onend = aoTerminar;
+    fala.onerror = aoTerminar;
+  }
+
+  sintetizador.speak(fala);
 }
 
-/* 2. Mantém o contorno quando a caixa é finalmente clicada/selecionada (Focus) */
-.campo-adicionar input:focus,
-.campo-adicionar select:focus,
-.seletor-controle:focus,
-.botao-controle:focus {
-  border-color: var(--coral-escuro) !important;
-  outline: 3px solid var(--menta) !important;
-  outline-offset: 2px;
+function pararFala() {
+  if (sintetizador) sintetizador.cancel();
 }
 
-/* 3. Seleção de texto grifado */
-::selection {
-  background-color: var(--dourado) !important;
-  color: #000000 !important;
+function obterMensagemInicial() {
+  var hora = new Date().getHours();
+  var saudacao = "Bom dia!";
+  if (hora >= 12 && hora < 18) saudacao = "Boa tarde!";
+  else if (hora >= 18 || hora < 5) saudacao = "Boa noite!";
+
+  var textoSaudacao = document.getElementById('texto-saudacao').textContent || saudacao;
+  var textoData = document.getElementById('texto-data').textContent || '';
+  var agora = new Date();
+  var horaFormatada = agora.getHours() + " horas e " + agora.getMinutes() + " minutos";
+
+  return textoSaudacao + " " + textoData + " Agora são " + horaFormatada + ". " +
+         "Menu de voz: Pressione 1 para ouvir os Remédios de hoje. " +
+         "Pressione 2 para ouvir os Compromissos. " +
+         "Pressione 3 para ouvir os Contatos importantes. " +
+         "Pressione 0 para ouvir a página inteira. " +
+         "Pressione ESC a qualquer momento para parar a leitura.";
 }
+
+function lerSecaoRemedios() {
+  if (dados.remedios.length === 0) {
+    falar("Você não possui nenhum remédio cadastrado para hoje.");
+    return;
+  }
+  var texto = "Seus remédios para hoje são: ";
+  dados.remedios.forEach(function(r) {
+    texto += "Às " + formatarHoraExtenso(r.hora) + ", " + r.texto + ". Status: " + (r.feito ? "já tomado" : "pendente") + ". ";
+  });
+  falar(texto);
+}
+
+function lerSecaoAgenda() {
+  if (dados.agenda.length === 0) {
+    falar("Você não possui compromissos agendados para hoje.");
+    return;
+  }
+  var texto = "Seus compromissos para hoje são: ";
+  dados.agenda.forEach(function(item) {
+    texto += "Às " + formatarHoraExtenso(item.hora) + ", " + item.texto + ". Status: " + (item.feito ? "concluído" : "pendente") + ". ";
+  });
+  falar(texto);
+}
+
+function lerSecaoContatos() {
+  if (dados.contatos.length === 0) {
+    falar("Você não possui contatos de emergência cadastrados.");
+    return;
+  }
+  var texto = "Seus contatos importantes são: ";
+  dados.contatos.forEach(function(c) {
+    texto += c.nome + ", telefone " + c.numero + ". ";
+  });
+  falar(texto);
+}
+
+function lerPaginaInteira() {
+  var conteudo = document.getElementById('conteudo-principal').innerText;
+  falar(conteudo);
+}
+
+function ativarAssistenteVoz() {
+  assistenteAtivo = true;
+  document.getElementById('painel-voz').style.display = 'none';
+  anunciar("Assistente de voz ativado.");
+  falar(obterMensagemInicial());
+}
+
+function desativarAssistenteVoz() {
+  assistenteAtivo = false;
+  pararFala();
+  document.getElementById('painel-voz').style.display = 'none';
+  anunciar("Assistente de voz desativado.");
+}
+
+document.getElementById('btn-voz-sim').addEventListener('click', ativarAssistenteVoz);
+document.getElementById('btn-voz-nao').addEventListener('click', desativarAssistenteVoz);
+
+var btnOuvir = document.getElementById('btn-ouvir');
+btnOuvir.addEventListener('click', function() {
+  if (sintetizador && sintetizador.speaking) {
+    pararFala();
+    btnOuvir.textContent = '🔊 Ouvir a página';
+    btnOuvir.setAttribute('aria-pressed', 'false');
+  } else {
+    lerPaginaInteira();
+    btnOuvir.textContent = '⏹ Parar leitura';
+    btnOuvir.setAttribute('aria-pressed', 'true');
+  }
+});
+
+document.addEventListener('keydown', function(event) {
+  var tecla = event.key.toLowerCase();
+  var tagAlvo = event.target.tagName ? event.target.tagName.toLowerCase() : '';
+  var estaDigitando = tagAlvo === 'input' || tagAlvo === 'textarea' || tagAlvo === 'select' || event.target.isContentEditable;
+
+  if (estaDigitando) {
+    if (tecla === 'escape') pararFala();
+    return;
+  }
+
+  var painelVisivel = document.getElementById('painel-voz').style.display !== 'none';
+  if (painelVisivel) {
+    if (tecla === 's' || tecla === '1') {
+      event.preventDefault();
+      ativarAssistenteVoz();
+      return;
+    }
+    if (tecla === 'n' || tecla === 'escape' || tecla === '2') {
+      event.preventDefault();
+      desativarAssistenteVoz();
+      return;
+    }
+  }
+
+  if (event.altKey && (tecla === 'o')) {
+    event.preventDefault();
+    btnOuvir.click();
+    return;
+  }
+
+  if (assistenteAtivo) {
+    if (tecla === 'escape') {
+      pararFala();
+    } else if (tecla === '1') {
+      event.preventDefault();
+      lerSecaoRemedios();
+    } else if (tecla === '2') {
+      event.preventDefault();
+      lerSecaoAgenda();
+    } else if (tecla === '3') {
+      event.preventDefault();
+      lerSecaoContatos();
+    } else if (tecla === '0') {
+      event.preventDefault();
+      lerPaginaInteira();
+    }
+  }
+});
+
+window.addEventListener('DOMContentLoaded', async function() {
+  await carregar();
+  atualizarRelogioESaudacao();
+  setInterval(atualizarRelogioESaudacao, 1000);
+});
