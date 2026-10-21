@@ -19,20 +19,20 @@
   --cor-texto-botao: #FFFFFF;
 }
 
-/* PREVENÇÃO GLOBAL DE TRANSBORDO HORIZONTAL */
+/* PREVENÇÃO GLOBAL DE TRANSBORDO HORIZONTAL E ISOLAMENTO DE GPU PARA GITHUB PAGES */
 *, *::before, *::after {
   box-sizing: border-box;
   max-width: 100%;
 }
 
-html, body {
-  width: 100%;
-  overflow-x: hidden;
-}
-
 html { 
   font-size: calc(18px * var(--escala)); 
   scroll-behavior: smooth; 
+  isolation: isolate;
+  height: auto;
+  min-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 body {
@@ -41,9 +41,22 @@ body {
   background: var(--azul-fundo);
   color: var(--azul-marinho);
   line-height: 1.55;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 a { color: inherit; }
+
+/* ISOLAMENTO DE CAMADAS DAS BARRAS FIXAS/STICKY */
+header.topo,
+.banner-alarme,
+.relogio-flutuante {
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
 
 /* ============================================================
    PALETAS DALTÔNICAS SUAVE / SEM OFUSCAMENTO (MODO NORMAL)
@@ -952,8 +965,7 @@ html.alto-contraste .relogio-flutuante {
    CONTORNO VISÍVEL AO PASSAR O MOUSE (HOVER SEM SELECIONAR)
    ============================================================ */
 
-/* 1. Contorno ao passar o cursor por cima (Hover): 
-      Usa as variáveis do modo daltônico ativo assim que o mouse encosta na caixa ou botão */
+/* 1. Contorno ao passar o cursor por cima (Hover) */
 .campo-adicionar input:hover,
 .campo-adicionar select:hover,
 .seletor-controle:hover,
@@ -963,12 +975,12 @@ html.alto-contraste .relogio-flutuante {
 .botao-excluir:hover,
 .botao-ligar:hover {
   border-color: var(--coral-escuro) !important;
-  outline: 3px solid var(--dourado) !important; /* O anel de contorno aparece aqui! */
+  outline: 3px solid var(--dourado) !important;
   outline-offset: 2px;
   cursor: pointer;
 }
 
-/* 2. Mantém o contorno quando a caixa é finalmente clicada/selecionada (Focus) */
+/* 2. Mantém o contorno quando a caixa é selecionada (Focus) */
 .campo-adicionar input:focus,
 .campo-adicionar select:focus,
 .seletor-controle:focus,
